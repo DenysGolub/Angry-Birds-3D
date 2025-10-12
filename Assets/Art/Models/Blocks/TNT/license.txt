@@ -1,0 +1,11 @@
+Model Information:
+* title:	Stylized TNT box
+* source:	https://sketchfab.com/3d-models/stylized-tnt-box-8c180bd87d364b758b20dab461479bdb
+* author:	AndresX (https://sketchfab.com/Andres_X)
+
+Model License:
+* license type:	CC-BY-NC-SA-4.0 (http://creativecommons.org/licenses/by-nc-sa/4.0/)
+* requirements:	Author must be credited. No commercial use. Modified versions must have the same license.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Stylized TNT box" (https://sketchfab.com/3d-models/stylized-tnt-box-8c180bd87d364b758b20dab461479bdb) by AndresX (https://sketchfab.com/Andres_X) licensed under CC-BY-NC-SA-4.0 (http://creativecommons.org/licenses/by-nc-sa/4.0/)
