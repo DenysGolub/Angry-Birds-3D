@@ -1,7 +1,7 @@
 using Unity.Cinemachine;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class CameraManager : MonoBehaviour
 {
     public CinemachineCamera LevelCamera;
     public CinemachineCamera ShotCamera;

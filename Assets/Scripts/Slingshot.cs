@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Unity.Cinemachine;
 using Unity.VisualScripting;
@@ -28,13 +29,29 @@ public class Slingshot : MonoBehaviour
     private SpringJoint Joint;
     private bool IsDragging = false;
 
-    [Header("Birds Ammo")] 
-    public GameObject BirdsAmmo;
+    [Header("First ammo setup")]
+    public GameObject CurrentProjectilePrefab;
+    public static event Action OnShotFired;
     
 
     void Start()
     {
         CreateProjectile();
+    }
+
+    private void OnEnable()
+    {
+        BirdManager.ChangeCurrentProjectile += GetProjectile;
+    }
+
+    private void OnDisable()
+    {
+        BirdManager.ChangeCurrentProjectile -= GetProjectile;
+    }
+
+    void GetProjectile(GameObject bird)
+    {
+        CurrentProjectilePrefab = bird;
     }
 
     //Logic: we start to drag our bird and the more we drag to back the more power it will get
@@ -84,16 +101,17 @@ public class Slingshot : MonoBehaviour
     void CreateProjectile()
     {
         FlightCamera.Follow = Pivot;
-        var bird = BirdsAmmo.gameObject.transform.GetChild(0);
-        Destroy(BirdsAmmo.gameObject.transform.GetChild(0).gameObject);
-        bird.AddComponent<Rigidbody>();
-        CurrentProjectile = Instantiate(bird.GetComponent<Rigidbody>(), LaunchPoint.position, Quaternion.identity);
-        Joint = CurrentProjectile.gameObject.AddComponent<SpringJoint>();
-        Joint.connectedAnchor = Pivot.position;
-        Joint.spring = 40f;
-        Joint.damper = 5f;
-        Joint.autoConfigureConnectedAnchor = false;
-        CurrentProjectile.isKinematic = true;
+
+        if (CurrentProjectilePrefab != null)
+        {
+            CurrentProjectile = Instantiate(CurrentProjectilePrefab.GetComponent<Rigidbody>(), LaunchPoint.position, Quaternion.identity);
+            Joint = CurrentProjectile.gameObject.AddComponent<SpringJoint>();
+            Joint.connectedAnchor = Pivot.position;
+            Joint.spring = 40f;
+            Joint.damper = 5f;
+            Joint.autoConfigureConnectedAnchor = false;
+            CurrentProjectile.isKinematic = true; 
+        }
     }
 
     void DragProjectile()
@@ -116,6 +134,8 @@ public class Slingshot : MonoBehaviour
 
     IEnumerator Release()
     {
+        CurrentProjectilePrefab = null;
+        OnShotFired.Invoke();
         Destroy(Joint);
         CurrentProjectile.isKinematic = false;
 
