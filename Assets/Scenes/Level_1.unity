@@ -1631,7 +1631,7 @@ MonoBehaviour:
   Pivot: {fileID: 2120624137}
   LaunchPoint: {fileID: 2120624137}
   MaxStretch: 10.06
-  PowerMultiplier: 15.2
+  PowerMultiplier: 9.1
   FlightCamera: {fileID: 170469508}
   WaitSecondsAfterShot: 2
   LeftBand: {fileID: 274224558}
@@ -1641,7 +1641,7 @@ MonoBehaviour:
   FlightPath: {fileID: 524040942}
   PathResolution: 30
   PathTimeStep: 0.1
-  CurrentProjectilePrefab: {fileID: 5752506049090841202, guid: d382b58cded41e048895d66d4b626ead, type: 3}
+  CurrentProjectilePrefab: {fileID: 0}
 --- !u!1 &413758231
 GameObject:
   m_ObjectHideFlags: 0
@@ -3731,8 +3731,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BirdsAmmo:
+  - {fileID: 2306810275114104525, guid: 23fa2ee098712d643b965e84f1929f76, type: 3}
+  - {fileID: 1792080798594657422, guid: 2c69422a6377ed04280c37d0a7709e5b, type: 3}
+  - {fileID: 1792080798594657422, guid: 2c69422a6377ed04280c37d0a7709e5b, type: 3}
   - {fileID: 5752506049090841202, guid: d382b58cded41e048895d66d4b626ead, type: 3}
+  - {fileID: 2306810275114104525, guid: 23fa2ee098712d643b965e84f1929f76, type: 3}
   - {fileID: 5752506049090841202, guid: d382b58cded41e048895d66d4b626ead, type: 3}
+  Slingshot: {fileID: 501273678}
+  spawnedBirds: []
 --- !u!4 &1294455018
 Transform:
   m_ObjectHideFlags: 0
@@ -4714,6 +4720,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1632290895}
+  - component: {fileID: 1632290896}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -4736,6 +4743,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1632290896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1632290894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe1a46ec44c6821418fe8934306aa0e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1654409271
 GameObject:
   m_ObjectHideFlags: 0

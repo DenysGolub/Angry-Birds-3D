@@ -36,17 +36,18 @@ public class Slingshot : MonoBehaviour
 
     void Start()
     {
+        OnShotFired.Invoke();
         CreateProjectile();
     }
 
     private void OnEnable()
     {
-        BirdManager.ChangeCurrentProjectile += GetProjectile;
+        GameManager.SetNextBirdToSlingshotAction += GetProjectile;
     }
 
     private void OnDisable()
     {
-        BirdManager.ChangeCurrentProjectile -= GetProjectile;
+        GameManager.SetNextBirdToSlingshotAction -= GetProjectile;
     }
 
     void GetProjectile(GameObject bird)
@@ -100,6 +101,7 @@ public class Slingshot : MonoBehaviour
 
     void CreateProjectile()
     {
+        
         FlightCamera.Follow = Pivot;
 
         if (CurrentProjectilePrefab != null)
