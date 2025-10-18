@@ -1,15 +1,15 @@
+using System;
 using UnityEngine;
 
-public class RedBirds : MonoBehaviour
+public class RedBird : BirdBase
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+  
+    public override void PlaySoundEffect()
     {
-        
+        AudioManager.Instance.PlayBirdLaunch(Bird.Red);
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void UseSpecialAbility()
     {
         
     }

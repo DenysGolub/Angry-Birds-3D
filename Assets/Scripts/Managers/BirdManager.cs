@@ -6,10 +6,10 @@ using UnityEngine;
 
 public class BirdManager : MonoBehaviour
 {
-    public List<GameObject> BirdsAmmo;
     public static event Action<GameObject> ChangeCurrentProjectile;
     public Transform Slingshot;
     public List<GameObject> spawnedBirds;
+    public BirdsAmmoSO BirdsList;
 
     
     
@@ -19,13 +19,14 @@ public class BirdManager : MonoBehaviour
         float padding = 1.5f;
         Vector3 slingshotPosition = Slingshot.position;
         Debug.Log(slingshotPosition);
-        foreach (GameObject bird in BirdsAmmo)
+        for(int i = 1; i < BirdsList.Birds.Count; i++)
         {
             slingshotPosition.x  -= padding;
-            spawnedBirds.Add(Instantiate(bird, slingshotPosition, Slingshot.rotation));
+            spawnedBirds.Add(Instantiate(BirdsList.Birds[i], slingshotPosition, BirdsList.Birds[i].transform.rotation));
 
             padding = 0.8f;
         }
+        
         
     }
     
@@ -41,14 +42,11 @@ public class BirdManager : MonoBehaviour
     
     void SetUpCurrentProjectile()
     {
-        if (ChangeCurrentProjectile != null && BirdsAmmo.Count > 0)
+        if (ChangeCurrentProjectile != null && spawnedBirds.Count > 0)
         {
-            ChangeCurrentProjectile(BirdsAmmo[0]);
-            BirdsAmmo.RemoveAt(0);
-            Destroy(spawnedBirds[0]);
+            GameObject bird = spawnedBirds[0].gameObject;
+            ChangeCurrentProjectile(bird);
             spawnedBirds.RemoveAt(0);
         }
-        Debug.Log(BirdsAmmo.Count);
-        
     }
 }

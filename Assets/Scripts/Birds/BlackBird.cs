@@ -1,16 +1,30 @@
 using UnityEngine;
 
-public class BlackBird : MonoBehaviour
+public class BlackBird : BirdBase
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public float radius = 5.0F;
+    public float power = 10.0F;
+   
+    public override void PlaySoundEffect()
     {
-        
+        Debug.Log("BlackBird PlaySoundEffect");
     }
 
-    // Update is called once per frame
-    void Update()
+    
+   
+    public override void UseSpecialAbility()
     {
+        Debug.Log("BlackBird PlaySoundEffect");
+        Vector3 explosionPos = transform.position;
+        Collider[] colliders = Physics.OverlapSphere(explosionPos, radius, LayerMask.GetMask("Destructable"));
+        foreach (Collider hit in colliders)
+        {
+            Rigidbody rb = hit.GetComponent<Rigidbody>();
+
+            if (rb != null)
+                rb.AddExplosionForce(power, explosionPos, radius, 3.0F);
+        }
+        
         
     }
 }

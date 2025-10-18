@@ -11,6 +11,8 @@ public class Slingshot : MonoBehaviour
     public Transform LaunchPoint;
     public float MaxStretch = 3f;
     public float PowerMultiplier = 30f;
+    
+    public float MassForInitialVelocity = 0.5f;
 
     [Header("Flight Camera Setup")] public CinemachineCamera FlightCamera;
 
@@ -30,13 +32,16 @@ public class Slingshot : MonoBehaviour
     private bool IsDragging = false;
 
     [Header("First ammo setup")]
+    public BirdsAmmoSO BirdsList;
     public GameObject CurrentProjectilePrefab;
     public static event Action OnShotFired;
     
+    
+    
 
-    void Start()
+    void Awake()
     {
-        OnShotFired.Invoke();
+        CurrentProjectilePrefab = Instantiate(BirdsList.Birds[0].gameObject);
         CreateProjectile();
     }
 
@@ -60,6 +65,8 @@ public class Slingshot : MonoBehaviour
 
     void Update()
     {
+        
+        
         if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
         {
             return;
@@ -71,6 +78,7 @@ public class Slingshot : MonoBehaviour
             return;
         }
 
+        
         if (Input.GetMouseButtonDown(0))
         {
             AudioManager.Instance.PlaySlingshotStretch();
@@ -101,16 +109,14 @@ public class Slingshot : MonoBehaviour
 
     void CreateProjectile()
     {
-        
         FlightCamera.Follow = Pivot;
 
         if (CurrentProjectilePrefab != null)
         {
-            CurrentProjectile = Instantiate(CurrentProjectilePrefab.GetComponent<Rigidbody>(), LaunchPoint.position, Quaternion.identity);
-            Joint = CurrentProjectile.gameObject.AddComponent<SpringJoint>();
+            CurrentProjectile = CurrentProjectilePrefab.gameObject.GetComponent<Rigidbody>();
+            CurrentProjectile.transform.SetPositionAndRotation(LaunchPoint.position, CurrentProjectilePrefab.transform.rotation);
+            Joint = CurrentProjectile.gameObject.GetComponent<SpringJoint>();
             Joint.connectedAnchor = Pivot.position;
-            Joint.spring = 40f;
-            Joint.damper = 5f;
             Joint.autoConfigureConnectedAnchor = false;
             CurrentProjectile.isKinematic = true; 
         }
@@ -137,7 +143,12 @@ public class Slingshot : MonoBehaviour
     IEnumerator Release()
     {
         CurrentProjectilePrefab = null;
-        OnShotFired.Invoke();
+        if (OnShotFired != null)
+        {
+            OnShotFired.Invoke();
+            CurrentProjectile.gameObject.GetComponent<BirdBase>().OnShoot.Invoke();
+        }
+        
         Destroy(Joint);
         CurrentProjectile.isKinematic = false;
 

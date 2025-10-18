@@ -1,0 +1,11 @@
+Model Information:
+* title:	Yellow Angry Bird
+* source:	https://sketchfab.com/3d-models/yellow-angry-bird-OLGhFUE2hf7SrFeh1AmILW2pfO
+* author:	Roberto Abella (https://sketchfab.com/epimeison)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Yellow Angry Bird" (https://sketchfab.com/3d-models/yellow-angry-bird-OLGhFUE2hf7SrFeh1AmILW2pfO) by Roberto Abella (https://sketchfab.com/epimeison) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

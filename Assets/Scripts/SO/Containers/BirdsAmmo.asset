@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9de1a9a68c6cdf40bccd53d03b58c43, type: 3}
+  m_Name: BirdsAmmo
+  m_EditorClassIdentifier: 
+  Birds:
+  - {fileID: 4569406344906518996, guid: 7cca0bb672c340344b211f39d5c6c46e, type: 3}
+  - {fileID: 8320618998282036899, guid: 6a128da25cff6ba40995b11c23ae0a98, type: 3}
+  - {fileID: 4564408452649689803, guid: cde508cd0b9c98143ad973e3f2c1fe51, type: 3}

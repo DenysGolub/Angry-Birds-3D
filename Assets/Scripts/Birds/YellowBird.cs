@@ -1,16 +1,18 @@
 using UnityEngine;
 
-public class YellowBird : MonoBehaviour
+public class YellowBird : BirdBase
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public float ForceMultiplier = 40;
+    
+    public override void PlaySoundEffect()
     {
-        
+        AudioManager.Instance.PlayBirdLaunch(Bird.Yellow);
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void UseSpecialAbility()
     {
+        Debug.Log($"use ability for YellowBird");
+        _rb.AddForce(transform.forward * ForceMultiplier, ForceMode.VelocityChange);
         
     }
 }
