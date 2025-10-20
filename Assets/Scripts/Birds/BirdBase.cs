@@ -1,9 +1,10 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public abstract class BirdBase : MonoBehaviour
 {
-    public int PointsForNotUsing;
+    const int PointsForNotUsing = 10000;
    
     private protected Rigidbody _rb;
 
@@ -45,6 +46,19 @@ public abstract class BirdBase : MonoBehaviour
             _hasPowerUsed = true;
             _isFlying = false;
         }
+
+        if (_hasPowerUsed && !_isFlying)
+        {
+            StartCoroutine(DestroyBird());
+
+        }
+    }
+
+    public IEnumerator DestroyBird()
+    {
+        yield return new WaitForSeconds(3f);
+        //PlayDeath
+        Destroy(gameObject);
     }
 
 }

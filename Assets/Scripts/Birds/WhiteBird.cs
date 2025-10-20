@@ -1,16 +1,17 @@
 using UnityEngine;
 
-public class WhiteBird : MonoBehaviour
+public class WhiteBird : BirdBase
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public GameObject EggPrefab;
+    
+    public override void PlaySoundEffect()
     {
-        
+        Debug.Log("WhiteBird");
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void UseSpecialAbility()
     {
-        
+        Rigidbody eggRb = Instantiate(EggPrefab, transform.position, transform.rotation).GetComponent<Rigidbody>();
+        _rb.AddForce(Vector3.up * 10f, ForceMode.Impulse);
     }
 }

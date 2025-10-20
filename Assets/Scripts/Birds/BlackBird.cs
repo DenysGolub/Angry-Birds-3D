@@ -9,8 +9,6 @@ public class BlackBird : BirdBase
     {
         Debug.Log("BlackBird PlaySoundEffect");
     }
-
-    
    
     public override void UseSpecialAbility()
     {
@@ -24,7 +22,5 @@ public class BlackBird : BirdBase
             if (rb != null)
                 rb.AddExplosionForce(power, explosionPos, radius, 3.0F);
         }
-        
-        
     }
 }

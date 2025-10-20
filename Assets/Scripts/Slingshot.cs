@@ -12,8 +12,6 @@ public class Slingshot : MonoBehaviour
     public float MaxStretch = 3f;
     public float PowerMultiplier = 30f;
     
-    public float MassForInitialVelocity = 0.5f;
-
     [Header("Flight Camera Setup")] public CinemachineCamera FlightCamera;
 
     public float WaitSecondsAfterShot = 2f;
@@ -33,15 +31,12 @@ public class Slingshot : MonoBehaviour
 
     [Header("First ammo setup")]
     public BirdsAmmoSO BirdsList;
-    public GameObject CurrentProjectilePrefab;
+    private GameObject _currentProjectilePrefab;
     public static event Action OnShotFired;
     
-    
-    
-
     void Awake()
     {
-        CurrentProjectilePrefab = Instantiate(BirdsList.Birds[0].gameObject);
+        _currentProjectilePrefab = Instantiate(BirdsList.Birds[0].gameObject);
         CreateProjectile();
     }
 
@@ -57,7 +52,7 @@ public class Slingshot : MonoBehaviour
 
     void GetProjectile(GameObject bird)
     {
-        CurrentProjectilePrefab = bird;
+        _currentProjectilePrefab = bird;
     }
 
     //Logic: we start to drag our bird and the more we drag to back the more power it will get
@@ -111,10 +106,10 @@ public class Slingshot : MonoBehaviour
     {
         FlightCamera.Follow = Pivot;
 
-        if (CurrentProjectilePrefab != null)
+        if (_currentProjectilePrefab != null)
         {
-            CurrentProjectile = CurrentProjectilePrefab.gameObject.GetComponent<Rigidbody>();
-            CurrentProjectile.transform.SetPositionAndRotation(LaunchPoint.position, CurrentProjectilePrefab.transform.rotation);
+            CurrentProjectile = _currentProjectilePrefab.gameObject.GetComponent<Rigidbody>();
+            CurrentProjectile.transform.SetPositionAndRotation(LaunchPoint.position, _currentProjectilePrefab.transform.rotation);
             Joint = CurrentProjectile.gameObject.GetComponent<SpringJoint>();
             Joint.connectedAnchor = Pivot.position;
             Joint.autoConfigureConnectedAnchor = false;
@@ -142,7 +137,7 @@ public class Slingshot : MonoBehaviour
 
     IEnumerator Release()
     {
-        CurrentProjectilePrefab = null;
+        _currentProjectilePrefab = null;
         if (OnShotFired != null)
         {
             OnShotFired.Invoke();
