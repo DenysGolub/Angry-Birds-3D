@@ -12,14 +12,18 @@ public abstract class BirdBase : MonoBehaviour
  
     private protected bool _hasPowerUsed = false;
 
-    public abstract void PlaySoundEffect();
     public abstract void UseSpecialAbility();
     public Action OnShoot;
+    private protected BirdType _birdType;
+
+    public BirdType BirdType => _birdType;
 
     private void OnEnable()
     {
         OnShoot += SetFlying;
     }
+
+   
 
     private void OnDisable()
     {
@@ -28,6 +32,7 @@ public abstract class BirdBase : MonoBehaviour
     
     void SetFlying()
     {
+        PlayFlyingSoundEffect();
         Debug.Log("Got call to set flying");
         _isFlying = true;
     }
@@ -50,15 +55,17 @@ public abstract class BirdBase : MonoBehaviour
         if (_hasPowerUsed && !_isFlying)
         {
             StartCoroutine(DestroyBird());
-
         }
     }
 
     public IEnumerator DestroyBird()
     {
         yield return new WaitForSeconds(3f);
-        //PlayDeath
+        AudioManager.Instance.PlayBirdDeath();
         Destroy(gameObject);
     }
-
+    public void PlayFlyingSoundEffect()
+    {
+        AudioManager.Instance.PlayBirdLaunch(_birdType);
+    }
 }

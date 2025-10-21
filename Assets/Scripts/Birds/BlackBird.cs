@@ -5,10 +5,6 @@ public class BlackBird : BirdBase
     public float radius = 5.0F;
     public float power = 10.0F;
    
-    public override void PlaySoundEffect()
-    {
-        Debug.Log("BlackBird PlaySoundEffect");
-    }
    
     public override void UseSpecialAbility()
     {
@@ -22,5 +18,7 @@ public class BlackBird : BirdBase
             if (rb != null)
                 rb.AddExplosionForce(power, explosionPos, radius, 3.0F);
         }
+        
+        Destroy(gameObject);
     }
 }

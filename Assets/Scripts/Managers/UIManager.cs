@@ -5,9 +5,12 @@ using UnityEngine;
 public class UIManager : MonoBehaviour
 {
     public TextMeshProUGUI ScoreText;
+    public GameObject GameOverMenu;
+    public TextMeshProUGUI GameOverText;
     private void OnEnable()
     {
         GameManager.OnScoreChanged += UpdateScore;
+        GameManager.OnGameOver += ShowGameOverMenu;
     }
 
     void UpdateScore(int points)
@@ -23,6 +26,20 @@ public class UIManager : MonoBehaviour
     void ResumeButton()
     {
         
+    }
+
+    void ShowGameOverMenu(bool isWin)
+    {
+        GameOverMenu.SetActive(true);
+
+        if (isWin)
+        {
+            GameOverText.text = "You win!";
+        }
+        else
+        {
+            GameOverText.text = "You lose!";
+        }
     }
     
     

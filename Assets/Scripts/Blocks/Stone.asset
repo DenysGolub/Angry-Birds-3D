@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee87822d852c16f43a5982196fc14b6a, type: 3}
   m_Name: Stone
   m_EditorClassIdentifier: 
-  Health: 0
-  DestroyingScore: 0
+  MaxHealth: 289
+  DamageMultiplier: 11
+  Mass: 1.3
+  LinearDamping: 1.02
+  Type: 1

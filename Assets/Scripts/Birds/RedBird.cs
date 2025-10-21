@@ -3,11 +3,12 @@ using UnityEngine;
 
 public class RedBird : BirdBase
 {
-  
-    public override void PlaySoundEffect()
+    void Start()
     {
-        AudioManager.Instance.PlayBirdLaunch(Bird.Red);
+        _birdType =  BirdType.Red;
     }
+
+    
 
     public override void UseSpecialAbility()
     {

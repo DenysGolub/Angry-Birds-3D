@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class BlueBird : BirdBase
 {
-    public override void PlaySoundEffect()
+    void Start()
     {
-        Debug.Log("Blue Bird sound");
+        _birdType =  BirdType.Blue;
     }
-
+    
     public override void UseSpecialAbility()
     {
         Rigidbody currentBird = GetComponent<Rigidbody>();

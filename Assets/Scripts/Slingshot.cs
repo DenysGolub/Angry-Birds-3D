@@ -34,6 +34,8 @@ public class Slingshot : MonoBehaviour
     private GameObject _currentProjectilePrefab;
     public static event Action OnShotFired;
     
+    
+    
     void Awake()
     {
         _currentProjectilePrefab = Instantiate(BirdsList.Birds[0].gameObject);
@@ -43,48 +45,47 @@ public class Slingshot : MonoBehaviour
     private void OnEnable()
     {
         GameManager.SetNextBirdToSlingshotAction += GetProjectile;
+        GameManager.OnGameOver += DisableSlingshot;
     }
 
     private void OnDisable()
     {
         GameManager.SetNextBirdToSlingshotAction -= GetProjectile;
+        GameManager.OnGameOver -= DisableSlingshot;
     }
 
+    void DisableSlingshot(bool value)
+    {
+        this.enabled = false;
+    }
+    
     void GetProjectile(GameObject bird)
     {
         _currentProjectilePrefab = bird;
     }
 
-    //Logic: we start to drag our bird and the more we drag to back the more power it will get
-    //assume that bird flight always have parabola trajectory
-
     void Update()
     {
-        
-        
         if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
         {
             return;
         }
-
 
         if (CurrentProjectile == null)
         {
             return;
         }
 
-        
         if (Input.GetMouseButtonDown(0))
         {
             AudioManager.Instance.PlaySlingshotStretch();
-
+            AudioManager.Instance.PlaySelectedBirdsSoundEffects(_currentProjectilePrefab.GetComponent<BirdBase>().BirdType);
             IsDragging = true;
         }
 
         if (Input.GetMouseButtonUp(0))
         {
             AudioManager.Instance.PlayLaunchSlingshot();
-            AudioManager.Instance.PlayBirdLaunch(Bird.Red);
             IsDragging = false;
             FlightPath.enabled = false;
             StartCoroutine(Release());

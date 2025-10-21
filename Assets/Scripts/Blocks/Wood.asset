@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee87822d852c16f43a5982196fc14b6a, type: 3}
   m_Name: Wood
   m_EditorClassIdentifier: 
-  Health: 0
-  DestroyingScore: 0
+  MaxHealth: 158
+  DamageMultiplier: 18
+  Mass: 0.59
+  LinearDamping: 0.34
+  Type: 0

@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee87822d852c16f43a5982196fc14b6a, type: 3}
   m_Name: Ice
   m_EditorClassIdentifier: 
-  Health: 0
-  DestroyingScore: 0
+  MaxHealth: 99
+  DamageMultiplier: 51
+  Mass: 0.6
+  LinearDamping: 1.14
+  Type: 2
