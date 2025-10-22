@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Unity.Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -29,29 +30,98 @@ public class Slingshot : MonoBehaviour
     private Rigidbody CurrentProjectile;
     private SpringJoint Joint;
     private bool IsDragging = false;
+    private bool canDrag = false;
 
     [Header("First ammo setup")]
     public BirdsAmmoSO BirdsList;
     private GameObject _currentProjectilePrefab;
     public static event Action OnShotFired;
-    
+
+    private DraggingInputActions inputActions;    
     
     void Awake()
     {
         _currentProjectilePrefab = Instantiate(BirdsList.Birds[0].gameObject);
         CreateProjectile();
+        
+        inputActions = new DraggingInputActions();
+
     }
 
     private void OnEnable()
     {
         GameManager.SetNextBirdToSlingshotAction += GetProjectile;
         GameManager.OnGameOver += DisableSlingshot;
-    }
+        
+        inputActions.Drag.DragAndMove.started += OnDragStarted;
+        inputActions.Drag.PointerPosition.performed += OnDragPerformed;
+        inputActions.Drag.DragAndMove.canceled += OnDragCanceled;
+        //inputActions.Gameplay.Shoot.performed += OnShoot;        
+        
+        inputActions.Enable();
 
+    }
+    
     private void OnDisable()
     {
         GameManager.SetNextBirdToSlingshotAction -= GetProjectile;
         GameManager.OnGameOver -= DisableSlingshot;
+        
+        
+        inputActions.Drag.DragAndMove.started -= OnDragStarted;
+        inputActions.Drag.PointerPosition.performed -= OnDragPerformed;
+        inputActions.Drag.DragAndMove.canceled -= OnDragCanceled;
+        
+        inputActions.Disable();
+
+    }
+
+    private void OnDragCanceled(InputAction.CallbackContext obj)
+    {
+        if (!canDrag) return;
+
+   
+        AudioManager.Instance.PlayLaunchSlingshot();
+        IsDragging = false;
+        FlightPath.enabled = false;
+        StartCoroutine(Release());    
+    }
+
+    private void OnDragPerformed(InputAction.CallbackContext obj)
+    {
+        if (!canDrag) return;
+
+        
+        Vector2 screenPos = obj.ReadValue<Vector2>();
+        DragProjectile(screenPos);
+        UpdateFlightPath();
+    }
+    
+    private bool IsPointerOverUIObject() {
+        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+        eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+        
+        Debug.Log(results.Count > 0);
+        
+        return results.Count > 0;
+    }
+
+    private void OnDragStarted(InputAction.CallbackContext obj)
+    {
+        if (IsPointerOverUIObject())
+        {
+            canDrag = false;
+            return;
+        }
+        
+        if (CurrentProjectile == null ) return;
+
+        canDrag = true; 
+        AudioManager.Instance.PlaySlingshotStretch();
+        AudioManager.Instance.PlaySelectedBirdsSoundEffects(_currentProjectilePrefab.GetComponent<BirdBase>().BirdType);
+        IsDragging = true;
     }
 
     void DisableSlingshot(bool value)
@@ -63,40 +133,7 @@ public class Slingshot : MonoBehaviour
     {
         _currentProjectilePrefab = bird;
     }
-
-    void Update()
-    {
-        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
-        {
-            return;
-        }
-
-        if (CurrentProjectile == null)
-        {
-            return;
-        }
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            AudioManager.Instance.PlaySlingshotStretch();
-            AudioManager.Instance.PlaySelectedBirdsSoundEffects(_currentProjectilePrefab.GetComponent<BirdBase>().BirdType);
-            IsDragging = true;
-        }
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            AudioManager.Instance.PlayLaunchSlingshot();
-            IsDragging = false;
-            FlightPath.enabled = false;
-            StartCoroutine(Release());
-        }
-
-        if (IsDragging)
-        {
-            DragProjectile();
-            UpdateFlightPath();
-        }
-    }
+    
 
     void LateUpdate()
     {
@@ -118,17 +155,22 @@ public class Slingshot : MonoBehaviour
         }
     }
 
-    void DragProjectile()
+    void DragProjectile(Vector2 screenPos)
     {
+        if (CurrentProjectile == null) return;
+
+        
         if (!CurrentProjectile.isKinematic)
             CurrentProjectile.isKinematic = true;
 
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = Camera.main.ScreenPointToRay(screenPos);
         Plane plane = new Plane(Vector3.up, Pivot.position);
+
         if (plane.Raycast(ray, out float distance))
         {
             Vector3 point = ray.GetPoint(distance);
             Vector3 dir = point - Pivot.position;
+
             if (dir.magnitude > MaxStretch)
                 dir = dir.normalized * MaxStretch;
 
@@ -138,6 +180,9 @@ public class Slingshot : MonoBehaviour
 
     IEnumerator Release()
     {
+        if (CurrentProjectile == null) yield break;
+
+        canDrag = false;
         _currentProjectilePrefab = null;
         if (OnShotFired != null)
         {
@@ -154,11 +199,12 @@ public class Slingshot : MonoBehaviour
         float stretch = forceDir.magnitude / MaxStretch;
         float heightBoost = 0.5f + stretch * 2f;
         forceDir.y += heightBoost;
-
+        
         float forceMag = forceDir.magnitude * PowerMultiplier;
         CurrentProjectile.AddForce(forceDir.normalized * forceMag, ForceMode.Impulse);
 
         CurrentProjectile = null;
+
         yield return new WaitForSeconds(WaitSecondsAfterShot);
         CreateProjectile();
     }
@@ -190,7 +236,7 @@ public class Slingshot : MonoBehaviour
 
     void UpdateFlightPath()
     {
-        if (FlightPath == null || CurrentProjectile == null) return;
+        if (FlightPath == null || CurrentProjectile == null || !IsDragging) return;
 
         FlightPath.enabled = true;
         FlightPath.positionCount = PathResolution;

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public abstract class BirdBase : MonoBehaviour
@@ -15,6 +16,7 @@ public abstract class BirdBase : MonoBehaviour
     public abstract void UseSpecialAbility();
     public Action OnShoot;
     private protected BirdType _birdType;
+    [Header("Flight Camera Setup")] public CinemachineCamera FlightCamera;
 
     public BirdType BirdType => _birdType;
 
@@ -22,8 +24,6 @@ public abstract class BirdBase : MonoBehaviour
     {
         OnShoot += SetFlying;
     }
-
-   
 
     private void OnDisable()
     {

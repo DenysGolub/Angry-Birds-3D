@@ -1,0 +1,76 @@
+{
+    "name": "DraggingInputActions",
+    "maps": [
+        {
+            "name": "Drag",
+            "id": "cb997b72-519e-4e41-8be8-3401bf4c3c7c",
+            "actions": [
+                {
+                    "name": "DragAndMove",
+                    "type": "Button",
+                    "id": "95cba60c-cd40-446d-b6f9-b5797ed3fc93",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "PointerPosition",
+                    "type": "Value",
+                    "id": "b5a1542f-361a-4093-8d4c-821b88d13480",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "d9026337-383a-4927-81ad-d51d5ce41b29",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DragAndMove",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6c718b8a-28af-465e-b7d5-ffa4c5884ff1",
+                    "path": "<Touchscreen>/Press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DragAndMove",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a1d806dc-3d53-40ca-935c-e36263019a4b",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PointerPosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "39b52764-7c9e-4f83-a258-c6f7dfbd2acc",
+                    "path": "<Touchscreen>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PointerPosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
