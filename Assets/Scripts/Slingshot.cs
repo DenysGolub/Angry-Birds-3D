@@ -4,6 +4,7 @@ using Unity.Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class Slingshot : MonoBehaviour
 {
@@ -33,7 +34,6 @@ public class Slingshot : MonoBehaviour
     public BirdsAmmoSO BirdsList;
     private GameObject _currentProjectilePrefab;
     public static event Action OnShotFired;
-    
     
     
     void Awake()

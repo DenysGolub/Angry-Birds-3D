@@ -23,7 +23,7 @@ public class CameraManager : MonoBehaviour
     } 
     private void OnDisable()
     {
-        GameManager.OnGameOver += DisableCamera;
+        GameManager.OnGameOver -= DisableCamera;
     }
 
     private void DisableCamera(bool obj)

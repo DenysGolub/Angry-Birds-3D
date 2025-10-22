@@ -44,6 +44,9 @@ public class AudioManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        
+        DontDestroyOnLoad(gameObject);
+
     }
     
     public void PlaySlingshotStretch()
@@ -88,7 +91,5 @@ public class AudioManager : MonoBehaviour
     {
         LevelEndMusic.clip = LevelEndClips[Convert.ToInt32(isWin)];
         LevelEndMusic.Play();
-        
-
     }
 }

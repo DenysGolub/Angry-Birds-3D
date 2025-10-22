@@ -12,6 +12,12 @@ public class UIManager : MonoBehaviour
         GameManager.OnScoreChanged += UpdateScore;
         GameManager.OnGameOver += ShowGameOverMenu;
     }
+    
+    private void OnDisable()
+    {
+        GameManager.OnScoreChanged -= UpdateScore;
+        GameManager.OnGameOver -= ShowGameOverMenu;
+    }
 
     void UpdateScore(int points)
     {

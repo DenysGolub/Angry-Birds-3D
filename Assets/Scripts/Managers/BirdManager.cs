@@ -10,6 +10,7 @@ public class BirdManager : MonoBehaviour
     public Transform Slingshot;
     private List<GameObject> _spawnedBirds;
     public BirdsAmmoSO BirdsList;
+    public static Action OnEmptyAmmo;
 
     void Start()
     {
@@ -44,5 +45,14 @@ public class BirdManager : MonoBehaviour
             ChangeCurrentProjectile(bird);
             _spawnedBirds.RemoveAt(0);
         }
+        else
+        {
+            if (OnEmptyAmmo != null)
+            {
+                OnEmptyAmmo.Invoke();
+            }
+        }
     }
+    
+    
 }

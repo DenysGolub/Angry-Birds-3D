@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -9,8 +11,6 @@ public class GameManager : MonoBehaviour
     public static event Action<int> OnScoreChanged;
     
     public static event Action<bool> OnGameOver;
-    public static event Action OnGameStarted;
-
     public static event Action OnNextBirdChanged;
     public static event Action<GameObject> SetNextBirdToSlingshotAction;
 
@@ -31,9 +31,40 @@ public class GameManager : MonoBehaviour
         Enemy.OnEnemyDeath += UpdateScore;
         Enemy.OnEnemyDeath += DecreaseEnemyCount;
         Enemy.OnHealthChange += UpdateScore;
-
+        BirdManager.OnEmptyAmmo += CheckGameStatus;
         Block.OnBlockDestroyed += UpdateScore;
         Block.OnHealthChanged += UpdateScore;
+    }
+
+    private void CheckGameStatus()
+    {
+        StartCoroutine(WaitForEndLevel());
+    }
+    
+    private IEnumerator WaitForEndLevel()
+    {
+        yield return new WaitForSeconds(7f);
+        if (_enemyCount > 0)
+        {
+            if (OnGameOver != null)
+            {
+                AudioManager.Instance.PlayEndLevel(false);
+                OnGameOver.Invoke(false);
+            }
+        }
+    }
+
+    void OnDisable()
+    {
+        Slingshot.OnShotFired -= RequestNextBird;
+        BirdManager.ChangeCurrentProjectile -= SetNextBirdToSlingshot;
+        Enemy.OnEnemyDeath -= UpdateScore;
+        Enemy.OnEnemyDeath -= DecreaseEnemyCount;
+        Enemy.OnHealthChange -= UpdateScore;
+        BirdManager.OnEmptyAmmo -= CheckGameStatus;
+
+        Block.OnBlockDestroyed -= UpdateScore;
+        Block.OnHealthChanged -= UpdateScore;
     }
 
     private void UpdateScore(int points)
@@ -65,15 +96,6 @@ public class GameManager : MonoBehaviour
             } 
         }
     }
-    
-    void OnDisable()
-    {
-        Slingshot.OnShotFired -= RequestNextBird;
-        BirdManager.ChangeCurrentProjectile -= SetNextBirdToSlingshot;
-        Enemy.OnEnemyDeath -= UpdateScore;
-        Enemy.OnHealthChange -= UpdateScore;
-    }
-
 
     void RequestNextBird()
     {

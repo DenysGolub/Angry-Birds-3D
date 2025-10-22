@@ -10,11 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d9de1a9a68c6cdf40bccd53d03b58c43, type: 3}
-  m_Name: BirdsAmmo
+  m_Name: Level3_Ammo
   m_EditorClassIdentifier: 
   Birds:
-  - {fileID: 4569406344906518996, guid: 8a599c13d8b6db24d99fa7b78bb1f547, type: 3}
-  - {fileID: 4564408452649689803, guid: 042357151db070341b67a09f51530d4d, type: 3}
   - {fileID: 650711149328088102, guid: 4148e9ba397696f4fa2b1afb8114d59b, type: 3}
-  - {fileID: 8320618998282036899, guid: 08eeab5956f35cb4ca86f4cc2491fdae, type: 3}
   - {fileID: 1104181556251630216, guid: be92dedf4eb865a488c59692e6b739ef, type: 3}
