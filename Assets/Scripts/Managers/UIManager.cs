@@ -1,13 +1,16 @@
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
+    private int _points;
+    
     public TextMeshProUGUI ScoreText;
     public GameObject GameOverMenu;
     public TextMeshProUGUI GameOverText;
-
     public GameObject PauseMenu;
 
     private void OnEnable()
@@ -22,15 +25,16 @@ public class UIManager : MonoBehaviour
         GameManager.OnGameOver -= ShowGameOverMenu;
     }
 
-    void UpdateScore(int points)
+    void UpdateScore(int newPoints)
     {
-        ScoreText.text = $"Score: {points}";
+        ScoreText.text = $"Score: {newPoints}";
+        _points = newPoints;
     }
 
     public void ShowGameOverMenu(bool isWin)
     {
         GameOverMenu.SetActive(true);
-
+        
         if (isWin)
         {
             GameOverText.text = "You win!";
@@ -39,6 +43,8 @@ public class UIManager : MonoBehaviour
         {
             GameOverText.text = "You lose!";
         }
+        Debug.Log(SceneManager.GetActiveScene().name);
+        LevelScores.SetHighScore(SceneManager.GetActiveScene().name.ToString(), _points);
     }
 
     public void SetActivePauseMenu(bool isActive)
@@ -53,6 +59,4 @@ public class UIManager : MonoBehaviour
             Time.timeScale = 1f;
         }
     }
-    
-    
 }

@@ -5,21 +5,24 @@ using UnityEngine;
 
 public abstract class BirdBase : MonoBehaviour
 {
-    const int PointsForNotUsing = 10000;
    
-    private protected Rigidbody _rb;
-
-    private protected bool _isFlying = false;
- 
-    private protected bool _hasPowerUsed = false;
-
-    public abstract void UseSpecialAbility();
-    public Action OnShoot;
+    private protected Rigidbody rb;
+    private protected bool isFlying = false;
+    private protected bool hasPowerUsed = false;
     private protected BirdType _birdType;
-    [Header("Flight Camera Setup")] public CinemachineCamera FlightCamera;
+    
+    public Action OnShoot;
+    
+    public abstract void UseSpecialAbility();
 
+    public CinemachineCamera FlightCamera;
     public BirdType BirdType => _birdType;
 
+    void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
+    
     private void OnEnable()
     {
         OnShoot += SetFlying;
@@ -29,35 +32,30 @@ public abstract class BirdBase : MonoBehaviour
     {
         OnShoot -= SetFlying;
     }
+
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0) && !hasPowerUsed && isFlying)
+        {
+            Debug.Log(isFlying);
+            UseSpecialAbility();
+            hasPowerUsed = true;
+            isFlying = false;
+        }
+
+        if (hasPowerUsed && !isFlying)
+        {
+            StartCoroutine(DestroyBird());
+        }
+    }
     
     void SetFlying()
     {
         PlayFlyingSoundEffect();
         Debug.Log("Got call to set flying");
-        _isFlying = true;
+        isFlying = true;
     }
-    
-    void Awake()
-    {
-        _rb = GetComponent<Rigidbody>();
-    }
-    
-    void Update()
-    {
-        if (Input.GetMouseButtonDown(0) && !_hasPowerUsed && _isFlying)
-        {
-            Debug.Log(_isFlying);
-            UseSpecialAbility();
-            _hasPowerUsed = true;
-            _isFlying = false;
-        }
-
-        if (_hasPowerUsed && !_isFlying)
-        {
-            StartCoroutine(DestroyBird());
-        }
-    }
-
+   
     public IEnumerator DestroyBird()
     {
         yield return new WaitForSeconds(3f);

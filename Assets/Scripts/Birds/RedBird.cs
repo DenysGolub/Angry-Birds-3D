@@ -7,11 +7,5 @@ public class RedBird : BirdBase
     {
         _birdType =  BirdType.Red;
     }
-
-    
-
-    public override void UseSpecialAbility()
-    {
-        
-    }
+    public override void UseSpecialAbility() { }
 }

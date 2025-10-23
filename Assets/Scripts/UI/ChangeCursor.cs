@@ -4,13 +4,13 @@ using UnityEngine.UI;
 
 public class ChangeCursor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public Texture2D cursorTexture;
-    public CursorMode cursorMode = CursorMode.Auto;
-    public Vector2 hotSpot = Vector2.zero;
+    public Texture2D CursorTexture;
+    private CursorMode cursorMode = CursorMode.Auto;
+    private Vector2 hotSpot = Vector2.zero;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
+        Cursor.SetCursor(CursorTexture, hotSpot, cursorMode);
     }
 
     public void OnPointerExit(PointerEventData eventData)

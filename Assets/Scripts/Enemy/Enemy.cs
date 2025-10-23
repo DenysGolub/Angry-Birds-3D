@@ -3,16 +3,22 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    private float _currentHealth;
+    
     public float MaxHealth = 20f;
     public float DamageMultiplier = 30f;
     
-    private float _currentHealth;
-    
     public static event Action<int> OnEnemyDeath;
     public static event Action<int> OnHealthChange;
+    public static event Action AddEnemyCount;
     private void Start()
     {
         _currentHealth = MaxHealth;
+
+        if (AddEnemyCount != null)
+        {
+            AddEnemyCount.Invoke();
+        }
     }
     
     private void OnCollisionEnter(Collision other)
@@ -33,7 +39,6 @@ public class Enemy : MonoBehaviour
             }
             AudioManager.Instance.PlayPigDeath();
             Destroy(gameObject);
-            
         }
         else
         {
@@ -44,5 +49,4 @@ public class Enemy : MonoBehaviour
             }
         }
     }
-    
 }

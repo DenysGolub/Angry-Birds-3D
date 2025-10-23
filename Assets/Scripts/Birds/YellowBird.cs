@@ -12,7 +12,6 @@ public class YellowBird : BirdBase
     public override void UseSpecialAbility()
     {
         Debug.Log($"use ability for YellowBird");
-        _rb.AddForce(transform.forward * ForceMultiplier, ForceMode.VelocityChange);
-        
+        rb.AddForce(transform.forward * ForceMultiplier, ForceMode.VelocityChange);
     }
 }

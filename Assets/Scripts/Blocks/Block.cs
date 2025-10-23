@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class Block : MonoBehaviour
 {
-    public BlockSO BlockConfiguration;
     private float _maxHealth;
     private float _damageMultiplier;
     private Rigidbody _rigidbody;
     private float _currentHealth;
     private BlockType _blockType;
+    
+    public BlockSO BlockConfiguration;
+    
     public static Action<int> OnHealthChanged;
     public static Action<int> OnBlockDestroyed;
 
@@ -29,7 +31,6 @@ public class Block : MonoBehaviour
         _rigidbody.linearDamping = BlockConfiguration.LinearDamping;
     }
     
-
     private void OnCollisionEnter(Collision other)
     {
         if (_currentHealth <= 0)

@@ -15,6 +15,6 @@ public class WhiteBird : BirdBase
     {
         _pushingEgg.Play();
         Rigidbody eggRb = Instantiate(EggPrefab, transform.position, transform.rotation).GetComponent<Rigidbody>();
-        _rb.AddForce(Vector3.up * 10f, ForceMode.Impulse);
+        rb.AddForce(Vector3.up * 10f, ForceMode.Impulse);
     }
 }
