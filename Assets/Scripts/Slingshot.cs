@@ -51,13 +51,13 @@ public class Slingshot : MonoBehaviour
     private void OnEnable()
     {
         GameManager.SetNextBirdToSlingshotAction += GetProjectile;
-        GameManager.OnGameOver += DisableSlingshot;
+        GameManager.OnGameOver += DisableSlingshotOnGameOver;
         
         inputActions.Drag.DragAndMove.started += OnDragStarted;
         inputActions.Drag.PointerPosition.performed += OnDragPerformed;
         inputActions.Drag.DragAndMove.canceled += OnDragCanceled;
-        //inputActions.Gameplay.Shoot.performed += OnShoot;        
-        
+        //inputActions.Gameplay.Shoot.performed += OnShoot;  
+
         inputActions.Enable();
 
     }
@@ -65,13 +65,12 @@ public class Slingshot : MonoBehaviour
     private void OnDisable()
     {
         GameManager.SetNextBirdToSlingshotAction -= GetProjectile;
-        GameManager.OnGameOver -= DisableSlingshot;
+        GameManager.OnGameOver -= DisableSlingshotOnGameOver;
         
         
         inputActions.Drag.DragAndMove.started -= OnDragStarted;
         inputActions.Drag.PointerPosition.performed -= OnDragPerformed;
         inputActions.Drag.DragAndMove.canceled -= OnDragCanceled;
-        
         inputActions.Disable();
 
     }
@@ -124,11 +123,15 @@ public class Slingshot : MonoBehaviour
         IsDragging = true;
     }
 
-    void DisableSlingshot(bool value)
+    void DisableSlingshotOnGameOver(bool value)
     {
         this.enabled = false;
     }
-    
+
+    void DisableSlingshot(bool value)
+    {
+        this.enabled = value;
+    }
     void GetProjectile(GameObject bird)
     {
         _currentProjectilePrefab = bird;

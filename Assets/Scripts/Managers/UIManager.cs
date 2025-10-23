@@ -7,6 +7,9 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI ScoreText;
     public GameObject GameOverMenu;
     public TextMeshProUGUI GameOverText;
+
+    public GameObject PauseMenu;
+
     private void OnEnable()
     {
         GameManager.OnScoreChanged += UpdateScore;
@@ -24,17 +27,7 @@ public class UIManager : MonoBehaviour
         ScoreText.text = $"Score: {points}";
     }
 
-    void PauseButton()
-    {
-        
-    }
-
-    void ResumeButton()
-    {
-        
-    }
-
-    void ShowGameOverMenu(bool isWin)
+    public void ShowGameOverMenu(bool isWin)
     {
         GameOverMenu.SetActive(true);
 
@@ -45,6 +38,19 @@ public class UIManager : MonoBehaviour
         else
         {
             GameOverText.text = "You lose!";
+        }
+    }
+
+    public void SetActivePauseMenu(bool isActive)
+    {
+        PauseMenu.SetActive(isActive);
+        if(isActive)
+        {
+            Time.timeScale = 0f; 
+        }
+        else
+        {
+            Time.timeScale = 1f;
         }
     }
     

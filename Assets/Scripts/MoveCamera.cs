@@ -25,11 +25,7 @@ public class MoveCamera : MonoBehaviour
         //inputActions.Gameplay.Shoot.performed += OnShoot;        
         
         inputActions.Enable();
-    }
 
-    private void OnDragStarted(InputAction.CallbackContext obj)
-    {
-        _isDragging = true;
     }
 
     private void OnDisable()
@@ -37,10 +33,19 @@ public class MoveCamera : MonoBehaviour
         inputActions.Drag.DragAndMove.started -= OnDragStarted;
         inputActions.Drag.PointerPosition.performed -= OnDragPerformed;
         inputActions.Drag.DragAndMove.canceled -= OnDragCanceled;
-        //inputActions.Gameplay.Shoot.performed += OnShoot;        
+        //inputActions.Gameplay.Shoot.performed += OnShoot;    
+        
+
         
         inputActions.Disable();
     }
+    
+    private void OnDragStarted(InputAction.CallbackContext obj)
+    {
+        _isDragging = true;
+    }
+
+
 
     private void OnDragPerformed(InputAction.CallbackContext obj)
     {

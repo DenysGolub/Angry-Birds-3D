@@ -14,6 +14,11 @@ public class GameManager : MonoBehaviour
     public static event Action OnNextBirdChanged;
     public static event Action<GameObject> SetNextBirdToSlingshotAction;
 
+    
+    public MoveCamera Camera;
+    public Slingshot Slingshot;
+
+    
     private int _enemyCount;
     private int _birdCount;
 
@@ -34,7 +39,10 @@ public class GameManager : MonoBehaviour
         BirdManager.OnEmptyAmmo += CheckGameStatus;
         Block.OnBlockDestroyed += UpdateScore;
         Block.OnHealthChanged += UpdateScore;
+
     }
+
+
 
     private void CheckGameStatus()
     {
