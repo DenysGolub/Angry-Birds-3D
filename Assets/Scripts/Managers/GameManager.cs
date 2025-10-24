@@ -19,6 +19,11 @@ public class GameManager : MonoBehaviour
     public static event Action OnNextBirdChanged;
     public static event Action<GameObject> SetNextBirdToSlingshotAction;
   
+    void Start() 
+    {
+        Time.timeScale = 1f;
+    }
+    
     void OnEnable()
     {
         Slingshot.OnShotFired += RequestNextBird;
