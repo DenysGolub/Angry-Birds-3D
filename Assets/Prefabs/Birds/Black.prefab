@@ -384,8 +384,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa025e7f5a2245d43b894a081f644df3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 15.38
-  power: 90.4
+  FlightCamera: {fileID: 0}
+  ExplosionRadius: 15.42
+  ExplosionPower: 70.5
 --- !u!135 &-2195883742608376816
 SphereCollider:
   m_ObjectHideFlags: 0

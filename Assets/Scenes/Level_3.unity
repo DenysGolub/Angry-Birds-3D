@@ -8529,6 +8529,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3568144020555352428, guid: 5ff6504458b6e1b4f9a70a0607127c2d, type: 3}
+      propertyPath: BirdsList
+      value: 
+      objectReference: {fileID: 11400000, guid: b69cef21073780a4797e730690525540, type: 2}
     - target: {fileID: 3779995739721452600, guid: 5ff6504458b6e1b4f9a70a0607127c2d, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -8569,6 +8573,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Level
       objectReference: {fileID: 0}
+    - target: {fileID: 6969388159156586149, guid: 5ff6504458b6e1b4f9a70a0607127c2d, type: 3}
+      propertyPath: BirdsList
+      value: 
+      objectReference: {fileID: 11400000, guid: b69cef21073780a4797e730690525540, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
