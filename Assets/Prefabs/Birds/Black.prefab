@@ -386,7 +386,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FlightCamera: {fileID: 0}
   ExplosionRadius: 15.42
-  ExplosionPower: 70.5
+  ExplosionPower: 205.3
 --- !u!135 &-2195883742608376816
 SphereCollider:
   m_ObjectHideFlags: 0
