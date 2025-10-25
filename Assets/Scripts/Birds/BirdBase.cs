@@ -38,6 +38,7 @@ public abstract class BirdBase : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && !hasPowerUsed && isFlying)
         {
             Debug.Log(isFlying);
+            AudioManager.Instance.PlaySpecialAbility(_birdType);
             UseSpecialAbility();
             hasPowerUsed = true;
             isFlying = false;

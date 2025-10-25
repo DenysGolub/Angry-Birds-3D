@@ -1,7 +1,13 @@
+using System;
 using UnityEngine;
 
 public class BlackBird : BirdBase
 {
+    private void Start()
+    {
+        _birdType = BirdType.Black;
+    }
+
     public float ExplosionRadius = 5.0F;
     public float ExplosionPower = 10.0F;
     public override void UseSpecialAbility()

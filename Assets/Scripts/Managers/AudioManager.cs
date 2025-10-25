@@ -1,6 +1,7 @@
 using System;
 using Enums;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 public class AudioManager : MonoBehaviour
@@ -9,12 +10,16 @@ public class AudioManager : MonoBehaviour
     public AudioSource TitleMusic;
 
     public AudioSource GameMusic;
+    public AudioClip[] LevelMusic;
     public AudioSource LevelEndMusic;
     public AudioClip[] LevelEndClips;
     
     [Header("Birds Sound Effects")]
     public AudioSource BirdsSoundEffects;
     public AudioClip[] BirdsSounds;
+    
+    public AudioSource BirdsSpecialAbilityEffects;
+    public AudioClip[] BirdsSpecialAbilitySounds;
 
     public AudioSource BirdDestroyed;
     
@@ -44,9 +49,12 @@ public class AudioManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        
-        DontDestroyOnLoad(gameObject);
+    }
 
+    void Start()
+    {
+        GameMusic.clip = LevelMusic[(int)SceneManager.GetActiveScene().buildIndex-1];
+        GameMusic.Play();
     }
     
     public void PlaySlingshotStretch()
@@ -74,6 +82,12 @@ public class AudioManager : MonoBehaviour
     {
         BirdsSoundEffects.clip = BirdsSounds[(int)birdType];
         BirdsSoundEffects.Play();
+    }
+    
+    public void PlaySpecialAbility(BirdType birdType)
+    {
+        BirdsSpecialAbilityEffects.clip = BirdsSpecialAbilitySounds[(int)birdType];
+        BirdsSpecialAbilityEffects.Play();
     }
 
     public void PlayBirdDeath()
