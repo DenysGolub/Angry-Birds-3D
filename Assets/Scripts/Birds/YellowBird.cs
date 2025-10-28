@@ -9,13 +9,13 @@ namespace AngryBirds.Birds
     
         private void Start()
         {
-            _birdType =  BirdType.Yellow;
+            BirdType =  BirdType.Yellow;
         }
     
         public override void UseSpecialAbility()
         {
             Debug.Log($"use ability for YellowBird");
-            _rb.AddForce(transform.forward * _forceMultiplier, ForceMode.VelocityChange);
+            Rb.AddForce(transform.forward * _forceMultiplier, ForceMode.VelocityChange);
         }
     }
 }

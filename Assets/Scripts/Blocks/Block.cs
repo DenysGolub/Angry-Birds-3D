@@ -6,16 +6,16 @@ namespace AngryBirds.Blocks
 {
     public class Block : MonoBehaviour
     {
-        public BlockSO BlockConfiguration;
+        public static Action<int> OnHealthChanged;
+        public static Action<int> OnBlockDestroyed;
+        
+        [SerializeField] private BlockSO _blockConfiguration;
         
         private float _maxHealth;
         private float _damageMultiplier;
         private Rigidbody _rigidbody;
         private float _currentHealth;
         private BlockType _blockType;
-    
-        public static Action<int> OnHealthChanged;
-        public static Action<int> OnBlockDestroyed;
 
         private void Awake()
         {
@@ -24,13 +24,13 @@ namespace AngryBirds.Blocks
 
         private void Start()
         {
-            _maxHealth = BlockConfiguration.MaxHealth;
-            _damageMultiplier = BlockConfiguration.DamageMultiplier;
-            _blockType = BlockConfiguration.Type;
+            _maxHealth = _blockConfiguration.MaxHealth;
+            _damageMultiplier = _blockConfiguration.DamageMultiplier;
+            _blockType = _blockConfiguration.Type;
             _currentHealth = _maxHealth;
         
-            _rigidbody.mass = BlockConfiguration.Mass;
-            _rigidbody.linearDamping = BlockConfiguration.LinearDamping;
+            _rigidbody.mass = _blockConfiguration.Mass;
+            _rigidbody.linearDamping = _blockConfiguration.LinearDamping;
         }
     
         private void OnCollisionEnter(Collision other)

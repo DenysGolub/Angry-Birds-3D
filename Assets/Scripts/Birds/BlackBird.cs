@@ -7,7 +7,7 @@ namespace AngryBirds.Birds
     {
         private void Start()
         {
-            _birdType = BirdType.Black;
+            BirdType = BirdType.Black;
         }
         
         [SerializeField] private float _explosionRadius = 5.0F;

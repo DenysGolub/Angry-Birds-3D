@@ -8,17 +8,19 @@ namespace AngryBirds.Birds
 {
     public abstract class BirdBase : MonoBehaviour
     {
-        private protected Rigidbody _rb;
-        private protected bool isFlying = false;
-        private protected bool _hasPowerUsed = false;
-        private protected BirdType _birdType;
-    
         public Action OnShoot;
-        public BirdType BirdType => _birdType;
+        
+        protected Rigidbody Rb;
+        protected bool IsFlying = false;
+        protected bool HasPowerUsed = false;
+
+
+        public BirdType BirdType { get; protected set; }
+       
 
         private void Awake()
         {
-            _rb = GetComponent<Rigidbody>();
+            Rb = GetComponent<Rigidbody>();
         }
     
         private void OnEnable()
@@ -33,16 +35,16 @@ namespace AngryBirds.Birds
 
         private void Update()
         {
-            if (Input.GetMouseButtonDown(0) && !_hasPowerUsed && isFlying)
+            if (Input.GetMouseButtonDown(0) && !HasPowerUsed && IsFlying)
             {
-                Debug.Log(isFlying);
-                AudioManager.Instance.PlaySpecialAbility(_birdType);
+                Debug.Log(IsFlying);
+                AudioManager.Instance.PlaySpecialAbility(BirdType);
                 UseSpecialAbility();
-                _hasPowerUsed = true;
-                isFlying = false;
+                HasPowerUsed = true;
+                IsFlying = false;
             }
 
-            if (_hasPowerUsed && !isFlying)
+            if (HasPowerUsed && !IsFlying)
             {
                 StartCoroutine(DestroyBird());
             }
@@ -57,14 +59,14 @@ namespace AngryBirds.Birds
         }
         public void PlayFlyingSoundEffect()
         {
-            AudioManager.Instance.PlayBirdLaunch(_birdType);
+            AudioManager.Instance.PlayBirdLaunch(BirdType);
         }
     
         private void SetFlying()
         {
             PlayFlyingSoundEffect();
             Debug.Log("Got call to set flying");
-            isFlying = true;
+            IsFlying = true;
         }
     }
 }

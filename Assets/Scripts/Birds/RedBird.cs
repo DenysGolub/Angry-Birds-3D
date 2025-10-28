@@ -6,7 +6,7 @@ namespace AngryBirds.Birds
     {
         private void Start()
         {
-            _birdType =  BirdType.Red;
+            BirdType =  BirdType.Red;
         }
         public override void UseSpecialAbility() { }
     }

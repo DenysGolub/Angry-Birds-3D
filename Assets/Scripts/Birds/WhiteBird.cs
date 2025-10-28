@@ -8,13 +8,13 @@ namespace AngryBirds.Birds
         [SerializeField] private GameObject _eggPrefab;
         private void Start()
         {
-            _birdType =  BirdType.White;
+            BirdType =  BirdType.White;
         }
     
         public override void UseSpecialAbility()
         {
             Rigidbody eggRb = Instantiate(_eggPrefab, transform.position, transform.rotation).GetComponent<Rigidbody>();
-            _rb.AddForce(Vector3.up * 10f, ForceMode.Impulse);
+            Rb.AddForce(Vector3.up * 10f, ForceMode.Impulse);
         }
     }
 }
