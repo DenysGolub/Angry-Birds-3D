@@ -20,6 +20,7 @@ namespace AngryBirds.Managers
         {
             float padding = 1.5f;
             Vector3 slingshotPosition = _slingshot.position;
+            slingshotPosition.y += 0.15f;
             Debug.Log(slingshotPosition);
             for(int i = 1; i < _birdsList.Birds.Count; i++)
             {

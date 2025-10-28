@@ -52,7 +52,5 @@ namespace AngryBirds.Managers
             _scoreText.text = $"Score: {newPoints}";
             _points = newPoints;
         }
-
-
     }
 }

@@ -1,38 +1,43 @@
 using System;
 using AngryBirds.Enums;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace AngryBirds.Managers
 {
     public class AudioManager : MonoBehaviour
     {
         [Header("Music")] 
-        public AudioSource TitleMusic;
-
-        public AudioSource GameMusic;
-        public AudioSource LevelEndMusic;
-        public AudioClip[] LevelEndClips;
-    
-        [Header("Birds Sound Effects")]
-        public AudioSource BirdsSoundEffects;
-        public AudioClip[] BirdsSounds;
-
-        public AudioSource BirdDestroyed;
-    
+        [SerializeField] private AudioSource _gameMusic;
+        [SerializeField] private AudioClip[] _levelMusic;
+        [SerializeField] private AudioSource _levelEndMusic;
+        [SerializeField] private AudioClip[] _levelEndClips;
+        
+        [Header("Birds Flying Sound Effects")]
+        [SerializeField] private AudioSource _birdsFlyingSoundEffects;
+        [SerializeField] private AudioClip[] _birdsSounds;
+        
+        [Header("Birds Special Ability Sound Effects")]
+        [SerializeField] private AudioSource _birdsSpecialAbilityEffects;
+        [SerializeField] private AudioClip[] _birdsSpecialAbilitySounds;
+       
+        [SerializeField] private AudioSource _birdDestroyed;
+        
         [Header("Selected Birds Sound Effects")]
-        public AudioSource SelectedBirdsSoundEffects;
-        public AudioClip[] SelectedSounds;
-    
+        [SerializeField] private AudioSource _selectedBirdsSoundEffects;
+        [SerializeField] private AudioClip[] _selectedSounds;
+        
         [Header("Slingshot Sound Effects")] 
-        public AudioSource SlingshotStrech;
+        [SerializeField] private AudioSource _slingshotStretch;
+        [SerializeField] private AudioSource _slingshotLaunch;
 
-        public AudioSource SlingshotLaunch;
         [Header("Pigs Sound Effects")]
-        public AudioSource PigsSoundEffects;
-    
+        [SerializeField] private AudioSource _pigsSoundEffects;
+        
         [Header("Blocks Sound Effects")]
-        public AudioSource BlockDestroyed;
-        public AudioClip[] BlockDestroyedSounds;
+        [SerializeField] private AudioSource _blockDestroyed;
+        [SerializeField] private AudioClip[] _blockDestroyedSounds;
+        
         public static AudioManager Instance;
 
         private void Awake()
@@ -45,52 +50,62 @@ namespace AngryBirds.Managers
             {
                 Destroy(gameObject);
             }
-        
-            DontDestroyOnLoad(gameObject);
         }
-    
+
+        private void Start()
+        {
+            _gameMusic.clip = _levelMusic[SceneManager.GetActiveScene().buildIndex - 1];
+            _gameMusic.Play();
+        }
+        
         public void PlaySlingshotStretch()
         {
-            SlingshotStrech.Play();
+            _slingshotStretch.Play();
         }
 
         public void PlayLaunchSlingshot()
         {
-            SlingshotLaunch.Play();
+            _slingshotLaunch.Play();
         }
 
         public void PlayPigDeath()
         {
-            PigsSoundEffects.Play();
+            _pigsSoundEffects.Play();
         }
 
         public void PlaySelectedBirdsSoundEffects(BirdType birdType)
         {
-            SelectedBirdsSoundEffects.clip = SelectedSounds[(int)birdType];
-            SelectedBirdsSoundEffects.Play();
+            _selectedBirdsSoundEffects.clip = _selectedSounds[(int)birdType];
+            _selectedBirdsSoundEffects.Play();
         }
-    
+        
         public void PlayBirdLaunch(BirdType birdType)
         {
-            BirdsSoundEffects.clip = BirdsSounds[(int)birdType];
-            BirdsSoundEffects.Play();
+            _birdsFlyingSoundEffects.clip = _birdsSounds[(int)birdType];
+            _birdsFlyingSoundEffects.Play();
+        }
+        
+        public void PlaySpecialAbility(BirdType birdType)
+        {
+            _birdsSpecialAbilityEffects.clip = _birdsSpecialAbilitySounds[(int)birdType];
+            _birdsSpecialAbilityEffects.Play();
         }
 
         public void PlayBirdDeath()
         {
-            BirdDestroyed.Play();
+            _birdDestroyed.Play();
         }
 
         public void PlayDestroyedBlock(BlockType blockType)
         {
-            BlockDestroyed.clip = BlockDestroyedSounds[(int)blockType];
-            BlockDestroyed.Play();
+            _blockDestroyed.clip = _blockDestroyedSounds[(int)blockType];
+            _blockDestroyed.Play();
         }
 
         public void PlayEndLevel(bool isWin)
         {
-            LevelEndMusic.clip = LevelEndClips[Convert.ToInt32(isWin)];
-            LevelEndMusic.Play();
+            _levelEndMusic.clip = _levelEndClips[Convert.ToInt32(isWin)];
+            _levelEndMusic.Play();
         }
     }
 }

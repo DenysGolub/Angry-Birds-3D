@@ -548,9 +548,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa025e7f5a2245d43b894a081f644df3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FlightCamera: {fileID: 0}
-  ExplosionRadius: 15.42
-  ExplosionPower: 205.3
+  _explosionRadius: 5
+  _explosionPower: 10
 --- !u!135 &-2195883742608376816
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -595,7 +594,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0

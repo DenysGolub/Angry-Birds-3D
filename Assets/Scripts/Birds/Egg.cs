@@ -4,8 +4,8 @@ namespace AngryBirds.Birds
 {
     public class Egg: MonoBehaviour
     {
-        private float _radius = 15f;
-        private float _power = 100f;
+        [SerializeField] private float _radius = 15f;
+        [SerializeField] private float _power = 100f;
       
         private void OnCollisionEnter(Collision collision)
         {

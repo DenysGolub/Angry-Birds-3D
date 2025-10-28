@@ -5,7 +5,7 @@ namespace AngryBirds.Birds
 {
     public class YellowBird : BirdBase
     {
-        public float ForceMultiplier = 40;
+        [SerializeField] private float _forceMultiplier = 40;
     
         private void Start()
         {
@@ -15,7 +15,7 @@ namespace AngryBirds.Birds
         public override void UseSpecialAbility()
         {
             Debug.Log($"use ability for YellowBird");
-            _rb.AddForce(transform.forward * ForceMultiplier, ForceMode.VelocityChange);
+            _rb.AddForce(transform.forward * _forceMultiplier, ForceMode.VelocityChange);
         }
     }
 }

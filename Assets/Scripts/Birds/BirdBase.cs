@@ -36,6 +36,7 @@ namespace AngryBirds.Birds
             if (Input.GetMouseButtonDown(0) && !_hasPowerUsed && isFlying)
             {
                 Debug.Log(isFlying);
+                AudioManager.Instance.PlaySpecialAbility(_birdType);
                 UseSpecialAbility();
                 _hasPowerUsed = true;
                 isFlying = false;
