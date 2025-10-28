@@ -1,11 +1,13 @@
-using System;
-using UnityEngine;
+using AngryBirds.Enums;
 
-public class RedBird : BirdBase
+namespace AngryBirds.Birds
 {
-    void Start()
+    public class RedBird : BirdBase
     {
-        _birdType =  BirdType.Red;
+        private void Start()
+        {
+            _birdType =  BirdType.Red;
+        }
+        public override void UseSpecialAbility() { }
     }
-    public override void UseSpecialAbility() { }
 }

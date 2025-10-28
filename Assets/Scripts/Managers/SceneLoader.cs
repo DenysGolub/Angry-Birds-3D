@@ -1,26 +1,29 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneLoader : MonoBehaviour
+namespace AngryBirds.Managers
 {
-    public void LoadMainMenu()
+    public class SceneLoader : MonoBehaviour
     {
-        SceneManager.LoadScene("MainMenu");
-    }
+        public void LoadMainMenu()
+        {
+            SceneManager.LoadScene("MainMenu");
+        }
 
-    public void LoadNextLevel()
-    {
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(currentSceneIndex + 1);
-    }
+        public void LoadNextLevel()
+        {
+            int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadScene(currentSceneIndex + 1);
+        }
 
-    public void ReplayLevel()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
+        public void ReplayLevel()
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
 
-    public void QuitGame()
-    {
-        Application.Quit();
+        public void QuitGame()
+        {
+            Application.Quit();
+        }
     }
 }

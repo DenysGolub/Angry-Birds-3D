@@ -1,17 +1,21 @@
+using AngryBirds.Enums;
 using UnityEngine;
 
-public class YellowBird : BirdBase
+namespace AngryBirds.Birds
 {
-    public float ForceMultiplier = 40;
-    
-    void Start()
+    public class YellowBird : BirdBase
     {
-        _birdType =  BirdType.Yellow;
-    }
+        public float ForceMultiplier = 40;
     
-    public override void UseSpecialAbility()
-    {
-        Debug.Log($"use ability for YellowBird");
-        rb.AddForce(transform.forward * ForceMultiplier, ForceMode.VelocityChange);
+        private void Start()
+        {
+            _birdType =  BirdType.Yellow;
+        }
+    
+        public override void UseSpecialAbility()
+        {
+            Debug.Log($"use ability for YellowBird");
+            _rb.AddForce(transform.forward * ForceMultiplier, ForceMode.VelocityChange);
+        }
     }
 }

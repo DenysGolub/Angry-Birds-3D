@@ -1,20 +1,22 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
-public class ChangeCursor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+namespace AngryBirds.UI
 {
-    public Texture2D CursorTexture;
-    private CursorMode cursorMode = CursorMode.Auto;
-    private Vector2 hotSpot = Vector2.zero;
-
-    public void OnPointerEnter(PointerEventData eventData)
+    public class ChangeCursor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        Cursor.SetCursor(CursorTexture, hotSpot, cursorMode);
-    }
+        [SerializeField] private Texture2D _cursorTexture;
+        private readonly CursorMode _cursorMode = CursorMode.Auto;
+        private readonly Vector2 _hotSpot = Vector2.zero;
 
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        Cursor.SetCursor(null, hotSpot, cursorMode);
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            Cursor.SetCursor(_cursorTexture, _hotSpot, _cursorMode);
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            Cursor.SetCursor(null, _hotSpot, _cursorMode);
+        }
     }
 }

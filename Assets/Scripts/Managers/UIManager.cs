@@ -1,62 +1,58 @@
-using System;
-using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class UIManager : MonoBehaviour
+namespace AngryBirds.Managers
 {
-    private int _points;
+    public class UIManager : MonoBehaviour
+    {
+        private int _points;
     
-    public TextMeshProUGUI ScoreText;
-    public GameObject GameOverMenu;
-    public TextMeshProUGUI GameOverText;
-    public GameObject PauseMenu;
-
-    private void OnEnable()
-    {
-        GameManager.OnScoreChanged += UpdateScore;
-        GameManager.OnGameOver += ShowGameOverMenu;
-    }
+        [SerializeField] 
+        private TextMeshProUGUI _scoreText;
     
-    private void OnDisable()
-    {
-        GameManager.OnScoreChanged -= UpdateScore;
-        GameManager.OnGameOver -= ShowGameOverMenu;
-    }
+        [SerializeField] 
+        private GameObject _gameOverMenu;
+    
+        [SerializeField] 
+        private TextMeshProUGUI _gameOverText;
+    
+        [SerializeField] 
+        private GameObject _pauseMenu;
 
-    void UpdateScore(int newPoints)
-    {
-        ScoreText.text = $"Score: {newPoints}";
-        _points = newPoints;
-    }
+        private void OnEnable()
+        {
+            GameManager.OnScoreChanged += UpdateScore;
+            GameManager.OnGameOver += ShowGameOverMenu;
+        }
+    
+        private void OnDisable()
+        {
+            GameManager.OnScoreChanged -= UpdateScore;
+            GameManager.OnGameOver -= ShowGameOverMenu;
+        }
 
-    public void ShowGameOverMenu(bool isWin)
-    {
-        GameOverMenu.SetActive(true);
+        public void ShowGameOverMenu(bool isWin)
+        {
+            _gameOverMenu.SetActive(true);
         
-        if (isWin)
-        {
-            GameOverText.text = "You win!";
+            _gameOverText.text = isWin ? "You win!" : "You lose!";
+            Debug.Log(SceneManager.GetActiveScene().name);
+            LevelScores.SetHighScore(SceneManager.GetActiveScene().name, _points);
         }
-        else
-        {
-            GameOverText.text = "You lose!";
-        }
-        Debug.Log(SceneManager.GetActiveScene().name);
-        LevelScores.SetHighScore(SceneManager.GetActiveScene().name.ToString(), _points);
-    }
 
-    public void SetActivePauseMenu(bool isActive)
-    {
-        PauseMenu.SetActive(isActive);
-        if(isActive)
+        public void SetActivePauseMenu(bool isActive)
         {
-            Time.timeScale = 0f; 
+            _pauseMenu.SetActive(isActive);
+            Time.timeScale = isActive ? 0f : 1f;
         }
-        else
+        
+        private void UpdateScore(int newPoints)
         {
-            Time.timeScale = 1f;
+            _scoreText.text = $"Score: {newPoints}";
+            _points = newPoints;
         }
+
+
     }
 }

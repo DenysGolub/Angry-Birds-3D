@@ -1,14 +1,13 @@
-using System;
 using UnityEngine;
 
-namespace Birds
+namespace AngryBirds.Birds
 {
     public class Egg: MonoBehaviour
     {
         private float _radius = 15f;
         private float _power = 100f;
       
-        void OnCollisionEnter(Collision collision)
+        private void OnCollisionEnter(Collision collision)
         {
             if (!collision.gameObject.CompareTag("Player"))
             {

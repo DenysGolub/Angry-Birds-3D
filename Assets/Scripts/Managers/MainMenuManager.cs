@@ -1,45 +1,80 @@
-using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Audio;
 using UnityEngine.UI;
 
-public class MainMenuManager : MonoBehaviour
+namespace AngryBirds.Managers
 {
-    public GameObject SettingsMenu;
-    public GameObject HighScoreMenu;
-    public GameObject MainMenu;
-
-    public TextMeshProUGUI HighScoreLevelOne;
-    public TextMeshProUGUI HighScoreLevelTwo;
-    public TextMeshProUGUI HighScoreLevelThree;
-
-    void Start()
+    public class MainMenuManager : MonoBehaviour
     {
-        HighScoreLevelOne.text = LevelScores.GetHighScore("Level_1").ToString();
-        HighScoreLevelTwo.text = LevelScores.GetHighScore("Level_2").ToString();
-        HighScoreLevelThree.text = LevelScores.GetHighScore("Level_3").ToString();
-    }
+        [SerializeField]
+        private GameObject _settingsMenu;
+        
+        [SerializeField]
+        private Button _settingsMenuBtn;
     
-    public void ToMainMenu()
-    {
-        MainMenu.SetActive(true);
-        SettingsMenu.SetActive(false);
-        HighScoreMenu.SetActive(false);
-    }
-
-    public void ToSettingsMenu()
-    {
-        MainMenu.SetActive(false);
-        SettingsMenu.SetActive(true);
-        HighScoreMenu.SetActive(false);
-    }
-
-    public void ToHighScoreMenu()
-    {
-        MainMenu.SetActive(false);
-        SettingsMenu.SetActive(false);
-        HighScoreMenu.SetActive(true);
-    }
+        [SerializeField]
+        private GameObject _highScoreMenu;
+        
+        [SerializeField]
+        private Button _highScoreBtn;
     
+        [SerializeField]
+        private GameObject _mainMenu;
+        
+        [SerializeField]
+        private Button _mainMenuBtn;
+
+        [SerializeField]
+        private TextMeshProUGUI _highScoreLevelOne;
+    
+        [SerializeField]
+        private TextMeshProUGUI _highScoreLevelTwo;
+    
+        [SerializeField]
+        private TextMeshProUGUI _highScoreLevelThree;
+
+        private void Start()
+        {
+            _highScoreLevelOne.text = LevelScores.GetHighScore("Level_1").ToString();
+            _highScoreLevelTwo.text = LevelScores.GetHighScore("Level_2").ToString();
+            _highScoreLevelThree.text = LevelScores.GetHighScore("Level_3").ToString();
+        }
+
+        private void OnEnable()
+        {
+            _mainMenuBtn.onClick.AddListener(ToMainMenu);
+            _settingsMenuBtn.onClick.AddListener(ToSettingsMenu);
+            _highScoreBtn.onClick.AddListener(ToHighScoreMenu);
+        }
+        private void OnDisable()
+        {
+            _mainMenuBtn.onClick.RemoveListener(ToMainMenu);
+            _settingsMenuBtn.onClick.RemoveListener(ToSettingsMenu);
+            _highScoreBtn.onClick.RemoveListener(ToHighScoreMenu);
+        }
+
+        public void ToMainMenu()
+        {
+            _mainMenu.SetActive(true);
+            _settingsMenu.SetActive(false);
+            _highScoreMenu.SetActive(false);
+            _mainMenuBtn.gameObject.SetActive(false);
+        }
+
+        public void ToSettingsMenu()
+        {
+            _mainMenu.SetActive(false);
+            _settingsMenu.SetActive(true);
+            _highScoreMenu.SetActive(false);
+            _mainMenuBtn.gameObject.SetActive(true);
+        }
+
+        public void ToHighScoreMenu()
+        {
+            _mainMenu.SetActive(false);
+            _settingsMenu.SetActive(false);
+            _highScoreMenu.SetActive(true);
+            _mainMenuBtn.gameObject.SetActive(true);
+        }
+    }
 }

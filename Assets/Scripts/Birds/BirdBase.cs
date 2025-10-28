@@ -1,70 +1,69 @@
 using System;
 using System.Collections;
-using Unity.Cinemachine;
+using AngryBirds.Enums;
+using AngryBirds.Managers;
 using UnityEngine;
 
-public abstract class BirdBase : MonoBehaviour
+namespace AngryBirds.Birds
 {
-   
-    private protected Rigidbody rb;
-    private protected bool isFlying = false;
-    private protected bool hasPowerUsed = false;
-    private protected BirdType _birdType;
+    public abstract class BirdBase : MonoBehaviour
+    {
+        private protected Rigidbody _rb;
+        private protected bool isFlying = false;
+        private protected bool _hasPowerUsed = false;
+        private protected BirdType _birdType;
     
-    public Action OnShoot;
-    
-    public abstract void UseSpecialAbility();
+        public Action OnShoot;
+        public BirdType BirdType => _birdType;
 
-    public CinemachineCamera FlightCamera;
-    public BirdType BirdType => _birdType;
-
-    void Awake()
-    {
-        rb = GetComponent<Rigidbody>();
-    }
-    
-    private void OnEnable()
-    {
-        OnShoot += SetFlying;
-    }
-
-    private void OnDisable()
-    {
-        OnShoot -= SetFlying;
-    }
-
-    void Update()
-    {
-        if (Input.GetMouseButtonDown(0) && !hasPowerUsed && isFlying)
+        private void Awake()
         {
-            Debug.Log(isFlying);
-            AudioManager.Instance.PlaySpecialAbility(_birdType);
-            UseSpecialAbility();
-            hasPowerUsed = true;
-            isFlying = false;
+            _rb = GetComponent<Rigidbody>();
+        }
+    
+        private void OnEnable()
+        {
+            OnShoot += SetFlying;
         }
 
-        if (hasPowerUsed && !isFlying)
+        private void OnDisable()
         {
-            StartCoroutine(DestroyBird());
+            OnShoot -= SetFlying;
         }
-    }
+
+        private void Update()
+        {
+            if (Input.GetMouseButtonDown(0) && !_hasPowerUsed && isFlying)
+            {
+                Debug.Log(isFlying);
+                UseSpecialAbility();
+                _hasPowerUsed = true;
+                isFlying = false;
+            }
+
+            if (_hasPowerUsed && !isFlying)
+            {
+                StartCoroutine(DestroyBird());
+            }
+        }
+        public abstract void UseSpecialAbility();
+        
+        public IEnumerator DestroyBird()
+        {
+            yield return new WaitForSeconds(3f);
+            AudioManager.Instance.PlayBirdDeath();
+            Destroy(gameObject);
+        }
+        public void PlayFlyingSoundEffect()
+        {
+            AudioManager.Instance.PlayBirdLaunch(_birdType);
+        }
     
-    void SetFlying()
-    {
-        PlayFlyingSoundEffect();
-        Debug.Log("Got call to set flying");
-        isFlying = true;
-    }
-   
-    public IEnumerator DestroyBird()
-    {
-        yield return new WaitForSeconds(3f);
-        AudioManager.Instance.PlayBirdDeath();
-        Destroy(gameObject);
-    }
-    public void PlayFlyingSoundEffect()
-    {
-        AudioManager.Instance.PlayBirdLaunch(_birdType);
+        private void SetFlying()
+        {
+            PlayFlyingSoundEffect();
+            Debug.Log("Got call to set flying");
+            isFlying = true;
+        }
     }
 }

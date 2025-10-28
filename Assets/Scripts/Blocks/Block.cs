@@ -1,61 +1,57 @@
 using System;
-using Enums;
+using AngryBirds.Enums;
+using AngryBirds.Managers;
 using UnityEngine;
-
-public class Block : MonoBehaviour
+namespace AngryBirds.Blocks
 {
-    private float _maxHealth;
-    private float _damageMultiplier;
-    private Rigidbody _rigidbody;
-    private float _currentHealth;
-    private BlockType _blockType;
-    
-    public BlockSO BlockConfiguration;
-    
-    public static Action<int> OnHealthChanged;
-    public static Action<int> OnBlockDestroyed;
-
-    private void Awake()
+    public class Block : MonoBehaviour
     {
-        _rigidbody = GetComponent<Rigidbody>();
-    }
-
-    void Start()
-    {
-        _maxHealth = BlockConfiguration.MaxHealth;
-        _damageMultiplier = BlockConfiguration.DamageMultiplier;
-        _blockType = BlockConfiguration.Type;
-        _currentHealth = _maxHealth;
+        public BlockSO BlockConfiguration;
         
-        _rigidbody.mass = BlockConfiguration.Mass;
-        _rigidbody.linearDamping = BlockConfiguration.LinearDamping;
-    }
+        private float _maxHealth;
+        private float _damageMultiplier;
+        private Rigidbody _rigidbody;
+        private float _currentHealth;
+        private BlockType _blockType;
     
-    private void OnCollisionEnter(Collision other)
-    {
-        if (_currentHealth <= 0)
+        public static Action<int> OnHealthChanged;
+        public static Action<int> OnBlockDestroyed;
+
+        private void Awake()
         {
-            return;
+            _rigidbody = GetComponent<Rigidbody>();
         }
 
-        _currentHealth -= other.relativeVelocity.magnitude * _damageMultiplier;
-        Debug.Log($"Impact from enter: {other.relativeVelocity.magnitude * _damageMultiplier}");
-        Debug.Log($"Impulse from explosion: {other.impulse.magnitude * _damageMultiplier}");
-        if (_currentHealth <= 0)
+        private void Start()
         {
-            if (OnBlockDestroyed != null)
-            {
-                OnBlockDestroyed.Invoke(500);
-            }
-            AudioManager.Instance.PlayDestroyedBlock(_blockType);
-            Destroy(gameObject);
-            
+            _maxHealth = BlockConfiguration.MaxHealth;
+            _damageMultiplier = BlockConfiguration.DamageMultiplier;
+            _blockType = BlockConfiguration.Type;
+            _currentHealth = _maxHealth;
+        
+            _rigidbody.mass = BlockConfiguration.Mass;
+            _rigidbody.linearDamping = BlockConfiguration.LinearDamping;
         }
-        else
+    
+        private void OnCollisionEnter(Collision other)
         {
-            if (OnHealthChanged != null)
+            if (_currentHealth <= 0)
             {
-                OnHealthChanged.Invoke((int)Math.Round(other.relativeVelocity.magnitude  * 100f));
+                return;
+            }
+
+            _currentHealth -= other.relativeVelocity.magnitude * _damageMultiplier;
+            Debug.Log($"Impact from enter: {other.relativeVelocity.magnitude * _damageMultiplier}");
+            Debug.Log($"Impulse from explosion: {other.impulse.magnitude * _damageMultiplier}");
+            if (_currentHealth <= 0)
+            {
+                OnBlockDestroyed?.Invoke(500);
+                AudioManager.Instance.PlayDestroyedBlock(_blockType);
+                Destroy(gameObject);
+            }
+            else
+            {
+                OnHealthChanged?.Invoke((int)Math.Round(other.relativeVelocity.magnitude  * 100f));
                 Debug.Log($"Points: {(int)Math.Round(other.relativeVelocity.magnitude * 100f)}");
             }
         }

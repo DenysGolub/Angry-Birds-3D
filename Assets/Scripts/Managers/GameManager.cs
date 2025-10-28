@@ -1,135 +1,120 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
+using AngryBirds.Blocks;
+using AngryBirds.Levels;
+using AngryBirds.SO.Scripts;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+namespace AngryBirds.Managers
 {
-    [Header("Score")]
-    private int _score = 0;
-    private int _enemyCount;
-    private int _birdCount;
-    private const int POINTS_PER_UNUSED_BIRD = 10000;
-    
-    public MoveCamera Camera;
-    public Slingshot Slingshot;
-    
-    public static event Action<int> OnScoreChanged;
-    public static event Action<bool> OnGameOver;
-    public static event Action OnNextBirdChanged;
-    public static event Action<GameObject> SetNextBirdToSlingshotAction;
+    public class GameManager : MonoBehaviour
+    {
+        [Header("Score")]
+        private int _score = 0;
+        private int _enemyCount;
+        private int _birdCount;
+        
+        [SerializeField] private MoveCamera _camera;
+        [SerializeField] private Slingshot _slingshot;
+
+        private const int POINTS_PER_UNUSED_BIRD = 10000;
+        
+        public static event Action<int> OnScoreChanged;
+        public static event Action<bool> OnGameOver;
+        public static event Action OnNextBirdChanged;
+        public static event Action<GameObject> SetNextBirdToSlingshotAction;
   
-    void Start() 
-    {
-        Time.timeScale = 1f;
-    }
-    
-    void OnEnable()
-    {
-        Slingshot.OnShotFired += RequestNextBird;
-        
-        BirdManager.ChangeCurrentProjectile += SetNextBirdToSlingshot;
-        BirdManager.SetAmmo += GetStartingBirdsCount;
-        BirdManager.OnEmptyAmmo += CheckGameStatus;
-        
-        Enemy.AddEnemyCount += ChangeEnemyCount;
-        Enemy.OnEnemyDeath += UpdateScore;
-        Enemy.OnEnemyDeath += DecreaseEnemyCount;
-        Enemy.OnHealthChange += UpdateScore;
-        
-        Block.OnBlockDestroyed += UpdateScore;
-        Block.OnHealthChanged += UpdateScore;
-
-    }
-    
-    void OnDisable()
-    {
-        Slingshot.OnShotFired -= RequestNextBird;
-        
-        BirdManager.ChangeCurrentProjectile -= SetNextBirdToSlingshot;
-        BirdManager.OnEmptyAmmo -= CheckGameStatus;
-        BirdManager.SetAmmo -= GetStartingBirdsCount;
-        
-        Enemy.AddEnemyCount -= ChangeEnemyCount;
-        Enemy.OnEnemyDeath -= UpdateScore;
-        Enemy.OnEnemyDeath -= DecreaseEnemyCount;
-        Enemy.OnHealthChange -= UpdateScore;
-
-        Block.OnBlockDestroyed -= UpdateScore;
-        Block.OnHealthChanged -= UpdateScore;
-    }
-    
-    private void GetStartingBirdsCount(BirdsAmmoSO obj)
-    {
-        _birdCount = obj.Birds.Count;
-    }
-
-    private void ChangeEnemyCount()
-    {
-        _enemyCount += 1;
-    }
-
-
-    private void CheckGameStatus()
-    {
-        StartCoroutine(WaitForEndLevel());
-    }
-    
-    private IEnumerator WaitForEndLevel()
-    {
-        yield return new WaitForSeconds(7f);
-        if (_enemyCount > 0)
+        private void Start() 
         {
-            if (OnGameOver != null)
+            Time.timeScale = 1f;
+        }
+    
+        private void OnEnable()
+        {
+            Slingshot.OnShotFired += RequestNextBird;
+        
+            BirdManager.ChangeCurrentProjectile += SetNextBirdToSlingshot;
+            BirdManager.SetAmmo += GetStartingBirdsCount;
+            BirdManager.OnEmptyAmmo += CheckGameStatus;
+        
+            Enemy.Enemy.AddEnemyCount += ChangeEnemyCount;
+            Enemy.Enemy.OnEnemyDeath += UpdateScore;
+            Enemy.Enemy.OnEnemyDeath += DecreaseEnemyCount;
+            Enemy.Enemy.OnHealthChange += UpdateScore;
+        
+            Block.OnBlockDestroyed += UpdateScore;
+            Block.OnHealthChanged += UpdateScore;
+        }
+    
+        private void OnDisable()
+        {
+            Slingshot.OnShotFired -= RequestNextBird;
+        
+            BirdManager.ChangeCurrentProjectile -= SetNextBirdToSlingshot;
+            BirdManager.OnEmptyAmmo -= CheckGameStatus;
+            BirdManager.SetAmmo -= GetStartingBirdsCount;
+        
+            Enemy.Enemy.AddEnemyCount -= ChangeEnemyCount;
+            Enemy.Enemy.OnEnemyDeath -= UpdateScore;
+            Enemy.Enemy.OnEnemyDeath -= DecreaseEnemyCount;
+            Enemy.Enemy.OnHealthChange -= UpdateScore;
+
+            Block.OnBlockDestroyed -= UpdateScore;
+            Block.OnHealthChanged -= UpdateScore;
+        }
+    
+        private void GetStartingBirdsCount(BirdsAmmoSO obj)
+        {
+            _birdCount = obj.Birds.Count;
+        }
+
+        private void ChangeEnemyCount()
+        {
+            _enemyCount += 1;
+        }
+
+        private void CheckGameStatus()
+        {
+            StartCoroutine(WaitForEndLevel());
+        }
+    
+        private IEnumerator WaitForEndLevel()
+        {
+            yield return new WaitForSeconds(7f);
+            if (_enemyCount > 0)
             {
                 AudioManager.Instance.PlayEndLevel(false);
-                OnGameOver.Invoke(false);
+                OnGameOver?.Invoke(false);
             }
         }
-    }
-    
 
-    private void UpdateScore(int points)
-    {
-        _score += points;
-        if (OnScoreChanged != null)
+        private void UpdateScore(int points)
         {
-            OnScoreChanged.Invoke(_score);
+            _score += points;
+            OnScoreChanged?.Invoke(_score);
         }
-    }
 
-    private void DecreaseEnemyCount(int count)
-    {
-        _enemyCount--;
-        if (_enemyCount == 0)
+        private void DecreaseEnemyCount(int count)
         {
-            if (OnGameOver != null)
+            _enemyCount--;
+            if (_enemyCount == 0)
             {
                 AudioManager.Instance.PlayEndLevel(true);
-                if (OnScoreChanged != null)
-                {
-                    _score += _birdCount * POINTS_PER_UNUSED_BIRD;
-                    OnScoreChanged.Invoke(_score);
-                }
-                OnGameOver.Invoke(true);
-            } 
+                _score += _birdCount * POINTS_PER_UNUSED_BIRD;
+                OnScoreChanged?.Invoke(_score);
+                OnGameOver?.Invoke(true);
+            }
         }
-    }
 
-    void RequestNextBird()
-    {
-        if (OnNextBirdChanged != null)
+        private void RequestNextBird()
         {
-            OnNextBirdChanged.Invoke();
+            OnNextBirdChanged?.Invoke();
             _birdCount--;
         }
-    }
 
-    void SetNextBirdToSlingshot(GameObject bird)
-    {
-        if (SetNextBirdToSlingshotAction != null)
+        private void SetNextBirdToSlingshot(GameObject bird)
         {
-            SetNextBirdToSlingshotAction.Invoke(bird);
+            SetNextBirdToSlingshotAction?.Invoke(bird);
         }
     }
 }

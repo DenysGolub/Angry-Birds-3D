@@ -1,50 +1,44 @@
 using System;
+using AngryBirds.Managers;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+namespace AngryBirds.Enemy
 {
-    private float _currentHealth;
-    
-    public float MaxHealth = 20f;
-    public float DamageMultiplier = 30f;
-    
-    public static event Action<int> OnEnemyDeath;
-    public static event Action<int> OnHealthChange;
-    public static event Action AddEnemyCount;
-    private void Start()
+    public class Enemy : MonoBehaviour
     {
-        _currentHealth = MaxHealth;
-
-        if (AddEnemyCount != null)
-        {
-            AddEnemyCount.Invoke();
-        }
-    }
+        private float _currentHealth;
     
-    private void OnCollisionEnter(Collision other)
-    {
-        if (_currentHealth <= 0)
+        public float MaxHealth = 20f;
+        public float DamageMultiplier = 30f;
+    
+        public static event Action<int> OnEnemyDeath;
+        public static event Action<int> OnHealthChange;
+        public static event Action AddEnemyCount;
+        private void Start()
         {
-            return;
+            _currentHealth = MaxHealth;
+            AddEnemyCount?.Invoke();
         }
-
-        _currentHealth -= other.relativeVelocity.magnitude * DamageMultiplier;
-        Debug.Log($"Impact from enter: {other.relativeVelocity.magnitude * DamageMultiplier}");
-        Debug.Log($"Impulse from explosion: {other.impulse.magnitude * DamageMultiplier}");
-        if (_currentHealth <= 0)
+    
+        private void OnCollisionEnter(Collision other)
         {
-            if (OnEnemyDeath != null)
+            if (_currentHealth <= 0)
             {
-                OnEnemyDeath.Invoke(1000);
+                return;
             }
-            AudioManager.Instance.PlayPigDeath();
-            Destroy(gameObject);
-        }
-        else
-        {
-            if (OnHealthChange != null)
+
+            _currentHealth -= other.relativeVelocity.magnitude * DamageMultiplier;
+            Debug.Log($"Impact from enter: {other.relativeVelocity.magnitude * DamageMultiplier}");
+            Debug.Log($"Impulse from explosion: {other.impulse.magnitude * DamageMultiplier}");
+            if (_currentHealth <= 0)
             {
-                OnHealthChange.Invoke((int)Math.Round(other.relativeVelocity.magnitude *  100f));
+                OnEnemyDeath?.Invoke(1000);
+                AudioManager.Instance.PlayPigDeath();
+                Destroy(gameObject);
+            }
+            else
+            {
+                OnHealthChange?.Invoke((int)Math.Round(other.relativeVelocity.magnitude *  100f));
                 Debug.Log($"Points: {(int)Math.Round(other.relativeVelocity.magnitude * 100f)}");
             }
         }

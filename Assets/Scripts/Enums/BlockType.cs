@@ -1,10 +1,10 @@
-namespace Enums
+namespace AngryBirds.Enums
 {
     public enum BlockType
     {
         Wood,
         Stone,
         Ice,
-        TNT
+        Tnt
     }
 }

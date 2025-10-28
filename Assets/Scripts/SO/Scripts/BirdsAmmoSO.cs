@@ -1,8 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "BirdsAmmo", menuName = "Scriptable Objects/BirdsAmmo")]
-public class BirdsAmmoSO : ScriptableObject
+namespace AngryBirds.SO.Scripts
 {
-    public List<GameObject> Birds = new List<GameObject>();
+    [CreateAssetMenu(fileName = "BirdsAmmo", menuName = "Scriptable Objects/BirdsAmmo")]
+    public class BirdsAmmoSO : ScriptableObject
+    {
+        public List<GameObject> Birds = new List<GameObject>();
+    }
 }

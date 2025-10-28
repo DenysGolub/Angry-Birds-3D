@@ -2,22 +2,30 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 
-public class ChangeVolumeMixer: MonoBehaviour
+namespace AngryBirds.UI
 {
-    public AudioMixer VolumeMixer;
-    public Slider MusicSlider;
-    public Slider SfxSlider;
+    public class ChangeVolumeMixer: MonoBehaviour
+    {
+        [SerializeField] 
+        private AudioMixer _volumeMixer;
+    
+        [SerializeField] 
+        private Slider _musicSlider;
+    
+        [SerializeField] 
+        private Slider _sfxSlider;
 
-    public void SetVolumeMusic()
-    {
-        float sliderValue = MusicSlider.value;
-        VolumeMixer.SetFloat("Music", Mathf.Log10(sliderValue) * 20);
-    }
-    public void SetVolumeSFX()
-    {
-        float sliderValue = SfxSlider.value;
-        VolumeMixer.SetFloat("SFX", Mathf.Log10(sliderValue) * 20);
-    }
+        public void SetVolumeMusic()
+        {
+            float sliderValue = _musicSlider.value;
+            _volumeMixer.SetFloat("Music", Mathf.Log10(sliderValue) * 20);
+        }
+        public void SetVolumeSFX()
+        {
+            float sliderValue = _sfxSlider.value;
+            _volumeMixer.SetFloat("SFX", Mathf.Log10(sliderValue) * 20);
+        }
     
 
+    }
 }

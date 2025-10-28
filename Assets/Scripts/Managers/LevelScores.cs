@@ -1,23 +1,26 @@
 using UnityEngine;
 
-public static class LevelScores 
+namespace AngryBirds.Managers
 {
-    public static void SetHighScore(string levelName, int score)
+    public static class LevelScores 
     {
-        if (!PlayerPrefs.HasKey(levelName))
+        public static void SetHighScore(string levelName, int score)
         {
-            PlayerPrefs.SetInt(levelName, 0);
-        }
+            if (!PlayerPrefs.HasKey(levelName))
+            {
+                PlayerPrefs.SetInt(levelName, 0);
+            }
         
-        int oldScore = GetHighScore(levelName);
-        if (score >= oldScore)
-        {
-            PlayerPrefs.SetInt(levelName, score);
+            int oldScore = GetHighScore(levelName);
+            if (score >= oldScore)
+            {
+                PlayerPrefs.SetInt(levelName, score);
+            }
         }
-    }
 
-    public static int GetHighScore(string levelName)
-    {
-        return PlayerPrefs.GetInt(levelName);
+        public static int GetHighScore(string levelName)
+        {
+            return PlayerPrefs.GetInt(levelName);
+        }
     }
 }

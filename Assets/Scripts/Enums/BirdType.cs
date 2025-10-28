@@ -1,8 +1,11 @@
-public enum BirdType
+namespace AngryBirds.Enums
 {
-    Red,
-    Blue, 
-    Yellow,
-    Black,
-    White
+    public enum BirdType
+    {
+        Red,
+        Blue, 
+        Yellow,
+        Black,
+        White
+    }
 }
