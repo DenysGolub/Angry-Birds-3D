@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace AngryBirds.Managers
 {
@@ -20,16 +21,40 @@ namespace AngryBirds.Managers
         [SerializeField] 
         private GameObject _pauseMenu;
 
+        [SerializeField] private Button _pauseBtn;
+        [SerializeField] private Button _closePauseBtn;
+        [SerializeField] private Button _changeCameraBtn;
+
+        [SerializeField] private Button _toMainMenuBtn;
+        [SerializeField] private Button _replayBtn;
+        
+        
+        [SerializeField] CameraManager _cameraManager;
+        [SerializeField] SceneLoader _sceneLoader;
+
         private void OnEnable()
         {
             GameManager.OnScoreChanged += UpdateScore;
             GameManager.OnGameOver += ShowGameOverMenu;
+            
+            _pauseBtn.onClick.AddListener(() => SetActivePauseMenu(true));
+            _closePauseBtn.onClick.AddListener(() => SetActivePauseMenu(false));
+            _changeCameraBtn.onClick.AddListener(_cameraManager.ChangeCamera);
+            _toMainMenuBtn.onClick.AddListener(_sceneLoader.LoadMainMenu);
+            _replayBtn.onClick.AddListener(_sceneLoader.ReplayLevel);
+
         }
     
         private void OnDisable()
         {
             GameManager.OnScoreChanged -= UpdateScore;
             GameManager.OnGameOver -= ShowGameOverMenu;
+            
+            _pauseBtn.onClick.RemoveAllListeners();
+            _closePauseBtn.onClick.RemoveAllListeners();
+            _changeCameraBtn.onClick.RemoveAllListeners();
+            _toMainMenuBtn.onClick.RemoveAllListeners();
+            _replayBtn.onClick.RemoveAllListeners();
         }
 
         public void ShowGameOverMenu(bool isWin)

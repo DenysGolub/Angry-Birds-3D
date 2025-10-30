@@ -8,7 +8,8 @@ namespace AngryBirds.Managers
     {
         [SerializeField] private CinemachineCamera _levelCamera;
         [SerializeField] private CinemachineCamera _shotCamera;
-        [SerializeField] private GameObject _slingshot;
+        public GameObject _slingshot;
+        
     
         private void OnEnable()
         {

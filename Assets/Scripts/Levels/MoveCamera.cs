@@ -62,7 +62,7 @@ namespace AngryBirds.Levels
                 float mouseX = obj.ReadValue<Vector2>().x;
                 if (mouseX < 0)
                 {
-                    Debug.Log("Mouse is moving left");
+                    //Debug.Log("Mouse is moving left");
                     var currentPosition = transform.localPosition;
                     currentPosition.z += _moveSpeed*Time.deltaTime;
                     currentPosition.z = Mathf.Clamp(currentPosition.z, LevelBorders.x, LevelBorders.y);
@@ -70,7 +70,7 @@ namespace AngryBirds.Levels
                 }
                 else if (mouseX > 0)
                 {
-                    Debug.Log("Mouse is moving right");
+                    //Debug.Log("Mouse is moving right");
                     var currentPosition = transform.localPosition;
                     currentPosition.z -= _moveSpeed*Time.deltaTime;
                     currentPosition.z = Mathf.Clamp(currentPosition.z, LevelBorders.x, LevelBorders.y);

@@ -9,6 +9,11 @@ namespace AngryBirds.Managers
 {
     public class GameManager : MonoBehaviour
     {
+        public static event Action<int> OnScoreChanged;
+        public static event Action<bool> OnGameOver;
+        public static event Action OnNextBirdChanged;
+        public static event Action<GameObject> SetNextBirdToSlingshotAction;
+        
         [Header("Score")]
         private int _score = 0;
         private int _enemyCount;
@@ -19,11 +24,6 @@ namespace AngryBirds.Managers
 
         private const int POINTS_PER_UNUSED_BIRD = 10000;
         
-        public static event Action<int> OnScoreChanged;
-        public static event Action<bool> OnGameOver;
-        public static event Action OnNextBirdChanged;
-        public static event Action<GameObject> SetNextBirdToSlingshotAction;
-  
         private void Start() 
         {
             Time.timeScale = 1f;

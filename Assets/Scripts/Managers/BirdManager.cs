@@ -7,15 +7,43 @@ namespace AngryBirds.Managers
 {
     public class BirdManager : MonoBehaviour
     {
+        public static event Action OnEmptyAmmo;
+        public static event Action<GameObject> ChangeCurrentProjectile;
+        public static event Action<BirdsAmmoSO> SetAmmo;
+        
         private Queue<GameObject> _spawnedBirds = new Queue<GameObject>();
     
         [SerializeField] private Transform _slingshot;
         [SerializeField] private BirdsAmmoSO _birdsList;
 
-        public static event Action OnEmptyAmmo;
-        public static event Action<GameObject> ChangeCurrentProjectile;
-        public static event Action<BirdsAmmoSO> SetAmmo;
-    
+        public void SetNewAmmoAndSlingshot(BirdsAmmoSO ammo, Transform slingshot)
+        {
+            _birdsList = ammo;
+            _slingshot = slingshot;
+
+            while (_spawnedBirds.Count != 0) 
+            {
+                GameObject bird = _spawnedBirds.Dequeue().gameObject;
+                Destroy(bird);
+            }
+
+
+            float padding = 1.5f;
+            Vector3 slingshotPosition = _slingshot.position;
+            slingshotPosition.y += 0.15f;
+
+            for (int i = 1; i < _birdsList.Birds.Count; i++)
+            {
+                slingshotPosition.x -= padding;
+                GameObject newBird = Instantiate(_birdsList.Birds[i], slingshotPosition, _birdsList.Birds[i].transform.rotation);
+                _spawnedBirds.Enqueue(newBird);
+                padding = 0.8f;
+            }
+
+            Debug.Log($"Spawned {_spawnedBirds.Count} birds for new ammo");
+        }
+
+        
         private void Awake()
         {
             float padding = 1.5f;
@@ -29,6 +57,7 @@ namespace AngryBirds.Managers
                 padding = 0.8f;
             }
         }
+        
 
         private void Start()
         {

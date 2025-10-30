@@ -6,14 +6,16 @@ namespace AngryBirds.Enemy
 {
     public class Enemy : MonoBehaviour
     {
-        private float _currentHealth;
-    
         public float MaxHealth = 20f;
         public float DamageMultiplier = 30f;
     
         public static event Action<int> OnEnemyDeath;
         public static event Action<int> OnHealthChange;
         public static event Action AddEnemyCount;
+        
+        private float _currentHealth;
+    
+        
         private void Start()
         {
             _currentHealth = MaxHealth;

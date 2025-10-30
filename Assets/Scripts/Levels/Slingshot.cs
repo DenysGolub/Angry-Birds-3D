@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using AngryBirds.Birds;
 using AngryBirds.Managers;
 using AngryBirds.SO.Scripts;
+using Fusion;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -11,7 +12,7 @@ using UnityEngine.InputSystem;
 
 namespace AngryBirds.Levels
 {
-    public class Slingshot : MonoBehaviour
+    public class Slingshot : NetworkBehaviour
     {
         [Header("Slingshot setup")] 
         [SerializeField] private Transform _pivot;
@@ -47,6 +48,18 @@ namespace AngryBirds.Levels
         private DraggingInputActions _inputActions;    
     
         public static event Action OnShotFired;
+
+        
+        private bool _isLocal;
+
+        public void SetAmmo(BirdsAmmoSO ammo)
+        {
+            _birdsList = ammo;
+            Destroy(_currentProjectilePrefab);
+            
+            _currentProjectilePrefab = Instantiate(_birdsList.Birds[0].gameObject);
+            CreateProjectile();
+        }
 
         private void Awake()
         {

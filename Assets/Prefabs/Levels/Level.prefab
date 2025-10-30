@@ -3046,19 +3046,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5109499220659122445}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: SetActivePauseMenu
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1117649439652668698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3754,6 +3742,13 @@ MonoBehaviour:
   _gameOverMenu: {fileID: 4900447268986539836}
   _gameOverText: {fileID: 6508538718770640643}
   _pauseMenu: {fileID: 3797660784105217442}
+  _pauseBtn: {fileID: 4068423007756594363}
+  _closePauseBtn: {fileID: 5256541754092812345}
+  _changeCameraBtn: {fileID: 4738332764443584419}
+  _toMainMenuBtn: {fileID: 4832975287838471034}
+  _replayBtn: {fileID: 1284599808681090526}
+  _cameraManager: {fileID: 3688908539631799970}
+  _sceneLoader: {fileID: 507087746520708860}
 --- !u!1 &6875050506911718504
 GameObject:
   m_ObjectHideFlags: 0
@@ -4806,19 +4801,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3020313958754623746}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3688908539631799970}
-        m_TargetAssemblyTypeName: CameraManager, Assembly-CSharp
-        m_MethodName: ChangeCamera
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &2246358018639346017
 MonoBehaviour:
   m_ObjectHideFlags: 0

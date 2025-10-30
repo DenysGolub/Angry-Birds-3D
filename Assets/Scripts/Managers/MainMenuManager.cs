@@ -23,6 +23,11 @@ namespace AngryBirds.Managers
         
         [SerializeField]
         private Button _mainMenuBtn;
+        
+        [SerializeField]
+        private Button _playBtn;
+        [SerializeField]
+        private Button _multiPlayerBtn;
 
         [SerializeField]
         private TextMeshProUGUI _highScoreLevelOne;
@@ -32,6 +37,9 @@ namespace AngryBirds.Managers
     
         [SerializeField]
         private TextMeshProUGUI _highScoreLevelThree;
+        
+        [SerializeField]
+        private SceneLoader _sceneLoader;
 
         private void Start()
         {
@@ -45,12 +53,16 @@ namespace AngryBirds.Managers
             _mainMenuBtn.onClick.AddListener(ToMainMenu);
             _settingsMenuBtn.onClick.AddListener(ToSettingsMenu);
             _highScoreBtn.onClick.AddListener(ToHighScoreMenu);
+            
+            _playBtn.onClick.AddListener(_sceneLoader.LoadNextLevel);
+            //TODO: add multiplayer callback
         }
         private void OnDisable()
         {
             _mainMenuBtn.onClick.RemoveListener(ToMainMenu);
             _settingsMenuBtn.onClick.RemoveListener(ToSettingsMenu);
             _highScoreBtn.onClick.RemoveListener(ToHighScoreMenu);
+            _playBtn.onClick.RemoveListener(_sceneLoader.LoadNextLevel);
         }
 
         public void ToMainMenu()
