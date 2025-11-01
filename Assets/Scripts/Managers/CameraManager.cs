@@ -1,3 +1,4 @@
+using System;
 using AngryBirds.Levels;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -6,10 +7,10 @@ namespace AngryBirds.Managers
 {
     public class CameraManager : MonoBehaviour
     {
+        public static event Action<bool> EnableSlingshot;
+        
         [SerializeField] private CinemachineCamera _levelCamera;
         [SerializeField] private CinemachineCamera _shotCamera;
-        public GameObject _slingshot;
-        
     
         private void OnEnable()
         {
@@ -19,6 +20,8 @@ namespace AngryBirds.Managers
         {
             GameManager.OnGameOver -= DisableCamera;
         }
+        
+        
 
         private void DisableCamera(bool obj)
         {
@@ -31,7 +34,7 @@ namespace AngryBirds.Managers
             {
                 _shotCamera.gameObject.SetActive(!_shotCamera.isActiveAndEnabled);
                 _levelCamera.gameObject.SetActive(!_levelCamera.isActiveAndEnabled);
-                _slingshot.GetComponent<Slingshot>().enabled = _shotCamera.isActiveAndEnabled;
+                EnableSlingshot?.Invoke(_shotCamera.isActiveAndEnabled);
             }
         }
 

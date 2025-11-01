@@ -3109,7 +3109,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _levelCamera: {fileID: 5528505669203879813}
   _shotCamera: {fileID: 4576872724909097118}
-  _slingshot: {fileID: 5143264765608044498}
 --- !u!1 &5632673920109496423
 GameObject:
   m_ObjectHideFlags: 0
@@ -4884,6 +4883,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 9159896171844599260}
     - target: {fileID: 8425899241702294634, guid: 5e71312b73352fb4ca627e53dd2611cf, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8425899241702294634, guid: 5e71312b73352fb4ca627e53dd2611cf, type: 3}
       propertyPath: _birdsList
       value: 
       objectReference: {fileID: 11400000, guid: 4ffb2e330206f6c4aa230c8309b99ccf, type: 2}
@@ -4961,17 +4964,12 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8425899241702294634, guid: 5e71312b73352fb4ca627e53dd2611cf, type: 3}
   m_PrefabInstance: {fileID: 5001905595205602566}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5143264765608044498}
-  m_Enabled: 0
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 376adc46beef23b4bac716af10d9d7ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &5143264765608044498 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 147170382487317204, guid: 5e71312b73352fb4ca627e53dd2611cf, type: 3}
-  m_PrefabInstance: {fileID: 5001905595205602566}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5920870504305926873 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1675760147365556191, guid: 5e71312b73352fb4ca627e53dd2611cf, type: 3}

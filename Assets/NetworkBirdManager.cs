@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using AngryBirds.SO.Scripts;
+using Fusion;
 using UnityEngine;
 
 namespace AngryBirds.Managers
 {
-    public class BirdManager : MonoBehaviour
+    public class NetworkBirdManager : NetworkBehaviour
     {
         public static event Action OnEmptyAmmo;
         public static event Action<GameObject> ChangeCurrentProjectile;
@@ -15,19 +16,12 @@ namespace AngryBirds.Managers
     
         [SerializeField] private Transform _slingshot;
         [SerializeField] private BirdsAmmoSO _birdsList;
-
+        
         public void SetNewAmmoAndSlingshot(BirdsAmmoSO ammo, Transform slingshot)
         {
             _birdsList = ammo;
             _slingshot = slingshot;
             SetAmmo?.Invoke(_birdsList);
-
-            while (_spawnedBirds.Count != 0) 
-            {
-                GameObject bird = _spawnedBirds.Dequeue().gameObject;
-                Destroy(bird);
-            }
-
 
             float padding = 1.5f;
             Vector3 slingshotPosition = _slingshot.position;
@@ -36,33 +30,13 @@ namespace AngryBirds.Managers
             for (int i = 1; i < _birdsList.Birds.Count; i++)
             {
                 slingshotPosition.x -= padding;
-                GameObject newBird = Instantiate(_birdsList.Birds[i], slingshotPosition, _birdsList.Birds[i].transform.rotation);
+                GameObject newBird = Runner.Spawn(_birdsList.Birds[i], slingshotPosition, _birdsList.Birds[i].transform.rotation, Object.InputAuthority).gameObject;
                 _spawnedBirds.Enqueue(newBird);
                 padding = 0.8f;
+                Debug.Log("Spawned bird!");
             }
 
             Debug.Log($"Spawned {_spawnedBirds.Count} birds for new ammo");
-        }
-
-        
-        private void Awake()
-        {
-            float padding = 1.5f;
-            Vector3 slingshotPosition = _slingshot.position;
-            slingshotPosition.y += 0.15f;
-            Debug.Log(slingshotPosition);
-            for(int i = 1; i < _birdsList.Birds.Count; i++)
-            {
-                slingshotPosition.x  -= padding;
-                _spawnedBirds.Enqueue(Instantiate(_birdsList.Birds[i], slingshotPosition, _birdsList.Birds[i].transform.rotation));
-                padding = 0.8f;
-            }
-        }
-        
-
-        private void Start()
-        {
-            SetAmmo?.Invoke(_birdsList);
         }
     
         private void OnEnable()

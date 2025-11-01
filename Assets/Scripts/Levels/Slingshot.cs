@@ -12,7 +12,7 @@ using UnityEngine.InputSystem;
 
 namespace AngryBirds.Levels
 {
-    public class Slingshot : NetworkBehaviour
+    public class Slingshot : MonoBehaviour
     {
         [Header("Slingshot setup")] 
         [SerializeField] private Transform _pivot;
@@ -48,31 +48,21 @@ namespace AngryBirds.Levels
         private DraggingInputActions _inputActions;    
     
         public static event Action OnShotFired;
-
         
-        private bool _isLocal;
-
-        public void SetAmmo(BirdsAmmoSO ammo)
-        {
-            _birdsList = ammo;
-            Destroy(_currentProjectilePrefab);
-            
-            _currentProjectilePrefab = Instantiate(_birdsList.Birds[0].gameObject);
-            CreateProjectile();
-        }
-
         private void Awake()
         {
             _currentProjectilePrefab = Instantiate(_birdsList.Birds[0].gameObject);
+           
             CreateProjectile();
             _inputActions = new DraggingInputActions();
         }
 
+        
         private void OnEnable()
         {
             GameManager.SetNextBirdToSlingshotAction += GetProjectile;
             GameManager.OnGameOver += DisableSlingshotOnGameOver;
-        
+            CameraManager.EnableSlingshot += EnableInput;
             _inputActions.Drag.DragAndMove.started += OnDragStarted;
             _inputActions.Drag.PointerPosition.performed += OnDragPerformed;
             _inputActions.Drag.DragAndMove.canceled += OnDragCanceled;
@@ -84,14 +74,33 @@ namespace AngryBirds.Levels
         {
             GameManager.SetNextBirdToSlingshotAction -= GetProjectile;
             GameManager.OnGameOver -= DisableSlingshotOnGameOver;
-        
+            CameraManager.EnableSlingshot -= EnableInput;
+
             _inputActions.Drag.DragAndMove.started -= OnDragStarted;
             _inputActions.Drag.PointerPosition.performed -= OnDragPerformed;
             _inputActions.Drag.DragAndMove.canceled -= OnDragCanceled;
             _inputActions.Disable();
 
         }
-        
+
+        private void Start()
+        {
+            _inputActions.Drag.Disable();
+        }
+
+   
+        private void EnableInput(bool obj)
+        {
+            Debug.Log($"Enabled input! {obj}");
+            if (obj)
+            {
+                _inputActions.Drag.Enable();
+            }
+            else
+            {
+                _inputActions.Drag.Disable();
+            }
+        }
         private void LateUpdate()
         {
             UpdateBands();
@@ -124,12 +133,17 @@ namespace AngryBirds.Levels
 
         private void OnDragStarted(InputAction.CallbackContext obj)
         {
+            // if (!Object.HasStateAuthority)
+            //{
+              //  return;
+           // }
+
             if (IsPointerOverUIObject())
             {
                 _canDrag = false;
                 return;
             }
-
+         
             if (_currentProjectile == null)
             {
                 return;
@@ -184,6 +198,8 @@ namespace AngryBirds.Levels
             {
                 _currentProjectile.isKinematic = true;
             }
+            
+            
 
             Ray ray = Camera.main.ScreenPointToRay(screenPos);
             Plane plane = new Plane(Vector3.up, _pivot.position);
@@ -197,6 +213,7 @@ namespace AngryBirds.Levels
                     dir = dir.normalized * _maxStretch;
 
                 _currentProjectile.position = _pivot.position + dir;
+                
             }
         }
 

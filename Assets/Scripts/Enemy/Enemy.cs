@@ -30,8 +30,8 @@ namespace AngryBirds.Enemy
             }
 
             _currentHealth -= other.relativeVelocity.magnitude * DamageMultiplier;
-            Debug.Log($"Impact from enter: {other.relativeVelocity.magnitude * DamageMultiplier}");
-            Debug.Log($"Impulse from explosion: {other.impulse.magnitude * DamageMultiplier}");
+  //          Debug.Log($"Impact from enter: {other.relativeVelocity.magnitude * DamageMultiplier}");
+//            Debug.Log($"Impulse from explosion: {other.impulse.magnitude * DamageMultiplier}");
             if (_currentHealth <= 0)
             {
                 OnEnemyDeath?.Invoke(1000);
@@ -41,7 +41,7 @@ namespace AngryBirds.Enemy
             else
             {
                 OnHealthChange?.Invoke((int)Math.Round(other.relativeVelocity.magnitude *  100f));
-                Debug.Log($"Points: {(int)Math.Round(other.relativeVelocity.magnitude * 100f)}");
+                //Debug.Log($"Points: {(int)Math.Round(other.relativeVelocity.magnitude * 100f)}");
             }
         }
     }

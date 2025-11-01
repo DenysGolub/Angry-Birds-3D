@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 2943243922044710016}
   - component: {fileID: -2769419712414867478}
   - component: {fileID: 609891570895532509}
+  - component: {fileID: 6777536253791369213}
+  - component: {fileID: 3199806227641770670}
   m_Layer: 6
   m_Name: RedBird
   m_TagString: Player
@@ -121,6 +123,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96bd077b3c48d134a843404c79e1e793, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6777536253791369213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4564408452649689803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 3437275844
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 3199806227641770670}
+  ForceRemoteRenderTimeframe: 0
+--- !u!114 &3199806227641770670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4564408452649689803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0
+  SyncScale: 0
+  SyncParent: 0
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0
 --- !u!1001 &8109356844287745789
 PrefabInstance:
   m_ObjectHideFlags: 0

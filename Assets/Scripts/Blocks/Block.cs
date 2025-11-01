@@ -40,9 +40,9 @@ namespace AngryBirds.Blocks
                 return;
             }
 
-            _currentHealth -= other.relativeVelocity.magnitude * _damageMultiplier;
-            Debug.Log($"Impact from enter: {other.relativeVelocity.magnitude * _damageMultiplier}");
-            Debug.Log($"Impulse from explosion: {other.impulse.magnitude * _damageMultiplier}");
+            _currentHealth -= other.relativeVelocity.magnitude * _damageMultiplier; 
+            //Debug.Log($"Impact from enter: {other.relativeVelocity.magnitude * _damageMultiplier}");
+            //Debug.Log($"Impulse from explosion: {other.impulse.magnitude * _damageMultiplier}");
             if (_currentHealth <= 0)
             {
                 OnBlockDestroyed?.Invoke(500);
@@ -52,7 +52,7 @@ namespace AngryBirds.Blocks
             else
             {
                 OnHealthChanged?.Invoke((int)Math.Round(other.relativeVelocity.magnitude  * 100f));
-                Debug.Log($"Points: {(int)Math.Round(other.relativeVelocity.magnitude * 100f)}");
+               // Debug.Log($"Points: {(int)Math.Round(other.relativeVelocity.magnitude * 100f)}");
             }
         }
     }

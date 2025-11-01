@@ -18,7 +18,7 @@ namespace AngryBirds.Birds
         
             positionUp.y += 1f;
             positionDown.y -= 1f;
-        
+            //TODO: spawn birds with Runner.Spawn!
             GameObject firstBird = Instantiate(gameObject, positionUp, transform.rotation);
             GameObject secondBird = Instantiate(gameObject, positionDown, transform.rotation);
 

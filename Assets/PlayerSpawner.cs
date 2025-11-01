@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using AngryBirds.Levels;
 using AngryBirds.Managers;
 using Fusion;
 using Unity.Cinemachine;
@@ -88,15 +89,15 @@ namespace AngryBirds
                 _secondPlayerSlingshot;
             
             Debug.Log(spawnPos);
-
-            _runner.Spawn(_playerPrefab, spawnPos.position, Quaternion.identity, player);
+            var sling = _runner.Spawn(_playerPrefab, spawnPos.position, _playerPrefab.transform.rotation, player);
         
-    
+            sling.GetComponent<NetworkSlingshot>().SetCamera(_cinemachineCamera);
+
             
             _cinemachineCamera.Follow = spawnPos; //TODO: call method from local player
+            _networkSlingshotManager.AssignSlingshot(player, index, sling);
             _spawnPointManagerInstance.SetSpawnPointUsedRpc(index, true);
-            _networkSlingshotManager.AssignSlingshot(player, index);
-            
+
             //RPC call is don't called when assign slingshot is called first???
 
         }

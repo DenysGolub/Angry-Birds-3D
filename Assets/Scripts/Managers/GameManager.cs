@@ -20,7 +20,6 @@ namespace AngryBirds.Managers
         private int _birdCount;
         
         [SerializeField] private MoveCamera _camera;
-        [SerializeField] private Slingshot _slingshot;
 
         private const int POINTS_PER_UNUSED_BIRD = 10000;
         
@@ -32,11 +31,17 @@ namespace AngryBirds.Managers
         private void OnEnable()
         {
             Slingshot.OnShotFired += RequestNextBird;
-        
+            NetworkSlingshot.OnShotFired += RequestNextBird;
+
             BirdManager.ChangeCurrentProjectile += SetNextBirdToSlingshot;
             BirdManager.SetAmmo += GetStartingBirdsCount;
             BirdManager.OnEmptyAmmo += CheckGameStatus;
         
+            NetworkBirdManager.ChangeCurrentProjectile += SetNextBirdToSlingshot;
+            NetworkBirdManager.SetAmmo += GetStartingBirdsCount;
+            NetworkBirdManager.OnEmptyAmmo += CheckGameStatus;
+
+            
             Enemy.Enemy.AddEnemyCount += ChangeEnemyCount;
             Enemy.Enemy.OnEnemyDeath += UpdateScore;
             Enemy.Enemy.OnEnemyDeath += DecreaseEnemyCount;
@@ -49,10 +54,14 @@ namespace AngryBirds.Managers
         private void OnDisable()
         {
             Slingshot.OnShotFired -= RequestNextBird;
-        
+            NetworkSlingshot.OnShotFired -= RequestNextBird;
             BirdManager.ChangeCurrentProjectile -= SetNextBirdToSlingshot;
             BirdManager.OnEmptyAmmo -= CheckGameStatus;
             BirdManager.SetAmmo -= GetStartingBirdsCount;
+            
+            NetworkBirdManager.ChangeCurrentProjectile -= SetNextBirdToSlingshot;
+            NetworkBirdManager.OnEmptyAmmo -= CheckGameStatus;
+            NetworkBirdManager.SetAmmo -= GetStartingBirdsCount;
         
             Enemy.Enemy.AddEnemyCount -= ChangeEnemyCount;
             Enemy.Enemy.OnEnemyDeath -= UpdateScore;

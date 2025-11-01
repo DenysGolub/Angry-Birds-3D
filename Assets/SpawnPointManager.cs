@@ -6,8 +6,8 @@ namespace AngryBirds
 {
     public class SpawnPointManager : NetworkBehaviour
     {
-        public Slingshot FirstPlayerSlingshot;
-        public Slingshot SecondPlayerSlingshot;
+        public Transform FirstPlayerSlingshot;
+        public Transform SecondPlayerSlingshot;
         [Networked, Capacity(2)]
         public NetworkArray<bool> SpawnPointsFree { get; }
 
@@ -36,6 +36,7 @@ namespace AngryBirds
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void SetSpawnPointUsedRpc(int index, bool used)
         {
+            Debug.Log("SetSpawnPointRPC!3");
             SetSpawnPointUsed(index, used);
         }
     }

@@ -32,7 +32,7 @@ namespace AngryBirds.Levels
             _inputActions.Drag.DragAndMove.canceled -= OnDragCanceled;
             _inputActions.Disable();
         }
-    
+        
         private void Update()
         {
             if (!_isDragging)
