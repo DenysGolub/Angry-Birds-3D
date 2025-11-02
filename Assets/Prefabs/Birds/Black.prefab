@@ -513,7 +513,7 @@ GameObject:
   - component: {fileID: -3292633881888756357}
   - component: {fileID: 3697599200832219671}
   - component: {fileID: -7119982952791316015}
-  - component: {fileID: -7694562096809593473}
+  - component: {fileID: -5448085170630515900}
   m_Layer: 6
   m_Name: Black
   m_TagString: Player
@@ -642,9 +642,9 @@ MonoBehaviour:
   Flags: 524289
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: -7694562096809593473}
+  - {fileID: -5448085170630515900}
   ForceRemoteRenderTimeframe: 0
---- !u!114 &-7694562096809593473
+--- !u!114 &-5448085170630515900
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -653,14 +653,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 4569406344906518996}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Script: {fileID: 11500000, guid: 0a591d221a634417e9827eb58e17de84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _stateAuthorityChangeErrorCorrectionDelta: 0
   SyncScale: 0
-  SyncParent: 0
-  _autoAOIOverride: 1
-  DisableSharedModeInterpolation: 0
+  SyncParent: 1
+  _interpolationTarget: {fileID: 0}
+  UsePreciseRotation: 0
+  UseRenderSleepThresholds: 1
+  RenderThresholds:
+    UseEnergy: 1
+    Position: 0.01
+    Rotation: 0.01
+    Scale: 0.01
 --- !u!1 &4775893224055371637
 GameObject:
   m_ObjectHideFlags: 0

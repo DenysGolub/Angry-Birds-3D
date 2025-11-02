@@ -26,6 +26,9 @@ namespace AngryBirds
         [SerializeField] private SpawnPointManager _spawnPointManagerInstance;
         [SerializeField] private CameraManager cameraManager;
 
+        [SerializeField] private GameObject structurePrefab;
+        [SerializeField] private Transform structureSpawnPoint;
+        
         private void OnEnable()
         {
             Debug.Log("Player subscribed!");
@@ -96,7 +99,16 @@ namespace AngryBirds
             
             _cinemachineCamera.Follow = spawnPos; //TODO: call method from local player
             _networkSlingshotManager.AssignSlingshot(player, index, sling);
+            
+            if (index == 1)
+            {
+                Debug.Log("Structure with pigs is spawned!");
+                _runner.Spawn(structurePrefab, structureSpawnPoint.position, structurePrefab.transform.rotation);
+            }
+            
             _spawnPointManagerInstance.SetSpawnPointUsedRpc(index, true);
+
+           
 
             //RPC call is don't called when assign slingshot is called first???
 

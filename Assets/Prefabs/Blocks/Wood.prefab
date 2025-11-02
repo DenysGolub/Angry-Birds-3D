@@ -226,6 +226,8 @@ GameObject:
   - component: {fileID: 6602985914912762674}
   - component: {fileID: 7649903249482799897}
   - component: {fileID: 407428836656043278}
+  - component: {fileID: 7292535015476342567}
+  - component: {fileID: -3030040161372819716}
   m_Layer: 3
   m_Name: Wood
   m_TagString: Untagged
@@ -310,3 +312,45 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _blockConfiguration: {fileID: 11400000, guid: 051a728ca8d7adf4983a42e5ade49647, type: 2}
+--- !u!114 &7292535015476342567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7668440945227673148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 1198157844
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: -3030040161372819716}
+  ForceRemoteRenderTimeframe: 0
+--- !u!114 &-3030040161372819716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7668440945227673148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a591d221a634417e9827eb58e17de84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0
+  SyncScale: 0
+  SyncParent: 1
+  _interpolationTarget: {fileID: 0}
+  UsePreciseRotation: 0
+  UseRenderSleepThresholds: 1
+  RenderThresholds:
+    UseEnergy: 1
+    Position: 0.01
+    Rotation: 0.01
+    Scale: 0.01
