@@ -8,83 +8,58 @@ namespace AngryBirds.Birds
 {
     public class BlueBird : BirdBase
     {
+        private NetworkObject _firstBird;
+        private NetworkObject _secondBird;
+        
+        private Vector3 _basePos;
+        private Vector3 _positionUp;
+        private Vector3 _positionDown;
+        
         [SerializeField] private GameObject _prefab;
-        private NetworkObject firstBird;
-        private NetworkObject secondBird;
+        
 
         private void Start()
         {
             BirdType = BirdType.Blue;
         }
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-        private void Rpc_SpawnCopies(Vector3 basePos, Quaternion rot)
+        private void SpawnCopiesRpc(Vector3 basePos, Quaternion rot)
         {
-            SpawnCopiesInternal(basePos, rot);
+            SpawnCopies(basePos, rot);
         }
 
-        private void SpawnCopiesInternal(Vector3 basePos, Quaternion rot)
+        private void SpawnCopies(Vector3 basePos, Quaternion rot)
         {
-            Vector3 posUp = basePos + Vector3.up * 0.4f;
-            Vector3 posDown = basePos + Vector3.down * 0.4f;
+            Vector3 posUp = basePos + Vector3.up;
+            Vector3 posDown = basePos + Vector3.down;
 
-            firstBird = Runner.Spawn(_prefab, posUp, rot);
-            secondBird = Runner.Spawn(_prefab, posDown, rot);
+            _firstBird = Runner.Spawn(_prefab, posUp, rot);
+            _secondBird = Runner.Spawn(_prefab, posDown, rot);
 
-            StartCoroutine(firstBird.GetComponent<BirdBase>().DestroyBird());
-            StartCoroutine(secondBird.GetComponent<BirdBase>().DestroyBird());
-        }
-
-        IEnumerator Wait()
-        {
-            yield return new WaitForEndOfFrame();
+            StartCoroutine(_firstBird.GetComponent<BirdBase>().DestroyBird());
+            StartCoroutine(_secondBird.GetComponent<BirdBase>().DestroyBird());
         }
         public override void UseSpecialAbility()
         {
-            var currentBird = GetComponent<NetworkRigidbody3D>().Rigidbody;
-            Vector3 basePos = transform.position;
-            Vector3 positionUp = basePos + Vector3.up * 0.4f;
-            Vector3 positionDown = basePos + Vector3.down * 0.4f;
+            var currentBird = GetComponent<Rigidbody>(); 
+            _basePos = transform.position;
             if (HasStateAuthority)
             {
-                Debug.Log($"Authority: {HasStateAuthority}, Input: {HasInputAuthority}, RunnerMode: {Runner.GameMode}");
-
-                //TODO: spawn birds with Runner.Spawn!
-            
-                firstBird = Runner.Spawn(_prefab, positionUp, transform.rotation);
-                secondBird = Runner.Spawn(_prefab, positionDown, transform.rotation);
-
-                var netObj1 = firstBird.GetComponent<NetworkObject>();
-                var netObj2 = secondBird.GetComponent<NetworkObject>();
-
-                netObj1.transform.position = positionUp;
-                netObj2.transform.position = positionDown;
-
-                // StartCoroutine(Wait());
+                SpawnCopiesRpc(_basePos, transform.rotation);
+                SetVelocity(currentBird.angularVelocity, currentBird.linearVelocity);
             }
             else
             {
-                Rpc_SpawnCopies(basePos, transform.rotation);
+                SpawnCopiesRpc(_basePos, transform.rotation);
+                SetVelocityRpc(currentBird.angularVelocity, currentBird.linearVelocity);
             }
-            
-
-            
-            // if (HasStateAuthority)
-            // {
-            //     SetVelocity(currentBird.angularVelocity, currentBird.linearVelocity);
-            // }
-            // else
-            // {
-            //     SetVelocityRpc(currentBird.angularVelocity, currentBird.linearVelocity);
-            // }
-           
-            // StartCoroutine(firstBird.GetComponent<BirdBase>().DestroyBird());
-            // StartCoroutine(secondBird.GetComponent<BirdBase>().DestroyBird());
         }
 
+      
         private void SetVelocity(Vector3 angularVelocity, Vector3 linearVelocity)
         {
-            var rb1 = firstBird.GetComponent<Rigidbody>();
-            var rb2 = secondBird.GetComponent<Rigidbody>();
+            var rb1 = _firstBird.GetComponent<Rigidbody>();
+            var rb2 = _secondBird.GetComponent<Rigidbody>();
 
             rb1.isKinematic = false;
             rb2.isKinematic = false;
@@ -95,11 +70,11 @@ namespace AngryBirds.Birds
             rb1.linearVelocity = linearVelocity;
             rb2.linearVelocity = linearVelocity;
             
-            Debug.Log($"Angular for origin: {angularVelocity}");
-            Debug.Log($"Linear for origin: {linearVelocity}");
-            
-            Debug.Log($"Angular for first bird: {rb1.angularVelocity}");
-            Debug.Log($"Linear for first bird: {rb1.linearVelocity}");
+            // Debug.Log($"Angular for origin: {angularVelocity}");
+            // Debug.Log($"Linear for origin: {linearVelocity}");
+            //
+            // Debug.Log($"Angular for first bird: {rb1.angularVelocity}");
+            // Debug.Log($"Linear for first bird: {rb1.linearVelocity}");
 
         }
 

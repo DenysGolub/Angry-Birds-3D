@@ -9,19 +9,11 @@ namespace AngryBirds.Birds
         private void Start()
         {
             BirdType =  BirdType.White;
-            _eggPrefab.GetComponent<Egg>().IsMultiplayer = _isMultiplayer;
         }
     
         public override void UseSpecialAbility()
         {
-            if (!_isMultiplayer)
-            {
-                Instantiate(_eggPrefab, transform.position, transform.rotation);
-            }
-            else
-            {
-                Runner.Spawn(_eggPrefab, transform.position, transform.rotation);
-            }
+            Runner.Spawn(_eggPrefab, transform.position, transform.rotation);
             
             Rb.AddForce(Vector3.up * 10f, ForceMode.Impulse);
         }

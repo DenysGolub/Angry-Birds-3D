@@ -16,8 +16,6 @@ namespace AngryBirds.Enemy
         
         private float _currentHealth;
         
-        [SerializeField] private bool _isMultiplayer;
-
         private void Start()
         {
             _currentHealth = MaxHealth;
@@ -39,24 +37,13 @@ namespace AngryBirds.Enemy
                 OnEnemyDeath?.Invoke(1000);
                 AudioManager.Instance.PlayPigDeath();
                 
-                if(!_isMultiplayer) 
-                {
-                    Destroy(gameObject);
-                }
-                else 
-                {
-                    Runner.Despawn(GetComponent<NetworkObject>());
-                }            
+                Runner.Despawn(GetComponent<NetworkObject>());
             }
             else
             {
                 OnHealthChange?.Invoke((int)Math.Round(other.relativeVelocity.magnitude *  100f));
                 //Debug.Log($"Points: {(int)Math.Round(other.relativeVelocity.magnitude * 100f)}");
             }
-        }
-        private void SetMode(bool obj)
-        {
-            _isMultiplayer = obj;
         }
     }
 }

@@ -34,10 +34,7 @@ namespace AngryBirds.Managers
                 GameObject newBird = Runner.Spawn(_birdsList.Birds[i], slingshotPosition, _birdsList.Birds[i].transform.rotation).gameObject;
                 _spawnedBirds.Enqueue(newBird);
                 padding = 0.8f;
-                Debug.Log("Spawned bird!");
             }
-
-            Debug.Log($"Spawned {_spawnedBirds.Count} birds for new ammo");
         }
     
         private void OnEnable()
@@ -52,7 +49,6 @@ namespace AngryBirds.Managers
     
         private void SetUpCurrentProjectile()
         {
-            Debug.Log("Sended bird!");
             if (ChangeCurrentProjectile != null && _spawnedBirds.Count > 0)
             {
                 GameObject bird = _spawnedBirds.Dequeue().gameObject;
@@ -60,7 +56,6 @@ namespace AngryBirds.Managers
             }
             else
             {
-                Debug.Log("Empty!");
                 OnEmptyAmmo?.Invoke();
             }
         }

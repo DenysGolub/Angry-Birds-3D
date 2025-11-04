@@ -6,8 +6,6 @@ namespace AngryBirds.Birds
 {
     public class BlackBird : BirdBase
     {
-     
-        
         [SerializeField] private float _explosionRadius = 5.0F;
         [SerializeField] private float _explosionPower = 10.0F;
         
@@ -17,7 +15,6 @@ namespace AngryBirds.Birds
         }
         public override void UseSpecialAbility()
         {
-            Debug.Log("BlackBird PlaySoundEffect");
             Vector3 explosionPos = transform.position;
             Collider[] colliders = Physics.OverlapSphere(explosionPos, _explosionRadius, LayerMask.GetMask("Destructable"));
             foreach (Collider hit in colliders)

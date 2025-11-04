@@ -36,7 +36,6 @@ namespace AngryBirds
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void SetSpawnPointUsedRpc(int index, bool used)
         {
-            Debug.Log("SetSpawnPointRPC!3");
             SetSpawnPointUsed(index, used);
         }
     }

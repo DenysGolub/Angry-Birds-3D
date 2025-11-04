@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1320143073471969813}
   - component: {fileID: 5592482672327218114}
   - component: {fileID: -634428942846644718}
-  - component: {fileID: 5016762965996364370}
+  - component: {fileID: -9110518297570029983}
   m_Layer: 6
   m_Name: BlueBird
   m_TagString: Player
@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.6917263, y: 1.6917263, z: 1.6917263}
+  m_LocalScale: {x: 0.7425802, y: 0.7425802, z: 0.7425802}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6165559696106199602}
@@ -121,9 +121,9 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 5592482672327218114}
-  - {fileID: 5016762965996364370}
+  - {fileID: -9110518297570029983}
   ForceRemoteRenderTimeframe: 0
---- !u!114 &5016762965996364370
+--- !u!114 &-9110518297570029983
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

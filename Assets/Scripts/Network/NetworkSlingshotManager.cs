@@ -20,7 +20,6 @@ namespace AngryBirds
             return index == 0 ? firstPlayerAmmo : secondPlayerAmmo;
         }
         
-        
         public void AssignSlingshot(PlayerRef targetPlayer, int index, NetworkObject slingshot)
         {
             Debug.Log($"Assign slingshot: {Runner.LocalPlayer}, {targetPlayer}");

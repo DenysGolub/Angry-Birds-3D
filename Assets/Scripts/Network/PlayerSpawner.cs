@@ -96,7 +96,6 @@ namespace AngryBirds
         
             sling.GetComponent<NetworkSlingshot>().SetCamera(_cinemachineCamera);
 
-            
             _cinemachineCamera.Follow = spawnPos; //TODO: call method from local player
             _networkSlingshotManager.AssignSlingshot(player, index, sling);
             
@@ -107,11 +106,6 @@ namespace AngryBirds
             }
             
             _spawnPointManagerInstance.SetSpawnPointUsedRpc(index, true);
-
-           
-
-            //RPC call is don't called when assign slingshot is called first???
-
         }
     }
 }
