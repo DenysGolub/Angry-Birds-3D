@@ -1,11 +1,13 @@
+using Fusion;
 using UnityEngine;
 
 namespace AngryBirds.Birds
 {
-    public class Egg: MonoBehaviour
+    public class Egg: NetworkBehaviour
     {
         [SerializeField] private float _radius = 15f;
         [SerializeField] private float _power = 100f;
+        public bool IsMultiplayer = false;
       
         private void OnCollisionEnter(Collision collision)
         {
@@ -21,7 +23,15 @@ namespace AngryBirds.Birds
                         rb.AddExplosionForce(_power, explosionPos, _radius, 3.0F);
                 }
             
-                Destroy(gameObject);
+                if (!IsMultiplayer)
+                {
+                    Destroy(gameObject);
+                }
+                else
+                {
+                    Runner.Despawn(GetComponent<NetworkObject>());
+                }
+                
             }
            
         }

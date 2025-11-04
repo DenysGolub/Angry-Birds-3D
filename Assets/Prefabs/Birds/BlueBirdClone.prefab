@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 6175558172882220176}
   - component: {fileID: 3062364674307155607}
   - component: {fileID: 1320143073471969813}
-  - component: {fileID: 5592482672327218114}
   - component: {fileID: -634428942846644718}
   - component: {fileID: 5016762965996364370}
+  - component: {fileID: -1973789942104662866}
   m_Layer: 6
-  m_Name: BlueBird
+  m_Name: BlueBirdClone
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.6917263, y: 1.6917263, z: 1.6917263}
+  m_LocalScale: {x: 1.355029, y: 1.355029, z: 1.355029}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6165559696106199602}
@@ -60,7 +60,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 2
@@ -89,20 +89,6 @@ SpringJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
---- !u!114 &5592482672327218114
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 650711149328088102}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 577e09c831ea8784ba5eb2b4d6d1d533, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _isMultiplayer: 0
-  _prefab: {fileID: 650711149328088102, guid: 886aa7bd875a7534698e818e0df88953, type: 3}
 --- !u!114 &-634428942846644718
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115,13 +101,13 @@ MonoBehaviour:
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SortKey: 18666346
+  SortKey: 975452835
   ObjectInterest: 1
   Flags: 524289
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: 5592482672327218114}
   - {fileID: 5016762965996364370}
+  - {fileID: -1973789942104662866}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &5016762965996364370
 MonoBehaviour:
@@ -142,10 +128,23 @@ MonoBehaviour:
   UsePreciseRotation: 0
   UseRenderSleepThresholds: 1
   RenderThresholds:
-    UseEnergy: 1
+    UseEnergy: 0
     Position: 0.01
     Rotation: 0.01
     Scale: 0.01
+--- !u!114 &-1973789942104662866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 650711149328088102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e74896d9709f0e4082e3313365cc867, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isMultiplayer: 0
 --- !u!1001 &7169388353448186188
 PrefabInstance:
   m_ObjectHideFlags: 0

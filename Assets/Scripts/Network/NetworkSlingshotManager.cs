@@ -32,7 +32,6 @@ namespace AngryBirds
                     Debug.Log($"[LOCAL] Assigned slingshot {index} to local player {targetPlayer}.");
                     slingshot.GetComponent<NetworkSlingshot>().SetAmmo(GetAmmoForIndex(index), targetPlayer);
                     _birdManager.SetNewAmmoAndSlingshot(GetAmmoForIndex(index), slingshot.transform);
-                        //TODO: make a correct position for slingshots and birds
                 }
             }
 

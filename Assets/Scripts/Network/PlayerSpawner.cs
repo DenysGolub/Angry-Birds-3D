@@ -100,7 +100,7 @@ namespace AngryBirds
             _cinemachineCamera.Follow = spawnPos; //TODO: call method from local player
             _networkSlingshotManager.AssignSlingshot(player, index, sling);
             
-            if (index == 1)
+            if (index == 0)
             {
                 Debug.Log("Structure with pigs is spawned!");
                 _runner.Spawn(structurePrefab, structureSpawnPoint.position, structurePrefab.transform.rotation);

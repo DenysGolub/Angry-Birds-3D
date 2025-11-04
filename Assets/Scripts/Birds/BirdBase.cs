@@ -2,18 +2,20 @@ using System;
 using System.Collections;
 using AngryBirds.Enums;
 using AngryBirds.Managers;
+using Fusion;
 using UnityEngine;
 
 namespace AngryBirds.Birds
 {
-    public abstract class BirdBase : MonoBehaviour
+    public abstract class BirdBase : NetworkBehaviour
     {
         public Action OnShoot;
         
         protected Rigidbody Rb;
         protected bool IsFlying = false;
         protected bool HasPowerUsed = false;
-
+        [SerializeField] private protected bool _isMultiplayer = false;
+        
 
         public BirdType BirdType { get; protected set; }
        
@@ -33,7 +35,7 @@ namespace AngryBirds.Birds
             OnShoot -= SetFlying;
         }
 
-        private void Update()
+        private void ApplyAbility()
         {
             if (Input.GetMouseButtonDown(0) && !HasPowerUsed && IsFlying)
             {
@@ -48,13 +50,29 @@ namespace AngryBirds.Birds
                 StartCoroutine(DestroyBird());
             }
         }
+        
+        private void Update()
+        {
+            //TODO: fix update so it can be called in that player who owns the stateauthority
+            if (HasStateAuthority)
+            {
+                ApplyAbility();
+            }
+        }
         public abstract void UseSpecialAbility();
         
         public IEnumerator DestroyBird()
         {
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(5f);
             AudioManager.Instance.PlayBirdDeath();
-            Destroy(gameObject);
+            if (!_isMultiplayer)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                Runner.Despawn(GetComponent<NetworkObject>());
+            }
         }
         public void PlayFlyingSoundEffect()
         {

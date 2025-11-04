@@ -312,6 +312,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _blockConfiguration: {fileID: 11400000, guid: 051a728ca8d7adf4983a42e5ade49647, type: 2}
+  _isMultiplayer: 0
 --- !u!114 &7292535015476342567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -329,6 +330,7 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
+  - {fileID: 407428836656043278}
   - {fileID: -3030040161372819716}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &-3030040161372819716

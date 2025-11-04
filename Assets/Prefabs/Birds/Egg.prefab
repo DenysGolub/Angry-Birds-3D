@@ -51,6 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _radius: 15
   _power: 100
+  _isMultiplayer: 0
 --- !u!54 &101801294844267255
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -118,6 +119,7 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
+  - {fileID: 4259460880481704059}
   - {fileID: -8992586433914499759}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &-8992586433914499759

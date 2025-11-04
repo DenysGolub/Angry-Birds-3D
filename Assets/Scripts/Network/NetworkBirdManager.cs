@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AngryBirds.Birds;
 using AngryBirds.SO.Scripts;
 using Fusion;
 using UnityEngine;
@@ -30,7 +31,7 @@ namespace AngryBirds.Managers
             for (int i = 1; i < _birdsList.Birds.Count; i++)
             {
                 slingshotPosition.x -= padding;
-                GameObject newBird = Runner.Spawn(_birdsList.Birds[i], slingshotPosition, _birdsList.Birds[i].transform.rotation, Object.InputAuthority).gameObject;
+                GameObject newBird = Runner.Spawn(_birdsList.Birds[i], slingshotPosition, _birdsList.Birds[i].transform.rotation).gameObject;
                 _spawnedBirds.Enqueue(newBird);
                 padding = 0.8f;
                 Debug.Log("Spawned bird!");

@@ -550,6 +550,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa025e7f5a2245d43b894a081f644df3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isMultiplayer: 0
   _explosionRadius: 5
   _explosionPower: 10
 --- !u!135 &-2195883742608376816
@@ -642,6 +643,7 @@ MonoBehaviour:
   Flags: 524289
   NestedObjects: []
   NetworkedBehaviours:
+  - {fileID: -4424663977916419076}
   - {fileID: -5448085170630515900}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &-5448085170630515900

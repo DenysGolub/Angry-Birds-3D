@@ -361,6 +361,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb9134667935f5940b56b6c59b4402d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &916398537 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4851712608887929787, guid: 5ff6504458b6e1b4f9a70a0607127c2d, type: 3}
+  m_PrefabInstance: {fileID: 1975832762}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &916398539 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5023366262341369774, guid: 5ff6504458b6e1b4f9a70a0607127c2d, type: 3}
+  m_PrefabInstance: {fileID: 1975832762}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 916398537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe1a46ec44c6821418fe8934306aa0e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &916398540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 916398537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 442471119
+  ObjectInterest: 1
+  Flags: 524289
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 916398539}
+  ForceRemoteRenderTimeframe: 0
 --- !u!1 &935640488 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 988865925321648940, guid: 5ff6504458b6e1b4f9a70a0607127c2d, type: 3}
@@ -837,6 +872,14 @@ PrefabInstance:
       propertyPath: _slingshot
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5023366262341369774, guid: 5ff6504458b6e1b4f9a70a0607127c2d, type: 3}
+      propertyPath: _isMultiplayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5023366262341369774, guid: 5ff6504458b6e1b4f9a70a0607127c2d, type: 3}
+      propertyPath: _isMultiplayerInspector
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5143264765608044498, guid: 5ff6504458b6e1b4f9a70a0607127c2d, type: 3}
       propertyPath: m_Name
       value: FirstPlayer_Slingshot
@@ -904,6 +947,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7047584387042613980, guid: 5ff6504458b6e1b4f9a70a0607127c2d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 781795234}
+    - targetCorrespondingSourceObject: {fileID: 4851712608887929787, guid: 5ff6504458b6e1b4f9a70a0607127c2d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 916398540}
     - targetCorrespondingSourceObject: {fileID: 115136900862611576, guid: 5ff6504458b6e1b4f9a70a0607127c2d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 979873254}

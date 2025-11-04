@@ -1,10 +1,11 @@
 using System;
 using AngryBirds.Enums;
 using AngryBirds.Managers;
+using Fusion;
 using UnityEngine;
 namespace AngryBirds.Blocks
 {
-    public class Block : MonoBehaviour
+    public class Block : NetworkBehaviour
     {
         public static Action<int> OnHealthChanged;
         public static Action<int> OnBlockDestroyed;
@@ -32,6 +33,7 @@ namespace AngryBirds.Blocks
             _rigidbody.mass = _blockConfiguration.Mass;
             _rigidbody.linearDamping = _blockConfiguration.LinearDamping;
         }
+        
     
         private void OnCollisionEnter(Collision other)
         {
@@ -40,20 +42,40 @@ namespace AngryBirds.Blocks
                 return;
             }
 
-            _currentHealth -= other.relativeVelocity.magnitude * _damageMultiplier; 
-            //Debug.Log($"Impact from enter: {other.relativeVelocity.magnitude * _damageMultiplier}");
-            //Debug.Log($"Impulse from explosion: {other.impulse.magnitude * _damageMultiplier}");
+            float impact = other.relativeVelocity.magnitude * _damageMultiplier;
+
+            if (HasStateAuthority)
+            {
+                ApplyImpact(impact);
+            }
+            else
+            {
+                ApplyImpactRpc(impact);
+            }
+        }
+
+        private void ApplyImpact(float impact)
+        {
+            _currentHealth -= impact;
+
             if (_currentHealth <= 0)
             {
                 OnBlockDestroyed?.Invoke(500);
                 AudioManager.Instance.PlayDestroyedBlock(_blockType);
-                Destroy(gameObject);
+
+                Runner.Despawn(GetComponent<NetworkObject>());
+
             }
             else
             {
-                OnHealthChanged?.Invoke((int)Math.Round(other.relativeVelocity.magnitude  * 100f));
-               // Debug.Log($"Points: {(int)Math.Round(other.relativeVelocity.magnitude * 100f)}");
+                OnHealthChanged?.Invoke((int)Math.Round(impact * 100f));
             }
+        }
+
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        private void ApplyImpactRpc(float impact)
+        {
+            ApplyImpact(impact);
         }
     }
 }

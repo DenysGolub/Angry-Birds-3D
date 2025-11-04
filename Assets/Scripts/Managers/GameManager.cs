@@ -3,17 +3,17 @@ using System.Collections;
 using AngryBirds.Blocks;
 using AngryBirds.Levels;
 using AngryBirds.SO.Scripts;
+using Fusion;
 using UnityEngine;
 
 namespace AngryBirds.Managers
 {
-    public class GameManager : MonoBehaviour
+    public class GameManager : NetworkBehaviour
     {
         public static event Action<int> OnScoreChanged;
         public static event Action<bool> OnGameOver;
         public static event Action OnNextBirdChanged;
         public static event Action<GameObject> SetNextBirdToSlingshotAction;
-        
         [Header("Score")]
         private int _score = 0;
         private int _enemyCount;
@@ -22,8 +22,9 @@ namespace AngryBirds.Managers
         [SerializeField] private MoveCamera _camera;
 
         private const int POINTS_PER_UNUSED_BIRD = 10000;
-        
-        private void Start() 
+
+      
+        private void Start()
         {
             Time.timeScale = 1f;
         }
@@ -49,6 +50,7 @@ namespace AngryBirds.Managers
         
             Block.OnBlockDestroyed += UpdateScore;
             Block.OnHealthChanged += UpdateScore;
+            
         }
     
         private void OnDisable()

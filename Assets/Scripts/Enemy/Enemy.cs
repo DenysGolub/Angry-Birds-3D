@@ -1,10 +1,11 @@
 using System;
 using AngryBirds.Managers;
+using Fusion;
 using UnityEngine;
 
 namespace AngryBirds.Enemy
 {
-    public class Enemy : MonoBehaviour
+    public class Enemy : NetworkBehaviour
     {
         public float MaxHealth = 20f;
         public float DamageMultiplier = 30f;
@@ -14,14 +15,15 @@ namespace AngryBirds.Enemy
         public static event Action AddEnemyCount;
         
         private float _currentHealth;
-    
         
+        [SerializeField] private bool _isMultiplayer;
+
         private void Start()
         {
             _currentHealth = MaxHealth;
             AddEnemyCount?.Invoke();
         }
-    
+        
         private void OnCollisionEnter(Collision other)
         {
             if (_currentHealth <= 0)
@@ -36,13 +38,25 @@ namespace AngryBirds.Enemy
             {
                 OnEnemyDeath?.Invoke(1000);
                 AudioManager.Instance.PlayPigDeath();
-                Destroy(gameObject);
+                
+                if(!_isMultiplayer) 
+                {
+                    Destroy(gameObject);
+                }
+                else 
+                {
+                    Runner.Despawn(GetComponent<NetworkObject>());
+                }            
             }
             else
             {
                 OnHealthChange?.Invoke((int)Math.Round(other.relativeVelocity.magnitude *  100f));
                 //Debug.Log($"Points: {(int)Math.Round(other.relativeVelocity.magnitude * 100f)}");
             }
+        }
+        private void SetMode(bool obj)
+        {
+            _isMultiplayer = obj;
         }
     }
 }
