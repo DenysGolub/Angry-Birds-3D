@@ -18,7 +18,7 @@ namespace AngryBirds.Managers
         [SerializeField] private Transform _slingshot;
         [SerializeField] private BirdsAmmoSO _birdsList;
         
-        public void SetNewAmmoAndSlingshot(BirdsAmmoSO ammo, Transform slingshot)
+        public void SetNewAmmoAndSlingshot(BirdsAmmoSO ammo, Transform slingshot, PlayerRef player)
         {
             _birdsList = ammo;
             _slingshot = slingshot;
@@ -31,10 +31,16 @@ namespace AngryBirds.Managers
             for (int i = 1; i < _birdsList.Birds.Count; i++)
             {
                 slingshotPosition.x -= padding;
-                GameObject newBird = Runner.Spawn(_birdsList.Birds[i], slingshotPosition, _birdsList.Birds[i].transform.rotation).gameObject;
+                GameObject newBird = Runner.Spawn(_birdsList.Birds[i], slingshotPosition, _birdsList.Birds[i].transform.rotation, player).gameObject;
                 _spawnedBirds.Enqueue(newBird);
                 padding = 0.8f;
             }
+        }
+
+
+        private void SpawnBirds(BirdsAmmoSO ammo)
+        {
+            
         }
     
         private void OnEnable()

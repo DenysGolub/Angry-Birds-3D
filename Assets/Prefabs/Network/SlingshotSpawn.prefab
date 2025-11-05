@@ -206,6 +206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f12d4b712e719b4a99c95bc48c4a67b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _NetworkPosition: {x: 0, y: 0, z: 0}
   _pivot: {fileID: 8261511746495754155}
   _launchPoint: {fileID: 8261511746495754155}
   _maxStretch: 19.2
@@ -219,8 +220,7 @@ MonoBehaviour:
   _flightPath: {fileID: 4618259597588328614}
   _pathResolution: 30
   _pathTimeStep: 0.1
-  _birdsList: {fileID: 0}
-  _NetworkPosition: {x: 0, y: 0, z: 0}
+  _currentProjectile: {fileID: 0}
 --- !u!114 &-7741574258257123140
 MonoBehaviour:
   m_ObjectHideFlags: 0

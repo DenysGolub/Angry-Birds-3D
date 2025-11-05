@@ -15,7 +15,7 @@ namespace AngryBirds.Birds
         {
             Runner.Spawn(_eggPrefab, transform.position, transform.rotation);
             
-            Rb.AddForce(Vector3.up * 10f, ForceMode.Impulse);
+            _rb.AddForce(Vector3.up * 10f, ForceMode.Impulse);
         }
     }
 }

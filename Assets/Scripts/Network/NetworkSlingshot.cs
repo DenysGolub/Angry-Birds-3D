@@ -45,7 +45,7 @@ namespace AngryBirds.Levels
         
         private GameObject _currentProjectilePrefab;
  
-        private Rigidbody _currentProjectile;
+        public Rigidbody _currentProjectile;
         private SpringJoint _joint;
         private bool _isDragging = false;
         private bool _canDrag = false;
@@ -82,7 +82,6 @@ namespace AngryBirds.Levels
 
         private void Start()
         {
-            _inputActions.Drag.Disable();
             _leftBand.enabled = true;
             _rightBand.enabled = true;
 
@@ -108,9 +107,15 @@ namespace AngryBirds.Levels
             UpdateBands();
         }
         
-        public void SetCamera(CinemachineCamera cam)
+        public void SetCamera(CinemachineCamera cam, PlayerRef targetPlayer)
         {
-            _flightCamera = cam;
+            if (_flightCamera == null && Runner.LocalPlayer == targetPlayer)
+            {
+                _flightCamera = cam;
+                _flightCamera.enabled = true;
+                cam.Follow = _launchPoint;    
+            }
+            
         } 
         
 
@@ -145,6 +150,10 @@ namespace AngryBirds.Levels
         
         private void OnDragCanceled(InputAction.CallbackContext obj)
         {
+            if (!HasStateAuthority)
+            {
+                return;
+            }
             if (!_canDrag)
             {
                 return;
@@ -170,10 +179,6 @@ namespace AngryBirds.Levels
 
         private void OnDragStarted(InputAction.CallbackContext obj)
         {
-            if (!Object.HasStateAuthority)
-            {
-              return;
-            }
 
             if (IsPointerOverUIObject())
             {
@@ -227,9 +232,6 @@ namespace AngryBirds.Levels
             }
             if (_currentProjectilePrefab != null)
             {
-                Debug.Log("_currentProjectilePrefab = " + (_currentProjectilePrefab != null));
-
-                Debug.Log("Set position for bird!");
                 _currentProjectile = _currentProjectilePrefab.gameObject.GetComponent<Rigidbody>();
 
                 _currentProjectile.transform.SetPositionAndRotation(_launchPoint.position, _currentProjectilePrefab.transform.rotation);
@@ -284,7 +286,6 @@ namespace AngryBirds.Levels
 
         private IEnumerator Release()
         {
-            syncedPosition = _currentProjectile.position;
             if (HasStateAuthority)
             {
                 NetworkPosition = _currentProjectile.position;
@@ -295,6 +296,8 @@ namespace AngryBirds.Levels
             {
                 yield break;
             }
+            syncedPosition = _currentProjectile.position;
+            
 
             _canDrag = false;
             _currentProjectilePrefab = null;

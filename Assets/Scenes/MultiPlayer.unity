@@ -171,7 +171,7 @@ MonoBehaviour:
   _cameraManager: {fileID: 845677455}
   _birdManager: {fileID: 979873254}
   firstPlayerAmmo: {fileID: 11400000, guid: a4d970cc966a47446876a8136c4afa13, type: 2}
-  secondPlayerAmmo: {fileID: 11400000, guid: a4d970cc966a47446876a8136c4afa13, type: 2}
+  secondPlayerAmmo: {fileID: 11400000, guid: 80ec05447731a2b4597fe52dd618b9fe, type: 2}
   IsSpawned: 0
 --- !u!4 &557045060
 Transform:

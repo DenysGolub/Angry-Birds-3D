@@ -45,7 +45,7 @@ namespace AngryBirds.Birds
             _basePos = transform.position;
             if (HasStateAuthority)
             {
-                SpawnCopiesRpc(_basePos, transform.rotation);
+                SpawnCopies(_basePos, transform.rotation);
                 SetVelocity(currentBird.angularVelocity, currentBird.linearVelocity);
             }
             else
@@ -79,7 +79,7 @@ namespace AngryBirds.Birds
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-        public void SetVelocityRpc(Vector3 angular, Vector3 linear)
+        private void SetVelocityRpc(Vector3 angular, Vector3 linear)
         {
             SetVelocity(angular, linear);
         }

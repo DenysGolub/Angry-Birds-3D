@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using AngryBirds.Levels;
 using AngryBirds.Managers;
@@ -5,7 +6,7 @@ using Fusion;
 using Unity.Cinemachine;
 using UnityEngine;
 
-namespace AngryBirds
+namespace AngryBirds.Network
 {
     public class PlayerSpawner : MonoBehaviour
     {
@@ -27,8 +28,10 @@ namespace AngryBirds
         [SerializeField] private CameraManager cameraManager;
 
         [SerializeField] private GameObject structurePrefab;
-        [SerializeField] private Transform structureSpawnPoint;
-        
+        [SerializeField]
+        private Transform structureSpawnPoint;
+
+        private NetworkObject[] sling = new NetworkObject[2];        
         private void OnEnable()
         {
             Debug.Log("Player subscribed!");
@@ -61,14 +64,17 @@ namespace AngryBirds
             _ = PlayerJoinedAsync(player);
         }
 
-        
+
         public async Task PlayerJoinedAsync(PlayerRef player)
         {
             Debug.Log($"{player}, {_runner.LocalPlayer}");
-            if (player != _runner.LocalPlayer)
-            {
-                return;
-            }
+            Debug.Log($"{player.AsIndex}, {_runner.LocalPlayer.AsIndex}");
+
+
+            //if (player != _runner.LocalPlayer)
+            //{
+            //  return;
+            //}
 
             if (_spawnPointManagerInstance == null)
             {
@@ -80,32 +86,42 @@ namespace AngryBirds
             {
                 await Task.Yield();
             }
-            
+
             while (!_networkSlingshotManager.IsSpawned)
             {
                 await Task.Yield();
             }
-            
-            int index = _spawnPointManagerInstance.IsFree(0) ? 0 : 1;
-            Transform spawnPos = index == 0 ? 
-                _firstPlayerSlingshot : 
-                _secondPlayerSlingshot;
-            
-            Debug.Log(spawnPos);
-            var sling = _runner.Spawn(_playerPrefab, spawnPos.position, _playerPrefab.transform.rotation, player);
-        
-            sling.GetComponent<NetworkSlingshot>().SetCamera(_cinemachineCamera);
 
-            _cinemachineCamera.Follow = spawnPos; //TODO: call method from local player
-            _networkSlingshotManager.AssignSlingshot(player, index, sling);
-            
-            if (index == 0)
+            int index = _spawnPointManagerInstance.IsFree(0) ? 0 : 1;
+            Transform spawnPos = index == 0 ? _firstPlayerSlingshot : _secondPlayerSlingshot;
+
+
+         
+            if (sling[index] == null)
             {
-                Debug.Log("Structure with pigs is spawned!");
-                _runner.Spawn(structurePrefab, structureSpawnPoint.position, structurePrefab.transform.rotation);
+                if (player == _runner.LocalPlayer)
+                {
+                    sling[index] = _runner.Spawn(_playerPrefab, spawnPos.position, _playerPrefab.transform.rotation, player);
+                }
+                
+                sling[index].GetComponent<NetworkSlingshot>().SetCamera(_cinemachineCamera, player);
+
+
+                if (index == 0 && _spawnPointManagerInstance.IsFree(0))
+                {
+                    Debug.Log("Structure with pigs is spawned!");
+                                   
+                    _runner.Spawn(structurePrefab, structureSpawnPoint.position, structurePrefab.transform.rotation);
+                }
+
+                if (_runner.LocalPlayer.AsIndex == 1)
+                {
+                    _networkSlingshotManager.SpawnBirds(index, sling[index], player);
+                }
+                _spawnPointManagerInstance.SetSpawnPointUsedRpc(index, true);
             }
             
-            _spawnPointManagerInstance.SetSpawnPointUsedRpc(index, true);
+            
         }
     }
 }

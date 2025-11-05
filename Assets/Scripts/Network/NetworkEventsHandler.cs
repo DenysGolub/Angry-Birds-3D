@@ -20,7 +20,6 @@ namespace AngryBirds
 
         public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
-            Debug.Log($"From handlers: {player}");
             OnPlayerJoinedEvent?.Invoke(player);
         }
 

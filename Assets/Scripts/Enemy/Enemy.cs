@@ -21,7 +21,7 @@ namespace AngryBirds.Enemy
             _currentHealth = MaxHealth;
             AddEnemyCount?.Invoke();
         }
-        
+        //TODO: make rpc for impact for enemy
         private void OnCollisionEnter(Collision other)
         {
             if (_currentHealth <= 0)

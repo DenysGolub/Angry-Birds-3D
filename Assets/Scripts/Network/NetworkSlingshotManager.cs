@@ -30,10 +30,16 @@ namespace AngryBirds
                 {
                     Debug.Log($"[LOCAL] Assigned slingshot {index} to local player {targetPlayer}.");
                     slingshot.GetComponent<NetworkSlingshot>().SetAmmo(GetAmmoForIndex(index), targetPlayer);
-                    _birdManager.SetNewAmmoAndSlingshot(GetAmmoForIndex(index), slingshot.transform);
                 }
             }
+            
 
+        }
+
+        public void SpawnBirds(int index, NetworkObject slingshot, PlayerRef targetPlayer)
+        {
+            slingshot.GetComponent<NetworkSlingshot>().SetAmmo(GetAmmoForIndex(index), targetPlayer);
+            _birdManager.SetNewAmmoAndSlingshot(GetAmmoForIndex(index), slingshot.transform, targetPlayer);
         }
         
         public bool IsSpawned = false;

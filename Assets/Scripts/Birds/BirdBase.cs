@@ -13,14 +13,14 @@ namespace AngryBirds.Birds
         public BirdType BirdType { get; protected set; }
         public abstract void UseSpecialAbility();
         
-        protected Rigidbody Rb;
-        protected bool IsFlying = false;
-        protected bool HasPowerUsed = false;
+        protected Rigidbody _rb;
+        protected bool _IsFlying = false;
+        protected bool _hasPowerUsed = false;
 
        
         private void Awake()
         {
-            Rb = GetComponent<Rigidbody>();
+            _rb = GetComponent<Rigidbody>();
         }
     
         private void OnEnable()
@@ -36,9 +36,13 @@ namespace AngryBirds.Birds
         private void Update()
         {
             //TODO: fix update so it can be called in that player who owns the stateauthority
-            if (HasStateAuthority)
+            if (Input.GetMouseButtonDown(0) && HasStateAuthority)
             {
                 ApplyAbility();
+            }
+            else if (Input.GetMouseButtonDown(0) && !HasStateAuthority)
+            {
+               ApplyAbilityRpc(); 
             }
         }
         public IEnumerator DestroyBird()
@@ -53,23 +57,41 @@ namespace AngryBirds.Birds
         }
         private void ApplyAbility()
         {
-            if (Input.GetMouseButtonDown(0) && !HasPowerUsed && IsFlying)
+            if (!_hasPowerUsed && _IsFlying)
             {
                 AudioManager.Instance.PlaySpecialAbility(BirdType);
                 UseSpecialAbility();
-                HasPowerUsed = true;
-                IsFlying = false;
+                _hasPowerUsed = true;
+                _IsFlying = false;
             }
 
-            if (HasPowerUsed && !IsFlying)
+            if (_hasPowerUsed && !_IsFlying)
             {
                 StartCoroutine(DestroyBird());
             }
         }
+        
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        private void ApplyAbilityRpc()
+        {
+            if (!_hasPowerUsed && _IsFlying)
+            {
+                AudioManager.Instance.PlaySpecialAbility(BirdType);
+                UseSpecialAbility();
+                _hasPowerUsed = true;
+                _IsFlying = false;
+            }
+
+            if (_hasPowerUsed && !_IsFlying)
+            {
+                StartCoroutine(DestroyBird());
+            }
+        }
+        
         private void SetFlying()
         {
             PlayFlyingSoundEffect();
-            IsFlying = true;
+            _IsFlying = true;
         }
     }
 }
