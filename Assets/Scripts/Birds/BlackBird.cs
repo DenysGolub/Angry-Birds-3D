@@ -17,25 +17,17 @@ namespace AngryBirds.Birds
         }
         public override void UseSpecialAbility()
         {
-            Vector3 explosionPos = transform.position;
-            _colliders = Physics.OverlapSphere(explosionPos, _explosionRadius, LayerMask.GetMask("Destructable"));
-            Debug.Log("Explosion count: " + _colliders.Length);
+      
 
-            if (HasStateAuthority)
-            {
-                ApplyExplosion(explosionPos);
-            }
-            else
-            {
-                Debug.Log("Rpc for black bird!");
-                ApplyExplosionRpc(explosionPos);
-            }
-        
+            ApplyExplosionRpc(transform.position);
             Runner.Despawn(GetComponent<NetworkObject>());
         }
         
-        private void ApplyExplosion(Vector3 explosionPos)
+        private void ApplyExplosion(Vector3 birdPos)
         {
+            Vector3 explosionPos = birdPos;
+            _colliders = Physics.OverlapSphere(explosionPos, _explosionRadius, LayerMask.GetMask("Destructable"));
+            Debug.Log("Explosion count: " + _colliders.Length);
             foreach (Collider hit in _colliders)
             {
                 Rigidbody rb = hit.GetComponent<Rigidbody>();
@@ -50,9 +42,10 @@ namespace AngryBirds.Birds
         }
         
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-        private void ApplyExplosionRpc(Vector3 explosionPos)
+        private void ApplyExplosionRpc(Vector3 birdPos)
         {
-            ApplyExplosion(explosionPos);
+            Debug.Log("Rpc for black bird is called!");
+            ApplyExplosion(birdPos);
         }
     }
 }

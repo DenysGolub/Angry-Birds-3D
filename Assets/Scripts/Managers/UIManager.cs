@@ -7,6 +7,7 @@ namespace AngryBirds.Managers
 {
     public class UIManager : MonoBehaviour
     {
+        //TODO: sync points between players
         private int _points;
     
         [SerializeField] 
@@ -62,7 +63,7 @@ namespace AngryBirds.Managers
             _gameOverMenu.SetActive(true);
         
             _gameOverText.text = isWin ? "You win!" : "You lose!";
-            Debug.Log(SceneManager.GetActiveScene().name);
+            // Debug.Log(SceneManager.GetActiveScene().name);
             LevelScores.SetHighScore(SceneManager.GetActiveScene().name, _points);
         }
 

@@ -13,10 +13,12 @@ namespace AngryBirds.Managers
         public static event Action<GameObject> ChangeCurrentProjectile;
         public static event Action<BirdsAmmoSO> SetAmmo;
         
-        private Queue<GameObject> _spawnedBirds = new Queue<GameObject>();
+        public Queue<GameObject> _spawnedBirds = new Queue<GameObject>();
     
         [SerializeField] private Transform _slingshot;
         [SerializeField] private BirdsAmmoSO _birdsList;
+        
+        
         
         public void SetNewAmmoAndSlingshot(BirdsAmmoSO ammo, Transform slingshot, PlayerRef player)
         {
@@ -35,12 +37,8 @@ namespace AngryBirds.Managers
                 _spawnedBirds.Enqueue(newBird);
                 padding = 0.8f;
             }
-        }
-
-
-        private void SpawnBirds(BirdsAmmoSO ammo)
-        {
             
+            Debug.Log(_spawnedBirds.Count);
         }
     
         private void OnEnable()
@@ -55,6 +53,7 @@ namespace AngryBirds.Managers
     
         private void SetUpCurrentProjectile()
         {
+            Debug.Log(_spawnedBirds.Count + "Bids Left!");
             if (ChangeCurrentProjectile != null && _spawnedBirds.Count > 0)
             {
                 GameObject bird = _spawnedBirds.Dequeue().gameObject;
@@ -62,7 +61,7 @@ namespace AngryBirds.Managers
             }
             else
             {
-                OnEmptyAmmo?.Invoke();
+                // OnEmptyAmmo?.Invoke();
             }
         }
     }

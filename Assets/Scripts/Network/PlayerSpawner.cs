@@ -104,7 +104,6 @@ namespace AngryBirds.Network
                     sling[index] = _runner.Spawn(_playerPrefab, spawnPos.position, _playerPrefab.transform.rotation, player);
                 }
                 
-                sling[index].GetComponent<NetworkSlingshot>().SetCamera(_cinemachineCamera, player);
 
 
                 if (index == 0 && _spawnPointManagerInstance.IsFree(0))
@@ -114,10 +113,11 @@ namespace AngryBirds.Network
                     _runner.Spawn(structurePrefab, structureSpawnPoint.position, structurePrefab.transform.rotation);
                 }
 
-                if (_runner.LocalPlayer.AsIndex == 1)
-                {
-                    _networkSlingshotManager.SpawnBirds(index, sling[index], player);
-                }
+                sling[index].GetComponent<NetworkSlingshot>().SetCamera(_cinemachineCamera, player);
+           
+                NetworkId id = sling[index].GetComponent<NetworkObject>().Id;
+                _networkSlingshotManager.SpawnBirdsRpc(id, index, sling[index], player);
+
                 _spawnPointManagerInstance.SetSpawnPointUsedRpc(index, true);
             }
             

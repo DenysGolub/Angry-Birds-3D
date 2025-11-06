@@ -7,47 +7,59 @@ using UnityEngine;
 
 namespace AngryBirds
 {
-    public class NetworkSlingshotManager : NetworkBehaviour
-    {
-        [SerializeField] private CameraManager _cameraManager;
-        [SerializeField] private NetworkBirdManager _birdManager;
+	public class NetworkSlingshotManager : NetworkBehaviour
+	{
+		[SerializeField] private CameraManager _cameraManager;
+		[SerializeField] private NetworkBirdManager _birdManager;
 
-        [SerializeField] private BirdsAmmoSO firstPlayerAmmo;
-        [SerializeField] private BirdsAmmoSO secondPlayerAmmo;
+		[SerializeField] private BirdsAmmoSO firstPlayerAmmo;
+		[SerializeField] private BirdsAmmoSO secondPlayerAmmo;
 
-        public BirdsAmmoSO GetAmmoForIndex(int index)
-        {
-            return index == 0 ? firstPlayerAmmo : secondPlayerAmmo;
-        }
+		public BirdsAmmoSO GetAmmoForIndex(int index)
+		{
+			return index == 0 ? firstPlayerAmmo : secondPlayerAmmo;
+		}
         
-        public void AssignSlingshot(PlayerRef targetPlayer, int index, NetworkObject slingshot)
-        {
-            Debug.Log($"Assign slingshot: {Runner.LocalPlayer}, {targetPlayer}");
+		// public void AssignSlingshot(PlayerRef targetPlayer, int index, NetworkObject slingshot)
+		// {
+		// 	Debug.Log($"Assign slingshot: {Runner.LocalPlayer}, {targetPlayer}");
+		//
+		// 	if (targetPlayer == Runner.LocalPlayer)
+		// 	{
+		// 		if (_cameraManager != null && slingshot != null)
+		// 		{
+		// 			Debug.Log($"[LOCAL] Assigned slingshot {index} to local player {targetPlayer}.");
+		// 			slingshot.GetComponent<NetworkSlingshot>().SetAmmo(GetAmmoForIndex(index), targetPlayer);
+		// 		}
+		// 	}
+		// }
 
-            if (targetPlayer == Runner.LocalPlayer)
-            {
-                if (_cameraManager != null && slingshot != null)
-                {
-                    Debug.Log($"[LOCAL] Assigned slingshot {index} to local player {targetPlayer}.");
-                    slingshot.GetComponent<NetworkSlingshot>().SetAmmo(GetAmmoForIndex(index), targetPlayer);
-                }
-            }
-            
 
-        }
-
-        public void SpawnBirds(int index, NetworkObject slingshot, PlayerRef targetPlayer)
-        {
-            slingshot.GetComponent<NetworkSlingshot>().SetAmmo(GetAmmoForIndex(index), targetPlayer);
-            _birdManager.SetNewAmmoAndSlingshot(GetAmmoForIndex(index), slingshot.transform, targetPlayer);
-        }
+		public void SetBirds(NetworkId id, int index, NetworkObject slingshot, PlayerRef targetPlayer)
+		{
+			_birdManager.SetNewAmmoAndSlingshot(GetAmmoForIndex(index), slingshot.transform, targetPlayer);
+		}
+		
+		public void SpawnBirds(NetworkId id, int index, NetworkObject slingshot, PlayerRef targetPlayer)
+		{
+			SetBirds(id, index, slingshot, targetPlayer);
+			slingshot.GetComponent<NetworkSlingshot>().SetAmmo(GetAmmoForIndex(index), targetPlayer, id);
+		}
+		
+		
         
-        public bool IsSpawned = false;
-        public override void Spawned()
-        {
-            IsSpawned = true;
-        }
+		[Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+		public void SpawnBirdsRpc(NetworkId id, int index, NetworkObject slingshot, PlayerRef owner)
+		{
+			SpawnBirds(id, index, slingshot, owner);
+		}
+        
+		public bool IsSpawned = false;
+		public override void Spawned()
+		{
+			IsSpawned = true;
+		}
         
 
-    }
+	}
 }
