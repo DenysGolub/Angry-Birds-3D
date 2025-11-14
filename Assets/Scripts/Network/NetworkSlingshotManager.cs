@@ -15,6 +15,9 @@ namespace AngryBirds
 		[SerializeField] private BirdsAmmoSO firstPlayerAmmo;
 		[SerializeField] private BirdsAmmoSO secondPlayerAmmo;
 
+		[SerializeField]
+		private NetworkBirdManager _birdManagerPrefab;
+
 		public BirdsAmmoSO GetAmmoForIndex(int index)
 		{
 			return index == 0 ? firstPlayerAmmo : secondPlayerAmmo;
@@ -34,7 +37,10 @@ namespace AngryBirds
 		// 	}
 		// }
 
-
+		public void SpawnManager(NetworkId id, int index, NetworkObject slingshot, PlayerRef targetPlayer)
+		{
+			_birdManager = Runner.Spawn(_birdManagerPrefab);
+		}
 		public void SetBirds(NetworkId id, int index, NetworkObject slingshot, PlayerRef targetPlayer)
 		{
 			_birdManager.SetNewAmmoAndSlingshot(GetAmmoForIndex(index), slingshot.transform, targetPlayer);
@@ -42,7 +48,7 @@ namespace AngryBirds
 		
 		public void SpawnBirds(NetworkId id, int index, NetworkObject slingshot, PlayerRef targetPlayer)
 		{
-			SetBirds(id, index, slingshot, targetPlayer);
+			//SetBirds(id, index, slingshot, targetPlayer);
 			slingshot.GetComponent<NetworkSlingshot>().SetAmmo(GetAmmoForIndex(index), targetPlayer, id);
 		}
 		
@@ -55,6 +61,7 @@ namespace AngryBirds
 		}
         
 		public bool IsSpawned = false;
+		
 		public override void Spawned()
 		{
 			IsSpawned = true;

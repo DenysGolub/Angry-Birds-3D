@@ -27,7 +27,7 @@ namespace AngryBirds.Birds
         {
             Vector3 explosionPos = birdPos;
             _colliders = Physics.OverlapSphere(explosionPos, _explosionRadius, LayerMask.GetMask("Destructable"));
-            Debug.Log("Explosion count: " + _colliders.Length);
+            // Debug.Log("Explosion count: " + _colliders.Length);
             foreach (Collider hit in _colliders)
             {
                 Rigidbody rb = hit.GetComponent<Rigidbody>();
@@ -35,7 +35,7 @@ namespace AngryBirds.Birds
                 if (rb != null)
                 {
                     rb.AddExplosionForce(_explosionPower, explosionPos, _explosionRadius, 3.0F);
-                    Debug.Log("Applying force!");
+                    // Debug.Log("Applying force!");
                     
                 }
             }
@@ -44,7 +44,7 @@ namespace AngryBirds.Birds
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         private void ApplyExplosionRpc(Vector3 birdPos)
         {
-            Debug.Log("Rpc for black bird is called!");
+            // Debug.Log("Rpc for black bird is called!");
             ApplyExplosion(birdPos);
         }
     }

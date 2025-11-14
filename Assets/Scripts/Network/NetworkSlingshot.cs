@@ -343,7 +343,9 @@ namespace AngryBirds.Levels
         {
             _canDrag = false;
             _currentProjectilePrefab = null;
-            OnShotFired?.Invoke();
+            Debug.Log(GetComponent<NetworkObject>().Id);
+            InvokeRpc();
+
             Destroy(_joint);
             _currentProjectile.isKinematic = false;
             _currentProjectile.gameObject.GetComponent<BirdBase>().OnShoot?.Invoke();
@@ -357,7 +359,13 @@ namespace AngryBirds.Levels
             _currentProjectile.AddForce(forceDir.normalized * forceMag, ForceMode.Impulse);
             _currentProjectile = null;
         }
-        
+
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        public void InvokeRpc()
+        {
+            OnShotFired?.Invoke();
+        }
+
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
         private void ApplyForceRpc(NetworkObject slingshot)
         {

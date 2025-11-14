@@ -67,8 +67,8 @@ namespace AngryBirds.Network
 
         public async Task PlayerJoinedAsync(PlayerRef player)
         {
-            Debug.Log($"{player}, {_runner.LocalPlayer}");
-            Debug.Log($"{player.AsIndex}, {_runner.LocalPlayer.AsIndex}");
+            // Debug.Log($"{player}, {_runner.LocalPlayer}");
+            // Debug.Log($"{player.AsIndex}, {_runner.LocalPlayer.AsIndex}");
 
 
             //if (player != _runner.LocalPlayer)
@@ -102,6 +102,8 @@ namespace AngryBirds.Network
                 if (player == _runner.LocalPlayer)
                 {
                     sling[index] = _runner.Spawn(_playerPrefab, spawnPos.position, _playerPrefab.transform.rotation, player);
+                    NetworkId idSlings = sling[index].GetComponent<NetworkObject>().Id;
+                    _networkSlingshotManager.SpawnManager(idSlings, index, sling[index], player);
                 }
                 
 
@@ -116,6 +118,7 @@ namespace AngryBirds.Network
                 sling[index].GetComponent<NetworkSlingshot>().SetCamera(_cinemachineCamera, player);
            
                 NetworkId id = sling[index].GetComponent<NetworkObject>().Id;
+                _networkSlingshotManager.SetBirds(id, index, sling[index], player);
                 _networkSlingshotManager.SpawnBirdsRpc(id, index, sling[index], player);
 
                 _spawnPointManagerInstance.SetSpawnPointUsedRpc(index, true);
