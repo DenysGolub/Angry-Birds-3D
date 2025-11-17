@@ -42,8 +42,8 @@ GameObject:
   - component: {fileID: 4234019550377663099}
   - component: {fileID: 7599411109931281155}
   - component: {fileID: -7821206593846694588}
-  - component: {fileID: -4759472484676138039}
   - component: {fileID: -7741574258257123140}
+  - component: {fileID: 3865437563972015575}
   m_Layer: 0
   m_Name: SlingshotSpawn
   m_TagString: Untagged
@@ -191,36 +191,9 @@ MonoBehaviour:
   Flags: 524289
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: -4759472484676138039}
   - {fileID: -7741574258257123140}
+  - {fileID: 3865437563972015575}
   ForceRemoteRenderTimeframe: 0
---- !u!114 &-4759472484676138039
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3021090048802928761}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f12d4b712e719b4a99c95bc48c4a67b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _NetworkPosition: {x: 0, y: 0, z: 0}
-  _pivot: {fileID: 8261511746495754155}
-  _launchPoint: {fileID: 8261511746495754155}
-  _maxStretch: 19.2
-  _powerMultiplier: 8.83
-  _flightCamera: {fileID: 0}
-  _waitSecondsAfterShot: 5
-  _leftBand: {fileID: 2572354405495276955}
-  _rightBand: {fileID: 7315517280094081253}
-  _leftAnchor: {fileID: 5501097087609197771}
-  _rightAnchor: {fileID: 3055022253121505693}
-  _flightPath: {fileID: 4618259597588328614}
-  _pathResolution: 30
-  _pathTimeStep: 0.1
-  _currentProjectile: {fileID: 0}
 --- !u!114 &-7741574258257123140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,6 +211,33 @@ MonoBehaviour:
   SyncParent: 0
   _autoAOIOverride: 1
   DisableSharedModeInterpolation: 0
+--- !u!114 &3865437563972015575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3021090048802928761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acd2ad95016a4c118fc038fd9939fe2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _NetworkPosition: {x: 0, y: 0, z: 0}
+  _pivot: {fileID: 8261511746495754155}
+  _launchPoint: {fileID: 8261511746495754155}
+  _maxStretch: 9.47
+  _powerMultiplier: 12.51
+  _flightCamera: {fileID: 0}
+  _waitSecondsAfterShot: 2
+  _leftBand: {fileID: 2572354405495276955}
+  _rightBand: {fileID: 7315517280094081253}
+  _leftAnchor: {fileID: 5501097087609197771}
+  _rightAnchor: {fileID: 3055022253121505693}
+  _flightPath: {fileID: 4618259597588328614}
+  _pathResolution: 30
+  _pathTimeStep: 0.1
+  _currentProjectile: {fileID: 0}
 --- !u!1 &6162148939740933612
 GameObject:
   m_ObjectHideFlags: 0

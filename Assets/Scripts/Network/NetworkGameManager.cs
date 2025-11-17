@@ -1,64 +1,54 @@
 using System;
 using System.Collections;
+using AngryBirds.Birds;
 using AngryBirds.Blocks;
 using AngryBirds.Levels;
+using AngryBirds.Managers;
 using AngryBirds.SO.Scripts;
 using Fusion;
 using UnityEngine;
 
-namespace AngryBirds.Managers
+namespace AngryBirds.Network
 {
-    public class GameManager : NetworkBehaviour
+    public class NetworkGameManager : NetworkBehaviour
     {
         public static event Action<int> OnScoreChanged;
         public static event Action<bool> OnGameOver;
-        public static event Action OnNextBirdChanged;
-        public static event Action<GameObject> SetNextBirdToSlingshotAction;
-        [Header("Score")]
-        private int _score = 0;
+
+        [Header("Score")] private int _score = 0;
         private int _enemyCount;
         private int _birdCount;
-        
-        [SerializeField] private MoveCamera _camera;
 
         private const int POINTS_PER_UNUSED_BIRD = 10000;
 
-      
+        [SerializeField] private NetworkSlingshot[] _players = new NetworkSlingshot[2];
+        
         private void Start()
         {
             Time.timeScale = 1f;
         }
-    
-        private void OnEnable()
-        {
-            Slingshot.OnShotFired += RequestNextBird;
-            // NetworkSlingshot.OnShotFired += RequestNextBird;
-
-            BirdManager.ChangeCurrentProjectile += SetNextBirdToSlingshot;
-            BirdManager.SetAmmo += GetStartingBirdsCount;
-            BirdManager.OnEmptyAmmo += CheckGameStatus;
         
 
+        private void OnEnable()
+        {
+            // NetworkSlingshot.OnShotFired += RemoveBird;
+            // NetworkSlingshot.OnLevelEnter += SetStartBirdCount;
             
             Enemy.Enemy.AddEnemyCount += ChangeEnemyCount;
             Enemy.Enemy.OnEnemyDeath += UpdateScore;
             Enemy.Enemy.OnEnemyDeath += DecreaseEnemyCount;
             Enemy.Enemy.OnHealthChange += UpdateScore;
-        
+
             Block.OnBlockDestroyed += UpdateScore;
             Block.OnHealthChanged += UpdateScore;
-            
+
         }
-    
+
         private void OnDisable()
         {
-            Slingshot.OnShotFired -= RequestNextBird;
-            // NetworkSlingshot.OnShotFired -= RequestNextBird;
-            BirdManager.ChangeCurrentProjectile -= SetNextBirdToSlingshot;
-            BirdManager.OnEmptyAmmo -= CheckGameStatus;
-            BirdManager.SetAmmo -= GetStartingBirdsCount;
             
-        
+            // NetworkSlingshot.OnShotFired -= RemoveBird;
+            // NetworkSlingshot.OnLevelEnter -= SetStartBirdCount;
             Enemy.Enemy.AddEnemyCount -= ChangeEnemyCount;
             Enemy.Enemy.OnEnemyDeath -= UpdateScore;
             Enemy.Enemy.OnEnemyDeath -= DecreaseEnemyCount;
@@ -67,12 +57,46 @@ namespace AngryBirds.Managers
             Block.OnBlockDestroyed -= UpdateScore;
             Block.OnHealthChanged -= UpdateScore;
         }
-    
-        private void GetStartingBirdsCount(BirdsAmmoSO obj)
+
+        private void SetStartBirdCount(int startCount)
         {
-            _birdCount = obj.Birds.Count;
+            _birdCount += startCount;
         }
 
+        private void RemoveBird(int obj)
+        {
+            _birdCount--;
+            if (_birdCount == 0)
+            {
+                CheckGameStatus();
+            }
+        }
+        private void SetPlayer(int index, NetworkSlingshot slingshot)
+        {
+            _players[index] = slingshot;
+        }
+
+        public bool IsPlayerSpawned(int index)
+        {
+            if (_players[index] == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public NetworkSlingshot GetPlayer(int index)
+        {
+            return _players[index];
+        }
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void SetPlayerRpc(int index, NetworkSlingshot slingshot)
+        {
+            SetPlayer(index, slingshot);
+        }
         private void ChangeEnemyCount()
         {
             _enemyCount += 1;
@@ -82,7 +106,7 @@ namespace AngryBirds.Managers
         {
             StartCoroutine(WaitForEndLevel());
         }
-    
+
         private IEnumerator WaitForEndLevel()
         {
             yield return new WaitForSeconds(7f);
@@ -109,17 +133,6 @@ namespace AngryBirds.Managers
                 OnScoreChanged?.Invoke(_score);
                 OnGameOver?.Invoke(true);
             }
-        }
-
-        private void RequestNextBird()
-        {
-            OnNextBirdChanged?.Invoke();
-            _birdCount--;
-        }
-
-        private void SetNextBirdToSlingshot(GameObject bird)
-        {
-            SetNextBirdToSlingshotAction?.Invoke(bird);
         }
     }
 }

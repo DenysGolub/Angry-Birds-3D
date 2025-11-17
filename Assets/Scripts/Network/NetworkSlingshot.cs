@@ -18,7 +18,7 @@ namespace AngryBirds.Levels
         public Vector3 NetworkPosition {get; set;}
 
         private Vector3 syncedPosition; 
-        public static event Action OnShotFired;
+        public static event Action<NetworkSlingshot> OnShotFired;
         
         [Header("Slingshot setup")] 
         [SerializeField] private Transform _pivot;
@@ -73,8 +73,6 @@ namespace AngryBirds.Levels
 
         private void OnEnable()
         {
-            GameManager.SetNextBirdToSlingshotAction += GetProjectile;
-            GameManager.OnGameOver += DisableSlingshotOnGameOver;
             CameraManager.EnableSlingshot += EnableInput;
         
             _inputActions.Drag.DragAndMove.started += OnDragStarted;
@@ -91,12 +89,11 @@ namespace AngryBirds.Levels
 
             syncedPosition = _launchPoint.position;
             _inputActions.Disable();
+            
         }
 
         private void OnDisable()
         {
-            GameManager.SetNextBirdToSlingshotAction -= GetProjectile;
-            GameManager.OnGameOver -= DisableSlingshotOnGameOver;
             CameraManager.EnableSlingshot -= EnableInput;
 
             _inputActions.Drag.DragAndMove.started -= OnDragStarted;
@@ -128,10 +125,10 @@ namespace AngryBirds.Levels
         //todo: spawnslingshot
         
 
-        public void SetAmmo(BirdsAmmoSO ammo, PlayerRef player, NetworkId playerId)
+        public void SetAmmo(BirdsAmmoSO ammo, NetworkId playerId)
         {
             _birdsList = ammo;
-            _currentProjectilePrefab = Runner.Spawn(_birdsList.Birds[0].gameObject, _launchPoint.position, _launchPoint.rotation, player).gameObject;
+            _currentProjectilePrefab = Runner.Spawn(_birdsList.Birds[0].gameObject, _launchPoint.position, _launchPoint.rotation).gameObject;
             Debug.Log(_currentProjectilePrefab);
 
            
@@ -233,7 +230,7 @@ namespace AngryBirds.Levels
             this.enabled = false;
         }
 
-        private void GetProjectile(GameObject bird)
+        public void GetProjectile(GameObject bird)
         {
             _currentProjectilePrefab = bird;
             syncedPosition = _launchPoint.position;
@@ -360,10 +357,9 @@ namespace AngryBirds.Levels
             _currentProjectile = null;
         }
 
-        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
         public void InvokeRpc()
         {
-            OnShotFired?.Invoke();
+            OnShotFired?.Invoke(this);
         }
 
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]

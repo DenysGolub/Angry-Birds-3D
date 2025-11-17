@@ -128,8 +128,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 557045060}
-  - component: {fileID: 557045059}
   - component: {fileID: 557045058}
+  - component: {fileID: 557045061}
   m_Layer: 0
   m_Name: NetworkSlingshotManager
   m_TagString: Untagged
@@ -154,26 +154,8 @@ MonoBehaviour:
   Flags: 524289
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: 557045059}
+  - {fileID: 557045061}
   ForceRemoteRenderTimeframe: 0
---- !u!114 &557045059
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 557045057}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b331b9bb4fdf3143913f4b57618b715, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _cameraManager: {fileID: 845677455}
-  _birdManager: {fileID: 0}
-  firstPlayerAmmo: {fileID: 11400000, guid: 80ec05447731a2b4597fe52dd618b9fe, type: 2}
-  secondPlayerAmmo: {fileID: 11400000, guid: 80ec05447731a2b4597fe52dd618b9fe, type: 2}
-  _birdManagerPrefab: {fileID: 6219871695837808790, guid: defb40f151df9f443bbc1b2cd1359d5d, type: 3}
-  IsSpawned: 0
 --- !u!4 &557045060
 Transform:
   m_ObjectHideFlags: 0
@@ -189,6 +171,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &557045061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 557045057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05b33970e5fc41dda0cc89708c86dfe7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsSpawned: 0
 --- !u!114 &688289072 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4576872724909097118, guid: 5ff6504458b6e1b4f9a70a0607127c2d, type: 3}
@@ -351,33 +346,11 @@ Light:
   m_CorrespondingSourceObject: {fileID: 3500949928053978845, guid: 5ff6504458b6e1b4f9a70a0607127c2d, type: 3}
   m_PrefabInstance: {fileID: 1975832762}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &845677455 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3688908539631799970, guid: 5ff6504458b6e1b4f9a70a0607127c2d, type: 3}
-  m_PrefabInstance: {fileID: 1975832762}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb9134667935f5940b56b6c59b4402d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &916398537 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4851712608887929787, guid: 5ff6504458b6e1b4f9a70a0607127c2d, type: 3}
   m_PrefabInstance: {fileID: 1975832762}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &916398539 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5023366262341369774, guid: 5ff6504458b6e1b4f9a70a0607127c2d, type: 3}
-  m_PrefabInstance: {fileID: 1975832762}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 916398537}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe1a46ec44c6821418fe8934306aa0e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &916398540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -395,8 +368,23 @@ MonoBehaviour:
   Flags: 524289
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: 916398539}
+  - {fileID: 916398541}
   ForceRemoteRenderTimeframe: 0
+--- !u!114 &916398541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 916398537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 074cc1b2489146baa1673b2e1e67eae3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _players:
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &935640488 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 988865925321648940, guid: 5ff6504458b6e1b4f9a70a0607127c2d, type: 3}
@@ -586,13 +574,18 @@ MonoBehaviour:
   _cinemachineCamera: {fileID: 688289072}
   _firstPlayerSlingshot: {fileID: 1713294757}
   _secondPlayerSlingshot: {fileID: 1792749016}
-  _spawnPointManagerPrefab: {fileID: 4763404597275113329, guid: a4476acc22f696348be91a4bce32a3a4, type: 3}
+  _spawnPointManagerPrefab: {fileID: 710919156}
+  _birdManagerPrefab: {fileID: 3603086921578511241, guid: 0e62b3547764dbc47a7da36608170545, type: 3}
   _runner: {fileID: 711153114}
-  _networkSlingshotManager: {fileID: 557045059}
+  _networkSlingshotManager: {fileID: 557045061}
   _spawnPointManagerInstance: {fileID: 710919156}
-  cameraManager: {fileID: 845677455}
+  cameraManager: {fileID: 0}
   structurePrefab: {fileID: 542265717969401532, guid: 668a117aa8a752645859038f5eb91aeb, type: 3}
   structureSpawnPoint: {fileID: 1185239382}
+  _gameManager: {fileID: 916398541}
+  _playersAmmo:
+  - {fileID: 11400000, guid: 80ec05447731a2b4597fe52dd618b9fe, type: 2}
+  - {fileID: 11400000, guid: 4ffb2e330206f6c4aa230c8309b99ccf, type: 2}
 --- !u!4 &1601996009 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 671858763370136278, guid: 5ff6504458b6e1b4f9a70a0607127c2d, type: 3}
@@ -897,6 +890,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6969388159156586149, guid: 5ff6504458b6e1b4f9a70a0607127c2d, type: 3}
+    - {fileID: 5023366262341369774, guid: 5ff6504458b6e1b4f9a70a0607127c2d, type: 3}
     m_RemovedGameObjects:
     - {fileID: 5143264765608044498, guid: 5ff6504458b6e1b4f9a70a0607127c2d, type: 3}
     - {fileID: 115136900862611576, guid: 5ff6504458b6e1b4f9a70a0607127c2d, type: 3}
@@ -914,6 +908,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4851712608887929787, guid: 5ff6504458b6e1b4f9a70a0607127c2d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 916398540}
+    - targetCorrespondingSourceObject: {fileID: 4851712608887929787, guid: 5ff6504458b6e1b4f9a70a0607127c2d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 916398541}
     - targetCorrespondingSourceObject: {fileID: 988865925321648940, guid: 5ff6504458b6e1b4f9a70a0607127c2d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 935640490}
