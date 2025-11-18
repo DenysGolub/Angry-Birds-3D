@@ -132,11 +132,10 @@ namespace AngryBirds.Network
             {
                 Debug.Log(e.Message);
             }
-            
             _birdManagerInstance.SpawnBirds();
+            SharedModeMasterClientTracker.LocalInstance.BirdManager = _birdManagerInstance;
         }
         
-        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
         private void SetupBirdManagerRpc(NetworkObject birdManager, NetworkObject slingshot1, NetworkObject slingshot2)
         {
             var manager = birdManager.GetComponent<NetworkBirdManager>();

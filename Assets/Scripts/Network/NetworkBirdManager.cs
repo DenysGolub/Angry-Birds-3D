@@ -16,6 +16,11 @@ namespace AngryBirds.Managers
         public Dictionary<NetworkSlingshot, Queue<NetworkObject>> _spawnedBirds 
             = new Dictionary<NetworkSlingshot, Queue<NetworkObject>>();
 
+
+        public List<NetworkObject> birdsForDisplayDebug1 = new List<NetworkObject>();
+        public List<NetworkObject> birdsForDisplayDebug2 = new List<NetworkObject>();
+
+        
         public void SetPlayerSlingshot(BirdsAmmoSO ammo, NetworkSlingshot slingshot)
         {
             Debug.Log("Set Player!");
@@ -39,6 +44,7 @@ namespace AngryBirds.Managers
             Debug.Log("Enter to spawn birds method!");
             try
             {
+                int index = 0;
                 Debug.Log("Spawn birds for");
                 foreach (var entry in _playersAmmo)
                 {
@@ -59,11 +65,19 @@ namespace AngryBirds.Managers
                             ammo.Birds[i].transform.rotation
                         );
 
+                        if (index == 0)
+                        {
+                            birdsForDisplayDebug1.Add(newBird);
+                        }
+                        else
+                        {
+                            birdsForDisplayDebug2.Add(newBird);
+                        }
                         _spawnedBirds[slingshot].Enqueue(newBird);
 
                         padding = 0.8f;
-
                     }
+                    index++;
                 }
             }
             catch (System.Exception e)
@@ -72,19 +86,27 @@ namespace AngryBirds.Managers
             }
           
         }
-
+        
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        private void GetBirdRpc(NetworkSlingshot slingshot)
+        {
+            if (!_spawnedBirds.ContainsKey(slingshot))
+            {
+                return;
+            }
+            if (_spawnedBirds[slingshot].Count == 0)
+            {
+                return;
+            }
+            NetworkObject bird = _spawnedBirds[slingshot].Dequeue();
+            Debug.Log($"Set {bird} for {slingshot}!!!");
+            slingshot.GetProjectileRpc(slingshot.Object.Id, bird.Id);
+            // slingshot.CreateProjectileRpc(bird.Id, slingshot.Object.Id);
+        }
         
         public void SetNextBirdAsProjectile(NetworkSlingshot slingshot)
         {
-            // if (!_spawnedBirds.ContainsKey(slingshot))
-            //     return false;
-            //
-            // if (_spawnedBirds[slingshot].Count == 0)
-            //     return false;
-
-            NetworkObject bird = _spawnedBirds[slingshot].Dequeue();
-            slingshot.GetProjectile(bird.gameObject);
-
+            GetBirdRpc(slingshot);
         }
 
         public bool HasBirds(NetworkSlingshot slingshot)
