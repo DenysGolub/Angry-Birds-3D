@@ -11,27 +11,29 @@ namespace AngryBirds.Network
 {
     public class PlayerSpawner : MonoBehaviour
     {
+        [Header("Network")]
         [SerializeField] private NetworkEventsHandler _networkEventsHandler;
-        [SerializeField] private GameObject _playerPrefab;
-        [SerializeField] private CinemachineCamera _cinemachineCamera;
+        [SerializeField] private NetworkRunner _runner;
 
         [Header("Spawn points")]
         [SerializeField] private Transform _firstPlayerSlingshot;
         [SerializeField] private Transform _secondPlayerSlingshot;
 
         [Header("Prefabs")]
+        [SerializeField] private GameObject _playerPrefab;
         [SerializeField] private SpawnPointManager _spawnPointManagerPrefab;
         [SerializeField] private NetworkBirdManager _birdManagerPrefab;
-        [SerializeField] private NetworkRunner _runner;
-
+        [SerializeField] private GameObject structurePrefab;
+        
+        [Header("References")]        
         [SerializeField] private NetworkSlingshotManager _networkSlingshotManager;
         [SerializeField] private SpawnPointManager _spawnPointManagerInstance;
-        [SerializeField] private CameraManager cameraManager;
+        [SerializeField] private CinemachineCamera _cinemachineCamera;
 
-        [SerializeField] private GameObject structurePrefab;
         [SerializeField] private Transform structureSpawnPoint;
         [SerializeField] private NetworkGameManager _gameManager;
-
+        
+        [Header("Ammo")]
         [SerializeField] private BirdsAmmoSO[] _playersAmmo = new BirdsAmmoSO[2];
 
         private NetworkObject[] _spawnedSlingshots = new NetworkObject[2];
@@ -49,13 +51,13 @@ namespace AngryBirds.Network
         }
 
 
-        public void PlayerJoined(PlayerRef player)
+        private void PlayerJoined(PlayerRef player)
         {
             _ = PlayerJoinedAsync(player);
         }
 
 
-        public async Task PlayerJoinedAsync(PlayerRef player)
+        private async Task PlayerJoinedAsync(PlayerRef player)
         {
             if (_spawnPointManagerInstance == null)
             {
@@ -86,7 +88,6 @@ namespace AngryBirds.Network
 
                 if (index == 0 && _spawnPointManagerInstance.IsFree(0))
                 {
-                    Debug.Log("Structure with pigs is spawned!");
                     _runner.Spawn(structurePrefab, structureSpawnPoint.position, structurePrefab.transform.rotation);
                 }
 
@@ -109,40 +110,29 @@ namespace AngryBirds.Network
 
         private async Task TrySpawnBirdsAfterPlayersReady()
         {
-            Debug.Log("Master entered!");
-
             while (!_gameManager.IsPlayerSpawned(1))
             {
-                Debug.Log("Waiting for second slingshot to spawn...");
                 await Task.Yield();
             }
             
             if (_birdManagerInstance == null)
             {
-                Debug.Log("Spawning BirdManager now");
                 _birdManagerInstance = _runner.Spawn(_birdManagerPrefab);
             }
 
-            try
-            {
-                Debug.Log(_gameManager.GetPlayer(0) +"_"+_gameManager.GetPlayer(1));
-                SetupBirdManagerRpc(_birdManagerInstance.Object, _gameManager.GetPlayer(0).Object, _gameManager.GetPlayer(1).Object);
-            }
-            catch (Exception e)
-            {
-                Debug.Log(e.Message);
-            }
+            SetupAmmoForSlingshots(_gameManager.GetPlayer(0), _gameManager.GetPlayer(1));
+
             _birdManagerInstance.SpawnBirds();
             SharedModeMasterClientTracker.LocalInstance.BirdManager = _birdManagerInstance;
         }
         
-        private void SetupBirdManagerRpc(NetworkObject birdManager, NetworkObject slingshot1, NetworkObject slingshot2)
+        private void SetupAmmoForSlingshots(NetworkSlingshot firstPlayerSlingshot, NetworkSlingshot secondPlayerSlingshot)
         {
-            var manager = birdManager.GetComponent<NetworkBirdManager>();
-            slingshot1.GetComponent<NetworkSlingshot>().SetAmmo(_playersAmmo[0], slingshot1.Id);
-            manager.SetPlayerSlingshot(_playersAmmo[0], slingshot1.GetComponent<NetworkSlingshot>());
-            slingshot2.GetComponent<NetworkSlingshot>().SetAmmo(_playersAmmo[1], slingshot2.Id);
-            manager.SetPlayerSlingshot(_playersAmmo[1], slingshot2.GetComponent<NetworkSlingshot>());
+            firstPlayerSlingshot.SetAmmo(_playersAmmo[0], firstPlayerSlingshot.Object.Id);
+            _birdManagerInstance.SetPlayerSlingshot(_playersAmmo[0], firstPlayerSlingshot.GetComponent<NetworkSlingshot>());
+            
+            secondPlayerSlingshot.SetAmmo(_playersAmmo[1], secondPlayerSlingshot.Object.Id);
+            _birdManagerInstance.SetPlayerSlingshot(_playersAmmo[1], secondPlayerSlingshot.GetComponent<NetworkSlingshot>());
         }
 
     }

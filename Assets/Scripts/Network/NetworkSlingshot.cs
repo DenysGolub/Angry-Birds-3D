@@ -73,27 +73,7 @@ namespace AngryBirds.Levels
         {
             _currentProjectilePrefab = NetworkBird;
             
-            if (_currentProjectilePrefab != null)
-            {
-                if (_flightCamera != null)
-                {
-                    _flightCamera.Follow = _launchPoint;
-                }
-                Debug.Log(_currentProjectilePrefab + "is created as projectile!");
-                _currentProjectile = _currentProjectilePrefab.gameObject.GetComponent<Rigidbody>();
-
-                _currentProjectile.transform.SetPositionAndRotation(_launchPoint.position, _currentProjectilePrefab.transform.rotation);
-
-                if (HasStateAuthority)
-                {
-                    NetworkPosition = _currentProjectile.position;
-                }
-                
-                _joint = _currentProjectile.gameObject.GetComponent<SpringJoint>();
-                _joint.connectedAnchor = _pivot.position;
-                _joint.autoConfigureConnectedAnchor = false;
-                _currentProjectile.isKinematic = true; 
-            }
+            CreateProjectile();
         }
         
         private void Awake()

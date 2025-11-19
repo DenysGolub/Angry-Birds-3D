@@ -23,10 +23,8 @@ namespace AngryBirds.Managers
         
         public void SetPlayerSlingshot(BirdsAmmoSO ammo, NetworkSlingshot slingshot)
         {
-            Debug.Log("Set Player!");
             _playersAmmo.Add(slingshot, ammo);
             _spawnedBirds.Add(slingshot, new Queue<NetworkObject>());
-            Debug.Log("Exit the method");
         }
 
         private void OnEnable()
@@ -41,11 +39,9 @@ namespace AngryBirds.Managers
         
         public void SpawnBirds()
         {
-            Debug.Log("Enter to spawn birds method!");
             try
             {
                 int index = 0;
-                Debug.Log("Spawn birds for");
                 foreach (var entry in _playersAmmo)
                 {
                     NetworkSlingshot slingshot = entry.Key;
@@ -99,9 +95,7 @@ namespace AngryBirds.Managers
                 return;
             }
             NetworkObject bird = _spawnedBirds[slingshot].Dequeue();
-            Debug.Log($"Set {bird} for {slingshot}!!!");
             slingshot.GetProjectileRpc(slingshot.Object.Id, bird.Id);
-            // slingshot.CreateProjectileRpc(bird.Id, slingshot.Object.Id);
         }
         
         public void SetNextBirdAsProjectile(NetworkSlingshot slingshot)
