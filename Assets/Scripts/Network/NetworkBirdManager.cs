@@ -8,13 +8,14 @@ namespace AngryBirds.Network
 {
     public class NetworkBirdManager : NetworkBehaviour
     {
-        public Dictionary<NetworkSlingshot, BirdsAmmoSO> _playersAmmo 
+        public static Action<int> UpdateBirdsCount;
+        
+        private Dictionary<NetworkSlingshot, BirdsAmmoSO> _playersAmmo 
             = new Dictionary<NetworkSlingshot, BirdsAmmoSO>();
 
-        public Dictionary<NetworkSlingshot, Queue<NetworkObject>> _spawnedBirds 
+        private Dictionary<NetworkSlingshot, Queue<NetworkObject>> _spawnedBirds 
             = new Dictionary<NetworkSlingshot, Queue<NetworkObject>>();
 
-        public static Action<int> UpdateBirdsCount;
 
         private void OnEnable()
         {
