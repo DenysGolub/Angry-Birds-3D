@@ -1,59 +1,53 @@
-using AngryBirds.Levels;
-using AngryBirds.Managers;
+using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
 
-namespace AngryBirds
+namespace AngryBirds.Network
 {
     public class SharedModeMasterClientTracker : NetworkBehaviour
     {
+        public NetworkBirdManager BirdManager {get => _birdManager; set => _birdManager = value; }
         public static SharedModeMasterClientTracker LocalInstance;
+        
         private NetworkBirdManager _birdManager;
 
         public override void Spawned()
         {
             LocalInstance = this;
         }
-        
-        public NetworkBirdManager BirdManager {get => _birdManager; set => _birdManager = value; }
-     
-        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-        public void RequestBirdRpc(NetworkSlingshot slinsghot, PlayerRef sender)
-        {
-            Debug.Log(sender + " called for bird!");
-            _birdManager.SetNextBirdAsProjectile(slinsghot);
-        }
 
         public static void RequestBird(NetworkSlingshot slingshot, PlayerRef sender)
         {
-            Debug.Log($"Local instance_{LocalInstance}_" );
             if (LocalInstance == null) return;
             if (LocalInstance.Object.StateAuthority == PlayerRef.None) return;
 
             LocalInstance.RequestBirdRpc(slingshot, sender);
         }
-        
-        
-        
         
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-        public void SetBirdForSlingshotRpc(NetworkSlingshot slinsghot, PlayerRef sender)
+        private void RequestBirdRpc(NetworkSlingshot slingshot, PlayerRef sender)
         {
             Debug.Log(sender + " called for bird!");
-            _birdManager.SetNextBirdAsProjectile(slinsghot);
+            _birdManager.SetNextBirdAsProjectile(slingshot);
         }
 
-        public static void SetBirdForSlingshot(NetworkSlingshot slingshot, PlayerRef sender)
+        public void DisconnectPlayers()
         {
-            Debug.Log($"Local instance_{LocalInstance}_" );
-            if (LocalInstance == null) return;
-            if (LocalInstance.Object.StateAuthority == PlayerRef.None) return;
-
-            LocalInstance.RequestBirdRpc(slingshot, sender);
+            /*IEnumerable<PlayerRef> players = Runner.ActivePlayers;
+            foreach (PlayerRef player in players)
+            {
+                Runner.Disconnect(player);
+                
+                Debug.Log(player + " disconnected!");
+            }
+            */
+           
         }
-        
 
-       
+        public void DisconnectPlayer(PlayerRef sender)
+        {
+            // Runner.Disconnect(sender);
+        }
     }
 
 }

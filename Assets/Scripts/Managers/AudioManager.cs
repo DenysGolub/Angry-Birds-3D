@@ -102,7 +102,7 @@ namespace AngryBirds.Managers
             _blockDestroyed.Play();
         }
 
-        public void PlayEndLevel(bool isWin)
+        public void PlayEndLevel(bool? isWin)
         {
             _levelEndMusic.clip = _levelEndClips[Convert.ToInt32(isWin)];
             _levelEndMusic.Play();

@@ -101,7 +101,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 577e09c831ea8784ba5eb2b4d6d1d533, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isMultiplayer: 0
   _prefab: {fileID: 650711149328088102, guid: 886aa7bd875a7534698e818e0df88953, type: 3}
 --- !u!114 &-634428942846644718
 MonoBehaviour:

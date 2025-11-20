@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace AngryBirds.Managers
@@ -55,7 +56,7 @@ namespace AngryBirds.Managers
             _highScoreBtn.onClick.AddListener(ToHighScoreMenu);
             
             _playBtn.onClick.AddListener(_sceneLoader.LoadNextLevel);
-            //TODO: add multiplayer callback
+            _multiPlayerBtn.onClick.AddListener(ToMultiPlayer);
         }
         private void OnDisable()
         {
@@ -63,9 +64,10 @@ namespace AngryBirds.Managers
             _settingsMenuBtn.onClick.RemoveListener(ToSettingsMenu);
             _highScoreBtn.onClick.RemoveListener(ToHighScoreMenu);
             _playBtn.onClick.RemoveListener(_sceneLoader.LoadNextLevel);
+            _multiPlayerBtn.onClick.RemoveListener(ToMultiPlayer);
         }
 
-        public void ToMainMenu()
+        private void ToMainMenu()
         {
             _mainMenu.SetActive(true);
             _settingsMenu.SetActive(false);
@@ -73,7 +75,7 @@ namespace AngryBirds.Managers
             _mainMenuBtn.gameObject.SetActive(false);
         }
 
-        public void ToSettingsMenu()
+        private void ToSettingsMenu()
         {
             _mainMenu.SetActive(false);
             _settingsMenu.SetActive(true);
@@ -81,12 +83,17 @@ namespace AngryBirds.Managers
             _mainMenuBtn.gameObject.SetActive(true);
         }
 
-        public void ToHighScoreMenu()
+        private void ToHighScoreMenu()
         {
             _mainMenu.SetActive(false);
             _settingsMenu.SetActive(false);
             _highScoreMenu.SetActive(true);
             _mainMenuBtn.gameObject.SetActive(true);
+        }
+
+        private void ToMultiPlayer()
+        {
+            SceneManager.LoadScene("Multiplayer");
         }
     }
 }

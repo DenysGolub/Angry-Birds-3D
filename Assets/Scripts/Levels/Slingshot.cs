@@ -14,6 +14,8 @@ namespace AngryBirds.Levels
 {
     public class Slingshot : MonoBehaviour
     {
+        public static event Action OnShotFired;
+        
         [Header("Slingshot setup")] 
         [SerializeField] private Transform _pivot;
         [SerializeField] private Transform _launchPoint;
@@ -47,7 +49,6 @@ namespace AngryBirds.Levels
         private bool _canDrag = false;
         private DraggingInputActions _inputActions;    
     
-        public static event Action OnShotFired;
         
         private void Awake()
         {
@@ -91,7 +92,6 @@ namespace AngryBirds.Levels
    
         private void EnableInput(bool obj)
         {
-            Debug.Log($"Enabled input! {obj}");
             if (obj)
             {
                 _inputActions.Drag.Enable();
@@ -133,11 +133,6 @@ namespace AngryBirds.Levels
 
         private void OnDragStarted(InputAction.CallbackContext obj)
         {
-            // if (!Object.HasStateAuthority)
-            //{
-              //  return;
-           // }
-
             if (IsPointerOverUIObject())
             {
                 _canDrag = false;

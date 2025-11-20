@@ -16,35 +16,6 @@ namespace AngryBirds.Managers
         [SerializeField] private Transform _slingshot;
         [SerializeField] private BirdsAmmoSO _birdsList;
 
-        public void SetNewAmmoAndSlingshot(BirdsAmmoSO ammo, Transform slingshot)
-        {
-            _birdsList = ammo;
-            _slingshot = slingshot;
-            SetAmmo?.Invoke(_birdsList);
-
-            while (_spawnedBirds.Count != 0) 
-            {
-                GameObject bird = _spawnedBirds.Dequeue().gameObject;
-                Destroy(bird);
-            }
-
-
-            float padding = 1.5f;
-            Vector3 slingshotPosition = _slingshot.position;
-            slingshotPosition.y += 0.15f;
-
-            for (int i = 1; i < _birdsList.Birds.Count; i++)
-            {
-                slingshotPosition.x -= padding;
-                GameObject newBird = Instantiate(_birdsList.Birds[i], slingshotPosition, _birdsList.Birds[i].transform.rotation);
-                _spawnedBirds.Enqueue(newBird);
-                padding = 0.8f;
-            }
-
-            Debug.Log($"Spawned {_spawnedBirds.Count} birds for new ammo");
-        }
-
-        
         private void Awake()
         {
             float padding = 1.5f;
@@ -77,7 +48,6 @@ namespace AngryBirds.Managers
     
         private void SetUpCurrentProjectile()
         {
-            Debug.Log("Sended bird!");
             if (ChangeCurrentProjectile != null && _spawnedBirds.Count > 0)
             {
                 GameObject bird = _spawnedBirds.Dequeue().gameObject;
@@ -85,7 +55,6 @@ namespace AngryBirds.Managers
             }
             else
             {
-                Debug.Log("Empty!");
                 OnEmptyAmmo?.Invoke();
             }
         }

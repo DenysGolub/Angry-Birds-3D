@@ -3,25 +3,25 @@ using AngryBirds.Managers;
 using Fusion;
 using UnityEngine;
 
-namespace AngryBirds.Enemy
+namespace AngryBirds.EnemySystem
 {
     public class Enemy : NetworkBehaviour
     {
-        public float MaxHealth = 20f;
-        public float DamageMultiplier = 30f;
-    
         public static event Action<int> OnEnemyDeath;
-        public static event Action<int> OnHealthChange;
+        public static event Action<int> OnHealthChanged;
         public static event Action AddEnemyCount;
+        
+        [SerializeField] private float _maxHealth = 150f;
+        [SerializeField] private float _damageMultiplier = 15f;
         
         private float _currentHealth;
         
         private void Start()
         {
-            _currentHealth = MaxHealth;
+            _currentHealth = _maxHealth;
             AddEnemyCount?.Invoke();
         }
-        //TODO: make rpc for impact for enemy
+        
         private void OnCollisionEnter(Collision other)
         {
             if (_currentHealth <= 0)
@@ -29,9 +29,7 @@ namespace AngryBirds.Enemy
                 return;
             }
 
-            _currentHealth -= other.relativeVelocity.magnitude * DamageMultiplier;
-  //          Debug.Log($"Impact from enter: {other.relativeVelocity.magnitude * DamageMultiplier}");
-//            Debug.Log($"Impulse from explosion: {other.impulse.magnitude * DamageMultiplier}");
+            _currentHealth -= other.relativeVelocity.magnitude * _damageMultiplier;
             if (_currentHealth <= 0)
             {
                 OnEnemyDeath?.Invoke(1000);
@@ -41,8 +39,7 @@ namespace AngryBirds.Enemy
             }
             else
             {
-                OnHealthChange?.Invoke((int)Math.Round(other.relativeVelocity.magnitude *  100f));
-                //Debug.Log($"Points: {(int)Math.Round(other.relativeVelocity.magnitude * 100f)}");
+                OnHealthChanged?.Invoke((int)Math.Round(other.relativeVelocity.magnitude *  100f));
             }
         }
     }

@@ -8,6 +8,7 @@ namespace AngryBirds.Birds
         {
             BirdType =  BirdType.Red;
         }
-        public override void UseSpecialAbility() { }
+
+        protected override void UseSpecialAbility() { }
     }
 }

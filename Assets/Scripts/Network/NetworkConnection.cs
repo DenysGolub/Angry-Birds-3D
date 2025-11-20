@@ -3,11 +3,11 @@ using Fusion;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace AngryBirds
+namespace AngryBirds.Network
 {
     public class NetworkConnection : MonoBehaviour
     {
-        [SerializeField] NetworkRunner _runner;
+        [SerializeField] private NetworkRunner _runner;
 
         private void Start()
         {
@@ -32,6 +32,5 @@ namespace AngryBirds
                 SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
             });
         }
-        
     }
 }

@@ -17,11 +17,11 @@ namespace AngryBirds.Birds
         
         [SerializeField] private GameObject _prefab;
         
-
         private void Start()
         {
             BirdType = BirdType.Blue;
         }
+        
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         private void SpawnCopiesRpc(Vector3 basePos, Quaternion rot)
         {
@@ -39,9 +39,10 @@ namespace AngryBirds.Birds
             StartCoroutine(_firstBird.GetComponent<BirdBase>().DestroyBird());
             StartCoroutine(_secondBird.GetComponent<BirdBase>().DestroyBird());
         }
-        public override void UseSpecialAbility()
+
+        protected override void UseSpecialAbility()
         {
-            var currentBird = GetComponent<Rigidbody>(); 
+            Rigidbody currentBird = GetComponent<Rigidbody>(); 
             _basePos = transform.position;
             if (HasStateAuthority)
             {
@@ -69,13 +70,6 @@ namespace AngryBirds.Birds
         
             rb1.linearVelocity = linearVelocity;
             rb2.linearVelocity = linearVelocity;
-            
-            // Debug.Log($"Angular for origin: {angularVelocity}");
-            // Debug.Log($"Linear for origin: {linearVelocity}");
-            //
-            // Debug.Log($"Angular for first bird: {rb1.angularVelocity}");
-            // Debug.Log($"Linear for first bird: {rb1.linearVelocity}");
-
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]

@@ -1,3 +1,6 @@
+using System.Threading.Tasks;
+using AngryBirds.Network;
+using Fusion;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,19 +11,12 @@ namespace AngryBirds.Managers
     public class UIManager : MonoBehaviour
     {
         //TODO: sync points between players
-        private int _points;
+        private int _score;
     
-        [SerializeField] 
-        private TextMeshProUGUI _scoreText;
-    
-        [SerializeField] 
-        private GameObject _gameOverMenu;
-    
-        [SerializeField] 
-        private TextMeshProUGUI _gameOverText;
-    
-        [SerializeField] 
-        private GameObject _pauseMenu;
+        [SerializeField] private TextMeshProUGUI _scoreText;
+        [SerializeField] private GameObject _gameOverMenu;
+        [SerializeField] private TextMeshProUGUI _gameOverText;
+        [SerializeField] private GameObject _pauseMenu;
 
         [SerializeField] private Button _pauseBtn;
         [SerializeField] private Button _closePauseBtn;
@@ -29,14 +25,14 @@ namespace AngryBirds.Managers
         [SerializeField] private Button _toMainMenuBtn;
         [SerializeField] private Button _replayBtn;
         
-        
         [SerializeField] CameraManager _cameraManager;
         [SerializeField] SceneLoader _sceneLoader;
 
         private void OnEnable()
         {
-            GameManager.OnScoreChanged += UpdateScore;
-            GameManager.OnGameOver += ShowGameOverMenu;
+            
+            NetworkGameManager.OnScoreChanged += UpdateScore;
+            NetworkGameManager.OnGameOver += ShowGameOverMenu;
             
             _pauseBtn.onClick.AddListener(() => SetActivePauseMenu(true));
             _closePauseBtn.onClick.AddListener(() => SetActivePauseMenu(false));
@@ -48,8 +44,8 @@ namespace AngryBirds.Managers
     
         private void OnDisable()
         {
-            GameManager.OnScoreChanged -= UpdateScore;
-            GameManager.OnGameOver -= ShowGameOverMenu;
+            NetworkGameManager.OnScoreChanged -= UpdateScore;
+            NetworkGameManager.OnGameOver -= ShowGameOverMenu;
             
             _pauseBtn.onClick.RemoveAllListeners();
             _closePauseBtn.onClick.RemoveAllListeners();
@@ -57,17 +53,19 @@ namespace AngryBirds.Managers
             _toMainMenuBtn.onClick.RemoveAllListeners();
             _replayBtn.onClick.RemoveAllListeners();
         }
-
-        public void ShowGameOverMenu(bool isWin)
+        
+       
+        private void ShowGameOverMenu(bool isWin)
         {
+            
+            Debug.Log(isWin);
             _gameOverMenu.SetActive(true);
         
             _gameOverText.text = isWin ? "You win!" : "You lose!";
-            // Debug.Log(SceneManager.GetActiveScene().name);
-            LevelScores.SetHighScore(SceneManager.GetActiveScene().name, _points);
+            LevelScores.SetHighScore(SceneManager.GetActiveScene().name, _score);
         }
 
-        public void SetActivePauseMenu(bool isActive)
+        private void SetActivePauseMenu(bool isActive)
         {
             _pauseMenu.SetActive(isActive);
             Time.timeScale = isActive ? 0f : 1f;
@@ -76,7 +74,6 @@ namespace AngryBirds.Managers
         private void UpdateScore(int newPoints)
         {
             _scoreText.text = $"Score: {newPoints}";
-            _points = newPoints;
         }
     }
 }

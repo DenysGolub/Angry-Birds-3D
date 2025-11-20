@@ -1,20 +1,16 @@
-using AngryBirds.Levels;
 using Fusion;
-using UnityEngine;
-
-namespace AngryBirds
+namespace AngryBirds.Network
 {
     public class SpawnPointManager : NetworkBehaviour
     {
-        public Transform FirstPlayerSlingshot;
-        public Transform SecondPlayerSlingshot;
-        [Networked, Capacity(2)]
+       [Networked, Capacity(2)]
         public NetworkArray<bool> SpawnPointsFree { get; }
 
         public bool IsSpawned = false;
+        
         public override void Spawned()
         {
-            if (Object.HasStateAuthority)
+            if (HasStateAuthority)
             {
                 for (int i = 0; i < SpawnPointsFree.Length; i++)
                 {
@@ -22,10 +18,6 @@ namespace AngryBirds
                 }
             }
             IsSpawned = true;
-        }
-        private void SetSpawnPointUsed(int index, bool used)
-        {
-            SpawnPointsFree.Set(index, used);
         }
 
         public bool IsFree(int index)
@@ -37,6 +29,11 @@ namespace AngryBirds
         public void SetSpawnPointUsedRpc(int index, bool used)
         {
             SetSpawnPointUsed(index, used);
+        }
+        
+        private void SetSpawnPointUsed(int index, bool used)
+        {
+            SpawnPointsFree.Set(index, used);
         }
     }
 }

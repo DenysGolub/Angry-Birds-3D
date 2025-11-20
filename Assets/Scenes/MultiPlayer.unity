@@ -119,6 +119,29 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &385037940 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1572564591265943055, guid: 5ff6504458b6e1b4f9a70a0607127c2d, type: 3}
+  m_PrefabInstance: {fileID: 1975832762}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &385037944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 385037940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 3253196036
+  ObjectInterest: 1
+  Flags: 524289
+  NestedObjects: []
+  NetworkedBehaviours: []
+  ForceRemoteRenderTimeframe: 0
 --- !u!1 &557045057
 GameObject:
   m_ObjectHideFlags: 0
@@ -153,8 +176,7 @@ MonoBehaviour:
   ObjectInterest: 1
   Flags: 524289
   NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 557045061}
+  NetworkedBehaviours: []
   ForceRemoteRenderTimeframe: 0
 --- !u!4 &557045060
 Transform:
@@ -183,6 +205,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05b33970e5fc41dda0cc89708c86dfe7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _runner: {fileID: 0}
+  _object: {fileID: 0}
+  InvokeRpc: 0
+  ObjectIndex: 0
+  WordOffset: 0
+  WordCount: 0
+  DefaultReplicated: 1
   IsSpawned: 0
 --- !u!114 &688289072 stripped
 MonoBehaviour:
@@ -244,8 +273,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61d2e674db6a47c6bb56749a10621ee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FirstPlayerSlingshot: {fileID: 1713294757}
-  SecondPlayerSlingshot: {fileID: 1792749016}
   _SpawnPointsFree: 
   IsSpawned: 0
 --- !u!4 &710919157
@@ -634,21 +661,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _networkEventsHandler: {fileID: 711153115}
-  _playerPrefab: {fileID: 3021090048802928761, guid: ef260af0880cda94ea207fd1998883e7, type: 3}
-  _cinemachineCamera: {fileID: 688289072}
+  _runner: {fileID: 711153114}
   _firstPlayerSlingshot: {fileID: 1713294757}
   _secondPlayerSlingshot: {fileID: 1792749016}
+  _playerPrefab: {fileID: 3021090048802928761, guid: ef260af0880cda94ea207fd1998883e7, type: 3}
   _spawnPointManagerPrefab: {fileID: 710919156}
   _birdManagerPrefab: {fileID: 3603086921578511241, guid: 0e62b3547764dbc47a7da36608170545, type: 3}
-  _runner: {fileID: 711153114}
-  _networkSlingshotManager: {fileID: 557045061}
-  _spawnPointManagerInstance: {fileID: 710919156}
-  cameraManager: {fileID: 0}
   structurePrefab: {fileID: 542265717969401532, guid: 668a117aa8a752645859038f5eb91aeb, type: 3}
+  _spawnPointManagerInstance: {fileID: 710919156}
+  _cinemachineCamera: {fileID: 688289072}
   structureSpawnPoint: {fileID: 1185239382}
   _gameManager: {fileID: 916398541}
   _playersAmmo:
-  - {fileID: 11400000, guid: 80ec05447731a2b4597fe52dd618b9fe, type: 2}
+  - {fileID: 11400000, guid: b69cef21073780a4797e730690525540, type: 2}
   - {fileID: 11400000, guid: 4ffb2e330206f6c4aa230c8309b99ccf, type: 2}
 --- !u!4 &1601996009 stripped
 Transform:
@@ -978,6 +1003,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 988865925321648940, guid: 5ff6504458b6e1b4f9a70a0607127c2d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 935640490}
+    - targetCorrespondingSourceObject: {fileID: 1572564591265943055, guid: 5ff6504458b6e1b4f9a70a0607127c2d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 385037944}
   m_SourcePrefab: {fileID: 100100000, guid: 5ff6504458b6e1b4f9a70a0607127c2d, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

@@ -4,7 +4,7 @@ using Fusion;
 using Fusion.Sockets;
 using UnityEngine;
 
-namespace AngryBirds
+namespace AngryBirds.Network
 {
     public class NetworkEventsHandler: MonoBehaviour, INetworkRunnerCallbacks
     {
@@ -25,6 +25,7 @@ namespace AngryBirds
 
         public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
         {
+            
         }
 
         public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)

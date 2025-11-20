@@ -11,10 +11,9 @@ namespace AngryBirds.Birds
         {
             BirdType =  BirdType.Yellow;
         }
-    
-        public override void UseSpecialAbility()
+
+        protected override void UseSpecialAbility()
         {
-            Debug.Log($"use ability for YellowBird");
             _rb.AddForce(transform.forward * _forceMultiplier, ForceMode.VelocityChange);
         }
     }

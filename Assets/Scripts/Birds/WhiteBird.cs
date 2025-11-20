@@ -10,11 +10,10 @@ namespace AngryBirds.Birds
         {
             BirdType =  BirdType.White;
         }
-    
-        public override void UseSpecialAbility()
+
+        protected override void UseSpecialAbility()
         {
             Runner.Spawn(_eggPrefab, transform.position, transform.rotation);
-            
             _rb.AddForce(Vector3.up * 10f, ForceMode.Impulse);
         }
     }

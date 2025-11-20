@@ -21,8 +21,6 @@ namespace AngryBirds.Managers
             GameManager.OnGameOver -= DisableCamera;
         }
         
-        
-
         private void DisableCamera(bool obj)
         {
             this.enabled = false;

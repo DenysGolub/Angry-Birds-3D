@@ -1,7 +1,4 @@
-using System;
 using System.Threading.Tasks;
-using AngryBirds.Levels;
-using AngryBirds.Managers;
 using AngryBirds.SO.Scripts;
 using Fusion;
 using Unity.Cinemachine;
@@ -26,7 +23,6 @@ namespace AngryBirds.Network
         [SerializeField] private GameObject structurePrefab;
         
         [Header("References")]        
-        [SerializeField] private NetworkSlingshotManager _networkSlingshotManager;
         [SerializeField] private SpawnPointManager _spawnPointManagerInstance;
         [SerializeField] private CinemachineCamera _cinemachineCamera;
 
@@ -61,14 +57,10 @@ namespace AngryBirds.Network
         {
             if (_spawnPointManagerInstance == null)
             {
-                Debug.Log("Spawn point manager is null!");
                 return;
             }
 
             while (!_spawnPointManagerInstance.IsSpawned)
-                await Task.Yield();
-
-            while (!_networkSlingshotManager.IsSpawned)
                 await Task.Yield();
 
             int index = _spawnPointManagerInstance.IsFree(0) ? 0 : 1;
@@ -91,14 +83,11 @@ namespace AngryBirds.Network
                     _runner.Spawn(structurePrefab, structureSpawnPoint.position, structurePrefab.transform.rotation);
                 }
 
-                _spawnedSlingshots[index]
-                    .GetComponent<NetworkSlingshot>()
-                    .SetCamera(_cinemachineCamera, player);
+                _spawnedSlingshots[index].GetComponent<NetworkSlingshot>().SetCamera(_cinemachineCamera, player);
 
                 _spawnPointManagerInstance.SetSpawnPointUsedRpc(index, true);
 
-                _gameManager.SetPlayerRpc(index,
-                    _spawnedSlingshots[index].GetComponent<NetworkSlingshot>());
+                _gameManager.SetPlayerRpc(index, _spawnedSlingshots[index].GetComponent<NetworkSlingshot>());
             }
 
             if (_runner.IsSharedModeMasterClient)
@@ -134,6 +123,5 @@ namespace AngryBirds.Network
             secondPlayerSlingshot.SetAmmo(_playersAmmo[1], secondPlayerSlingshot.Object.Id);
             _birdManagerInstance.SetPlayerSlingshot(_playersAmmo[1], secondPlayerSlingshot.GetComponent<NetworkSlingshot>());
         }
-
     }
 }

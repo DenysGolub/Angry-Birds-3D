@@ -1,14 +1,17 @@
+using AngryBirds.Network;
+using Fusion;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace AngryBirds.Managers
 {
-    public class SceneLoader : MonoBehaviour
+    public class SceneLoader : NetworkBehaviour
     {
         public void LoadMainMenu()
         {
             SceneManager.LoadScene("MainMenu");
         }
+        
 
         public void LoadNextLevel()
         {

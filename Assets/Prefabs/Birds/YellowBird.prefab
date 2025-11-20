@@ -654,7 +654,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!145 &8427015287080055981
 SpringJoint:
   m_ObjectHideFlags: 0
@@ -692,7 +692,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 682d67ac26064b146bf86850beef14a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isMultiplayer: 0
   _forceMultiplier: 40
 --- !u!135 &401337436005608921
 SphereCollider:

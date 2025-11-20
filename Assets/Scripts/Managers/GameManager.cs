@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using AngryBirds.Blocks;
+using AngryBirds.EnemySystem;
 using AngryBirds.Levels;
 using AngryBirds.SO.Scripts;
 using Fusion;
@@ -32,18 +33,15 @@ namespace AngryBirds.Managers
         private void OnEnable()
         {
             Slingshot.OnShotFired += RequestNextBird;
-            // NetworkSlingshot.OnShotFired += RequestNextBird;
 
             BirdManager.ChangeCurrentProjectile += SetNextBirdToSlingshot;
             BirdManager.SetAmmo += GetStartingBirdsCount;
             BirdManager.OnEmptyAmmo += CheckGameStatus;
-        
-
             
-            Enemy.Enemy.AddEnemyCount += ChangeEnemyCount;
-            Enemy.Enemy.OnEnemyDeath += UpdateScore;
-            Enemy.Enemy.OnEnemyDeath += DecreaseEnemyCount;
-            Enemy.Enemy.OnHealthChange += UpdateScore;
+            Enemy.AddEnemyCount += ChangeEnemyCount;
+            Enemy.OnEnemyDeath += UpdateScore;
+            Enemy.OnEnemyDeath += DecreaseEnemyCount;
+            Enemy.OnHealthChanged += UpdateScore;
         
             Block.OnBlockDestroyed += UpdateScore;
             Block.OnHealthChanged += UpdateScore;
@@ -53,16 +51,16 @@ namespace AngryBirds.Managers
         private void OnDisable()
         {
             Slingshot.OnShotFired -= RequestNextBird;
-            // NetworkSlingshot.OnShotFired -= RequestNextBird;
+            
             BirdManager.ChangeCurrentProjectile -= SetNextBirdToSlingshot;
             BirdManager.OnEmptyAmmo -= CheckGameStatus;
             BirdManager.SetAmmo -= GetStartingBirdsCount;
             
         
-            Enemy.Enemy.AddEnemyCount -= ChangeEnemyCount;
-            Enemy.Enemy.OnEnemyDeath -= UpdateScore;
-            Enemy.Enemy.OnEnemyDeath -= DecreaseEnemyCount;
-            Enemy.Enemy.OnHealthChange -= UpdateScore;
+            Enemy.AddEnemyCount -= ChangeEnemyCount;
+            Enemy.OnEnemyDeath -= UpdateScore;
+            Enemy.OnEnemyDeath -= DecreaseEnemyCount;
+            Enemy.OnHealthChanged -= UpdateScore;
 
             Block.OnBlockDestroyed -= UpdateScore;
             Block.OnHealthChanged -= UpdateScore;

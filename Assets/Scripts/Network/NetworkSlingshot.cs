@@ -10,26 +10,25 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-namespace AngryBirds.Levels
+namespace AngryBirds.Network
 {
     public class NetworkSlingshot : NetworkBehaviour
     {
-        [Networked, OnChangedRender(nameof(OnNetworkPositionChanged))] 
-        public Vector3 NetworkPosition {get; set;}
+        [Networked, OnChangedRender(nameof(OnNetworkPositionChanged))] private Vector3 NetworkPosition {get; set;}
 
-        private Vector3 syncedPosition; 
+        [Networked, OnChangedRender(nameof(OnNetworkBirdChanged))] private NetworkObject NetworkBird {get; set;}
         
-        [Networked, OnChangedRender(nameof(OnNetworkBirdChanged))] 
-        public NetworkObject NetworkBird {get; set;}
         public static event Action<NetworkSlingshot> OnShotFired;
         
-        [Header("Slingshot setup")] 
+        [Header("Slingshot configuration")] 
         [SerializeField] private Transform _pivot;
         [SerializeField] private Transform _launchPoint;
         [SerializeField] private float _maxStretch = 3f;
         [SerializeField] private float _powerMultiplier = 30f;
+        private Rigidbody _currentProjectile;
+        private SpringJoint _joint;
     
-        [Header("Flight Camera Setup")] 
+        [Header("Flight Camera")] 
         [SerializeField] private CinemachineCamera _flightCamera;
         [SerializeField] private float _waitSecondsAfterShot = 2f;
 
@@ -44,15 +43,64 @@ namespace AngryBirds.Levels
         [SerializeField] private int _pathResolution = 30;
         [SerializeField] private float _pathTimeStep = 0.1f;
 
+        [Header("Network")]
+        private NetworkObject _currentProjectilePrefab;
+        private Vector3 _syncedPosition;
+        
+        [Header("Ammo")]
         private BirdsAmmoSO _birdsList;
         
-        private NetworkObject _currentProjectilePrefab;
- 
-        public Rigidbody _currentProjectile;
-        private SpringJoint _joint;
+        [Header("Dragging")]
         private bool _isDragging = false;
         private bool _canDrag = false;
         private DraggingInputActions _inputActions;    
+        
+        private void Awake()
+        {
+            _inputActions = new DraggingInputActions();
+        }
+
+        private void OnEnable()
+        {
+            SubscribeEvents();
+        }
+
+        private void SubscribeEvents()
+        {
+            CameraManager.EnableSlingshot += EnableInput;
+            _inputActions.Drag.DragAndMove.started += OnDragStarted;
+            _inputActions.Drag.PointerPosition.performed += OnDragPerformed;
+            _inputActions.Drag.DragAndMove.canceled += OnDragCanceled;
+            _inputActions.Enable();
+        }
+        
+        private void OnDisable()
+        {
+            UnSubscribeEvents();
+        }
+
+        private void UnSubscribeEvents()
+        {
+            CameraManager.EnableSlingshot -= EnableInput;
+            _inputActions.Drag.DragAndMove.started -= OnDragStarted;
+            _inputActions.Drag.PointerPosition.performed -= OnDragPerformed;
+            _inputActions.Drag.DragAndMove.canceled -= OnDragCanceled;
+            _inputActions.Disable();
+        }
+
+        private void Start()
+        {
+            _leftBand.enabled = true;
+            _rightBand.enabled = true;
+
+            _syncedPosition = _launchPoint.position;
+            _inputActions.Disable();
+        }
+   
+        private void LateUpdate()
+        {
+            UpdateBands();
+        }
     
         private void OnNetworkPositionChanged()
         {
@@ -66,57 +114,12 @@ namespace AngryBirds.Levels
                 return;
             }
             _currentProjectile.position = NetworkPosition;
-            
         }
 
         private void OnNetworkBirdChanged()
         {
             _currentProjectilePrefab = NetworkBird;
-            
             CreateProjectile();
-        }
-        
-        private void Awake()
-        {
-            _inputActions = new DraggingInputActions();
-        }
-
-        private void OnEnable()
-        {
-            CameraManager.EnableSlingshot += EnableInput;
-        
-            _inputActions.Drag.DragAndMove.started += OnDragStarted;
-            _inputActions.Drag.PointerPosition.performed += OnDragPerformed;
-            _inputActions.Drag.DragAndMove.canceled += OnDragCanceled;
-            _inputActions.Enable();
-
-        }
-
-        private void Start()
-        {
-            _leftBand.enabled = true;
-            _rightBand.enabled = true;
-
-            syncedPosition = _launchPoint.position;
-            _inputActions.Disable();
-            
-        }
-
-        private void OnDisable()
-        {
-            CameraManager.EnableSlingshot -= EnableInput;
-
-            _inputActions.Drag.DragAndMove.started -= OnDragStarted;
-            _inputActions.Drag.PointerPosition.performed -= OnDragPerformed;
-            _inputActions.Drag.DragAndMove.canceled -= OnDragCanceled;
-            _inputActions.Disable();
-
-        }
-
-   
-        private void LateUpdate()
-        {
-            UpdateBands();
         }
         
         public void SetCamera(CinemachineCamera cam, PlayerRef targetPlayer)
@@ -129,36 +132,16 @@ namespace AngryBirds.Levels
             
         } 
         
-
-        //TODO: make slingshot spawn!
-        //hasStateAuthority - is owner?
-        //todo: spawnslingshot
-        
-
         public void SetAmmo(BirdsAmmoSO ammo, NetworkId playerId)
         {
             _birdsList = ammo;
             _currentProjectilePrefab = Runner.Spawn(_birdsList.Birds[0].gameObject, _launchPoint.position, _launchPoint.rotation);
-            // Debug.Log(_currentProjectilePrefab);
-
            
             CreateProjectile();
             CreateProjectileRpc(_currentProjectilePrefab.GetComponent<NetworkObject>().Id, playerId);
            
         }
         
-        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-        public void CreateProjectileRpc(NetworkId birdId, NetworkId slingshotId)
-        {
-            Debug.Log(slingshotId + "_" + birdId);
-            NetworkObject slingshotObj = null;
-            NetworkObject birdObj = null;
-            if (Runner.TryFindObject(slingshotId, out slingshotObj) &&  Runner.TryFindObject(birdId, out birdObj) )
-            {
-                slingshotObj.GetComponent<NetworkSlingshot>()._currentProjectilePrefab = birdObj;
-                CreateProjectile();
-            }
-        }
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void GetProjectileRpc(NetworkId slingshotId, NetworkId birdId)
         {
@@ -168,22 +151,58 @@ namespace AngryBirds.Levels
             {
                 _currentProjectilePrefab = birdObj;
                 
-                syncedPosition = _launchPoint.position;
+                _syncedPosition = _launchPoint.position;
                 CreateProjectile();
         
-                if (Object.HasStateAuthority)
+                if (HasStateAuthority)
                 {
                     _currentProjectilePrefab.transform.position = _launchPoint.position;
                     NetworkBird = birdObj;
-                    NetworkPosition = syncedPosition;
+                    NetworkPosition = _syncedPosition;
                     CreateProjectileRpc(birdId, slingshotId);
                 }
             }
-          
-            
         }
        
-       
+        private void CreateProjectile()
+        {
+            if (HasStateAuthority)
+            {
+                NetworkPosition = _launchPoint.position;
+            }
+            if (_currentProjectilePrefab != null)
+            {
+                if (_flightCamera != null)
+                {
+                    _flightCamera.Follow = _launchPoint;
+                }
+                _currentProjectile = _currentProjectilePrefab.gameObject.GetComponent<Rigidbody>();
+
+                _currentProjectile.transform.SetPositionAndRotation(_launchPoint.position, _currentProjectilePrefab.transform.rotation);
+
+                if (HasStateAuthority)
+                {
+                    NetworkPosition = _currentProjectile.position;
+                }
+                
+                _joint = _currentProjectile.gameObject.GetComponent<SpringJoint>();
+                _joint.connectedAnchor = _pivot.position;
+                _joint.autoConfigureConnectedAnchor = false;
+                _currentProjectile.isKinematic = true; 
+            }
+        }
+
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        private void CreateProjectileRpc(NetworkId birdId, NetworkId slingshotId)
+        {
+            NetworkObject slingshotObj = null;
+            NetworkObject birdObj = null;
+            if (Runner.TryFindObject(slingshotId, out slingshotObj) &&  Runner.TryFindObject(birdId, out birdObj) )
+            {
+                slingshotObj.GetComponent<NetworkSlingshot>()._currentProjectilePrefab = birdObj;
+                CreateProjectile();
+            }
+        }
         
         private void EnableInput(bool obj)
         {
@@ -258,59 +277,7 @@ namespace AngryBirds.Levels
             EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
             return results.Count > 0;
         }
-        private void DisableSlingshotOnGameOver(bool value)
-        {
-            this.enabled = false;
-        }
-
-        public void GetProjectile(NetworkObject bird)
-        {
-            _currentProjectilePrefab = bird;
-            syncedPosition = _launchPoint.position;
         
-            if (Object.HasStateAuthority)
-            {
-                _currentProjectilePrefab.transform.position = _launchPoint.position;
-                NetworkPosition = syncedPosition;
-            }
-
-            CreateProjectileRpc(bird.GetComponent<NetworkObject>().Id, this.Object.Id);
-
-        
-            
-        }
-
-
-        private void CreateProjectile()
-        {
-            if (HasStateAuthority)
-            {
-                NetworkPosition = _launchPoint.position;
-            }
-            if (_currentProjectilePrefab != null)
-            {
-                if (_flightCamera != null)
-                {
-                    _flightCamera.Follow = _launchPoint;
-                }
-                Debug.Log(_currentProjectilePrefab + "is created as projectile!");
-                _currentProjectile = _currentProjectilePrefab.gameObject.GetComponent<Rigidbody>();
-
-                _currentProjectile.transform.SetPositionAndRotation(_launchPoint.position, _currentProjectilePrefab.transform.rotation);
-
-                if (HasStateAuthority)
-                {
-                    NetworkPosition = _currentProjectile.position;
-                }
-                
-                _joint = _currentProjectile.gameObject.GetComponent<SpringJoint>();
-                _joint.connectedAnchor = _pivot.position;
-                _joint.autoConfigureConnectedAnchor = false;
-                _currentProjectile.isKinematic = true; 
-            }
-        }
-
-
         private void DragProjectile(Vector2 screenPos)
         {
             if (_currentProjectile == null)
@@ -358,11 +325,8 @@ namespace AngryBirds.Levels
                 yield break;
             }
             
-            syncedPosition = _currentProjectile.position;
-            if (Runner.IsSharedModeMasterClient)
-            {
-                Debug.Log("I'm the master!!!");
-            }
+            _syncedPosition = _currentProjectile.position;
+          
             if (Runner.IsSharedModeMasterClient)
             {
                 ApplyForce(this.GetComponent<NetworkObject>());
@@ -371,7 +335,6 @@ namespace AngryBirds.Levels
             {
                 ApplyForceRpc(this.GetComponent<NetworkObject>());
             }
-
             CreateProjectile();
         }
         
@@ -381,12 +344,10 @@ namespace AngryBirds.Levels
             {
                 _canDrag = false;
                 _currentProjectilePrefab = null;
-                Debug.Log(GetComponent<NetworkObject>().Id);
 
                 Destroy(_joint);
                 _currentProjectile.isKinematic = false;
                 _currentProjectile.gameObject.GetComponent<BirdBase>().OnShoot?.Invoke();
-                //_flightCamera.Follow = _currentProjectile.transform;
 
                 Vector3 forceDir = (_pivot.position - _currentProjectile.position);
                 float stretch = forceDir.magnitude / _maxStretch;
@@ -396,15 +357,12 @@ namespace AngryBirds.Levels
                 float forceMag = forceDir.magnitude * _powerMultiplier;
                 _currentProjectile.AddForce(forceDir.normalized * forceMag, ForceMode.Impulse);
                 _currentProjectile = null;
-                InvokeRpc();
-
+                RequestNewBird();
             }
         }
-        
-        public void InvokeRpc()
+
+        private void RequestNewBird()
         {
-            Debug.Log($"{this.name} invoked action for new bird!");
-            // OnShotFired?.Invoke(this);
             SharedModeMasterClientTracker.RequestBird(this, Runner.LocalPlayer);
         }
 
@@ -420,22 +378,14 @@ namespace AngryBirds.Levels
             {
                 slingshot.GetComponent<NetworkSlingshot>().ReleaseBird();
             }
-            
-        }
-
-        private IEnumerator Wait()
-        {
-            yield return new WaitForSeconds(_waitSecondsAfterShot);
         }
 
         private void UpdateBands()
-        {
-            //TODO: make sync bands across clients!
+      {
             if (_leftBand && _rightBand)
             {
                 _leftBand.enabled = true;
                 _rightBand.enabled = true;
-
                 
                 Vector3 pos = _launchPoint.position;
                 
@@ -448,7 +398,6 @@ namespace AngryBirds.Levels
                     pos = _currentProjectile.position;
                 }
                 
-
                 _leftBand.SetPosition(0, _leftAnchor.position);
                 _leftBand.SetPosition(1, pos);
 
@@ -459,11 +408,6 @@ namespace AngryBirds.Levels
                 float width = Mathf.Lerp(0.08f, 0.02f, stretch);
                 _leftBand.startWidth = _leftBand.endWidth = width;
                 _rightBand.startWidth = _rightBand.endWidth = width;
-            }
-            else
-            {
-                // if (_leftBand) _leftBand.enabled = false;
-                // if (_rightBand) _rightBand.enabled = false;
             }
         }
 

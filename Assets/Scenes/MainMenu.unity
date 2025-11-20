@@ -170,7 +170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a177a40819bd89343b54fe16c9f76edc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cursorTexture: {fileID: 0}
+  _cursorTexture: {fileID: 2800000, guid: c92522fdd57ea3048bd28eb67a5318bd, type: 3}
 --- !u!114 &57346967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1814,7 +1814,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a177a40819bd89343b54fe16c9f76edc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cursorTexture: {fileID: 0}
+  _cursorTexture: {fileID: 2800000, guid: c92522fdd57ea3048bd28eb67a5318bd, type: 3}
 --- !u!114 &616602716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4113,7 +4113,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a177a40819bd89343b54fe16c9f76edc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cursorTexture: {fileID: 0}
+  _cursorTexture: {fileID: 2800000, guid: c92522fdd57ea3048bd28eb67a5318bd, type: 3}
 --- !u!114 &2095233283
 MonoBehaviour:
   m_ObjectHideFlags: 0

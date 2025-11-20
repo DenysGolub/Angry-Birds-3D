@@ -435,7 +435,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!145 &3697599200832219671
 SpringJoint:
   m_ObjectHideFlags: 0
